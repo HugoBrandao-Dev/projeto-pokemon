@@ -2,19 +2,22 @@
   <main id="app">
     <section id="jogadores">
       <PlayerComponent />
+      <NPCComponent />
     </section>
   </main>
 </template>
 
 <script>
   import PlayerComponent from './components/PlayerComponent'
+  import NPCComponent from './components/NPCComponent'
 
-export default {
-  name: 'App',
-  components: {
-    PlayerComponent
+  export default {
+    name: 'App',
+    components: {
+      PlayerComponent,
+      NPCComponent
+    }
   }
-}
 </script>
 
 <style>

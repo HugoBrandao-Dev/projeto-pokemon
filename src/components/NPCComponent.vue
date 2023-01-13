@@ -1,0 +1,47 @@
+<template>
+  <div class="personagem espacar">
+    <h2>Monstro<img src="https://img.icons8.com/dotty/80/000000/monster-face.png" /></h2>
+    <div class="caixa-vida">
+      <div class="vida" :style="getVidaMonstro"></div>
+    </div>
+    <div>{{ getVidaMonstro.width }}</div>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        monstro: {
+          vida: 100,
+          ataque: {
+            minimo: 5,
+            maximo: 15
+          }
+        }
+      }
+    },
+    computed: {
+      getVidaMonstro() {
+        return {
+          width: `${this.monstro.vida}%`,
+          backgroundColor: this.getCorBarra(this.monstro.vida)
+        }
+      },
+    },
+    methods: {
+      getCorBarra(vida) {
+        if (vida > 60) {
+          return '#33cc33'
+        } else if (vida > 30) {
+          return '#e6e600'
+        } else {
+          return '#ff471a'
+        }
+      },
+    }
+  }
+</script>
+
+<style>
+</style>
