@@ -5,6 +5,7 @@
       <NPCComponent />
     </section>
     <ActionsComponent />
+    <LogsComponent />
   </main>
 </template>
 
@@ -12,13 +13,15 @@
   import PlayerComponent from './components/PlayerComponent'
   import NPCComponent from './components/NPCComponent'
   import ActionsComponent from './components/ActionsComponent'
+  import LogsComponent from './components/LogsComponent'
 
   export default {
     name: 'App',
     components: {
       PlayerComponent,
       NPCComponent,
-      ActionsComponent
+      ActionsComponent,
+      LogsComponent
     }
   }
 </script>
