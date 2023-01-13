@@ -21,6 +21,9 @@
         }
       }
     },
+    created() {
+      this.$emit("npcStatus", { monstro: this.monstro })
+    },
     computed: {
       getVidaMonstro() {
         return {

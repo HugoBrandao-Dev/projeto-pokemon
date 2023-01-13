@@ -31,6 +31,9 @@
         }
       }
     },
+    created() {
+      this.$emit("playerStatus", { jogador: this.jogador })
+    },
     computed: {
       getVidaJogador() {
         return {

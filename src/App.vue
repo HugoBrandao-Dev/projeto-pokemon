@@ -1,10 +1,10 @@
 <template>
   <main id="app">
     <section id="jogadores">
-      <PlayerComponent />
-      <NPCComponent />
+      <PlayerComponent @playerStatus="playerStatus($event)" />
+      <NPCComponent @npcStatus="npcStatus($event)" />
     </section>
-    <ActionsComponent />
+    <ActionsComponent :player="jogador" :npc="monstro" />
     <LogsComponent />
   </main>
 </template>
@@ -16,16 +16,27 @@
   import ActionsComponent from './components/ActionsComponent'
   import LogsComponent from './components/LogsComponent'
 
-  // Bibliotecas
-  import axios from 'axios'
-
   export default {
     name: 'App',
+    data() {
+      return {
+        jogador: {},
+        monstro: {}
+      }
+    },
     components: {
       PlayerComponent,
       NPCComponent,
       ActionsComponent,
       LogsComponent
+    },
+    methods: {
+      playerStatus($event) {
+        this.jogador = $event.jogador
+      },
+      npcStatus($event) {
+        this.monstro = $event.monstro
+      }
     }
   }
 </script>

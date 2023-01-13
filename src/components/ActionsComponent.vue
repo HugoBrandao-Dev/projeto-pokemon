@@ -20,12 +20,22 @@
     data() {
       return {
         statusPartida: {
-        emAndamento: false,
-        mostrarResultado: false,
-        status: '',
-        mensagem: ''
-        }
+          emAndamento: false,
+          mostrarResultado: false,
+          status: '',
+          mensagem: ''
+        },
+        jogador: {},
+        monstro: {}
       }
+    },
+    props: {
+      player: Object,
+      npc: Object
+    },
+    created() {
+      this.jogador = this.player
+      this.monstro = this.npc
     },
     methods: {
       vezJogadorAtacar(especial) {
@@ -108,6 +118,43 @@
         let danoDoMonstro = this.vezMonstroAtacar()
         this.setAcao('dano', 'jogador', danoDoMonstro)
         this.verificarVencedor
+      },
+      setAcao(tipo, destino, valor) {
+        if (valor != 0) {
+          let mensagem = ''
+          if (tipo == 'cura') {
+            mensagem = `Você curou ${valor}.`
+          } else {
+            mensagem = `O ${destino} recebeu ${valor} de dano.`
+          }
+          this.logAcoes.unshift({
+            id: `${destino}${Date.now()}${tipo}`,
+            destino,
+            tipo,
+            mensagem
+          })
+        }
+      },
+      getValorRandom(min, max) {
+        return Math.floor((Math.random() * (max - min + 1)) + min)
+      },
+      setIniciarPartida() {
+        this.jogador = this.player
+        this.monstro = this.npc
+        this.statusPartida.emAndamento = true
+        this.statusPartida.mensagem = ''
+        this.statusPartida.mostrarResultado = false
+        this.statusPartida.status = ''
+        this.logAcoes = []
+        this.jogador.vida = 100
+        this.monstro.vida = 100
+      },
+      setFinalizarPartida(status, mensagem) {
+        this.statusPartida.emAndamento = false
+        this.statusPartida.mensagem = mensagem
+        this.statusPartida.mostrarResultado = true
+        this.statusPartida.status = status
+        this.logAcoes = []
       },
       desistir() {
         if (confirm('Deseja realmente DESISTIR da partida?')) {
