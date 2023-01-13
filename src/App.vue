@@ -4,18 +4,21 @@
       <PlayerComponent />
       <NPCComponent />
     </section>
+    <ActionsComponent />
   </main>
 </template>
 
 <script>
   import PlayerComponent from './components/PlayerComponent'
   import NPCComponent from './components/NPCComponent'
+  import ActionsComponent from './components/ActionsComponent'
 
   export default {
     name: 'App',
     components: {
       PlayerComponent,
-      NPCComponent
+      NPCComponent,
+      ActionsComponent
     }
   }
 </script>
