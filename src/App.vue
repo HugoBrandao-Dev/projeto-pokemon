@@ -10,10 +10,14 @@
 </template>
 
 <script>
+  // Componentes
   import PlayerComponent from './components/PlayerComponent'
   import NPCComponent from './components/NPCComponent'
   import ActionsComponent from './components/ActionsComponent'
   import LogsComponent from './components/LogsComponent'
+
+  // Bibliotecas
+  import axios from 'axios'
 
   export default {
     name: 'App',
