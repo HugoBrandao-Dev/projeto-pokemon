@@ -4,7 +4,8 @@
       <PlayerComponent @playerStatus="playerStatus($event)" />
       <NPCComponent @npcStatus="npcStatus($event)" />
     </section>
-    <ActionsComponent :player="jogador" :npc="monstro" />
+    <MatchComponent @match="statusMatch($event)" />
+    <ActionsComponent :player="jogador" :npc="monstro" :statusMatch="match" />
     <LogsComponent />
   </main>
 </template>
@@ -13,6 +14,7 @@
   // Componentes
   import PlayerComponent from './components/PlayerComponent'
   import NPCComponent from './components/NPCComponent'
+  import MatchComponent from './components/MatchComponent'
   import ActionsComponent from './components/ActionsComponent'
   import LogsComponent from './components/LogsComponent'
 
@@ -21,12 +23,14 @@
     data() {
       return {
         jogador: {},
-        monstro: {}
+        monstro: {},
+        match: {}
       }
     },
     components: {
       PlayerComponent,
       NPCComponent,
+      MatchComponent,
       ActionsComponent,
       LogsComponent
     },
@@ -36,6 +40,9 @@
       },
       npcStatus($event) {
         this.monstro = $event.monstro
+      },
+      statusMatch($event) {
+        this.match = $event.status
       }
     }
   }

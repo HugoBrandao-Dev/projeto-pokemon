@@ -26,16 +26,13 @@
           mensagem: ''
         },
         jogador: {},
-        monstro: {}
+        monstro: {},
       }
     },
     props: {
       player: Object,
-      npc: Object
-    },
-    created() {
-      this.jogador = this.player
-      this.monstro = this.npc
+      npc: Object,
+      statusMatch: Object
     },
     methods: {
       vezJogadorAtacar(especial) {
@@ -101,7 +98,7 @@
 
         let danoDoMonstro = this.vezMonstroAtacar()
         this.setAcao('dano', 'jogador', danoDoMonstro)
-        this.verificarVencedor
+        this.verificarVencedor()
       },
       atacarEspecial() {
         let danoDoJogador = this.vezJogadorAtacar(true)
@@ -109,7 +106,7 @@
 
         let danoDoMonstro = this.vezMonstroAtacar()
         this.setAcao('dano', 'jogador', danoDoMonstro)
-        this.verificarVencedor
+        this.verificarVencedor()
       },
       curarJogador() {
         let curaDoJogador = this.vezJogadorCurar()
@@ -117,7 +114,7 @@
 
         let danoDoMonstro = this.vezMonstroAtacar()
         this.setAcao('dano', 'jogador', danoDoMonstro)
-        this.verificarVencedor
+        this.verificarVencedor()
       },
       setAcao(tipo, destino, valor) {
         if (valor != 0) {
@@ -141,6 +138,7 @@
       setIniciarPartida() {
         this.jogador = this.player
         this.monstro = this.npc
+        this.statusPartida = this.statusMatch
         this.statusPartida.emAndamento = true
         this.statusPartida.mensagem = ''
         this.statusPartida.mostrarResultado = false
@@ -155,6 +153,13 @@
         this.statusPartida.mostrarResultado = true
         this.statusPartida.status = status
         this.logAcoes = []
+      },
+      verificarVencedor() {
+        if (this.jogador.vida == 0) {
+          this.setFinalizarPartida('perdeu', 'Você perdeu :(')
+        } else if (this.monstro.vida == 0) {
+          this.setFinalizarPartida('ganhou', "Você venceu !! \\o/")
+        }
       },
       desistir() {
         if (confirm('Deseja realmente DESISTIR da partida?')) {
