@@ -1,5 +1,5 @@
 <template>
-  <main id="app">
+  <div id="app">
     <section id="jogadores">
       <PlayerComponent @playerStatus="playerStatus($event)" />
       <NPCComponent @npcStatus="npcStatus($event)" />
@@ -7,7 +7,7 @@
     <MatchComponent @match="statusMatch($event)" />
     <ActionsComponent :player="jogador" :npc="monstro" :statusMatch="match" />
     <LogsComponent />
-  </main>
+  </div>
 </template>
 
 <script>
