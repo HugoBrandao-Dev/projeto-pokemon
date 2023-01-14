@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <HeaderComponent />
     <section id="jogadores">
       <PlayerComponent @playerStatus="playerStatus($event)" />
       <NPCComponent @npcStatus="npcStatus($event)" />
@@ -12,6 +13,7 @@
 
 <script>
   // Componentes
+  import HeaderComponent from './components/HeaderComponent'
   import PlayerComponent from './components/PlayerComponent'
   import NPCComponent from './components/NPCComponent'
   import MatchComponent from './components/MatchComponent'
@@ -28,6 +30,7 @@
       }
     },
     components: {
+      HeaderComponent,
       PlayerComponent,
       NPCComponent,
       MatchComponent,
