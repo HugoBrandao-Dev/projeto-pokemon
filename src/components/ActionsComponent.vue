@@ -16,6 +16,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     data() {
       return {
@@ -135,10 +137,27 @@
       getValorRandom(min, max) {
         return Math.floor((Math.random() * (max - min + 1)) + min)
       },
+      setCharacteres() {
+        axios.get(`https://pokeapi.co/api/v2/pokemon/${ this.getValorRandom(1,151) }`)
+          .then(resPlayer => {
+            axios.get(`https://pokeapi.co/api/v2/pokemon/${ this.getValorRandom(1,151) }`)
+              .then(resNpc => {
+                console.log(resPlayer.data)
+                console.log(resNpc.data)
+              })
+              .catch(error => {
+                console.log(error)
+              })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      },
       setIniciarPartida() {
         this.jogador = this.player
         this.monstro = this.npc
         this.statusPartida = this.statusMatch
+        this.setCharacteres()
         this.statusPartida.emAndamento = true
         this.statusPartida.mensagem = ''
         this.statusPartida.mostrarResultado = false
