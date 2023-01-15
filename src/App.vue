@@ -118,7 +118,7 @@
   }
 
   .personagem h2 {
-    font-size: 0px;
+    font-size: 14pt;
   }
 
   .caixa-vida {

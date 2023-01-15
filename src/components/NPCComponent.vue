@@ -1,6 +1,7 @@
 <template>
   <div class="personagem espacar">
-    <h2>Monstro<img :src="monstro.picture" /></h2>
+    <h2>Monstro</h2>
+    <img :src="monstro.picture" />
     <div class="caixa-vida">
       <div class="vida" :style="getVidaMonstro"></div>
     </div>
