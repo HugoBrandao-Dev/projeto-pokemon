@@ -1,6 +1,6 @@
 <template>
   <div class="personagem espacar">
-    <h2>Jogador<img src="https://img.icons8.com/dotty/80/000000/user.png" /></h2>
+    <h2>Jogador<img :src="jogador.picture" /></h2>
     <div class="caixa-vida">
       <div class="vida" :style="getVidaJogador"></div>
     </div>
@@ -14,6 +14,7 @@
       return {
         jogador: {
           vida: 100,
+          picture: 'https://img.icons8.com/dotty/80/000000/user.png',
           ataque: {
             normal: {
               minimo: 5,
