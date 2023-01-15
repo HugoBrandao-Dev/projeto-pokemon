@@ -29,12 +29,14 @@
         },
         jogador: {},
         monstro: {},
+        logAcoes: []
       }
     },
     props: {
       player: Object,
       npc: Object,
-      statusMatch: Object
+      statusMatch: Object,
+      logActions: Array
     },
     methods: {
       vezJogadorAtacar(especial) {
@@ -165,11 +167,12 @@
         this.monstro = this.npc
         this.statusPartida = this.statusMatch
         this.setCharacteres()
+        this.$emit("clearLog")
+        this.logAcoes = this.logActions
         this.statusPartida.emAndamento = true
         this.statusPartida.mensagem = ''
         this.statusPartida.mostrarResultado = false
         this.statusPartida.status = ''
-        this.logAcoes = []
         this.jogador.vida = 100
         this.monstro.vida = 100
       },

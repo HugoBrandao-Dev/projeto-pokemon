@@ -6,8 +6,8 @@
       <NPCComponent @npcStatus="npcStatus($event)" />
     </section>
     <MatchComponent @match="statusMatch($event)" />
-    <ActionsComponent :player="jogador" :npc="monstro" :statusMatch="match" />
-    <LogsComponent />
+    <ActionsComponent @clearLog="clearLog" :player="jogador" :npc="monstro" :statusMatch="match" :logActions="log" />
+    <LogsComponent @logActions="logActions($event)" />
   </div>
 </template>
 
@@ -26,7 +26,8 @@
       return {
         jogador: {},
         monstro: {},
-        match: {}
+        match: {},
+        log: []
       }
     },
     components: {
@@ -46,8 +47,14 @@
       },
       statusMatch($event) {
         this.match = $event.status
+      },
+      logActions($event) {
+        this.log = $event.logAcoes
+      },
+      clearLog() {
+        this.log.splice(0)
       }
-    }
+    },
   }
 </script>
 

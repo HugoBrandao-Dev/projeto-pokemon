@@ -1,6 +1,8 @@
 <template>
   <section id="logs">
-    <p v-for="(log) in logAcoes" class="log-acao" :class="log.destino" :key="log.id">{{ log.mensagem }}</p>
+    <p v-for="(log) in logAcoes" class="log-acao" :class="log.destino" :key="log.id">
+      {{ log.mensagem }}
+    </p>
   </section>
 </template>
 
@@ -10,6 +12,9 @@
       return {
         logAcoes: []
       }
+    },
+    created() {
+      this.$emit("logActions", { logAcoes: this.logAcoes })
     }
   }
 </script>
