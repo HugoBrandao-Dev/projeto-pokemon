@@ -1,7 +1,7 @@
 <template>
   <div class="personagem espacar">
     <h2>Jogador</h2>
-    <small>{{ jogador.specie }}</small>
+    <small v-show="jogador.specie">{{ jogador.specie }} - Exp.{{ jogador.experience }}</small>
     <img :src="jogador.picture" :title="jogador.specie" />
     <div class="caixa-vida">
       <div class="vida" :style="getVidaJogador"></div>
@@ -18,6 +18,7 @@
           vida: 100,
           picture: 'https://img.icons8.com/dotty/80/000000/user.png',
           specie: '',
+          experience: 0,
           ataque: {
             normal: {
               minimo: 5,

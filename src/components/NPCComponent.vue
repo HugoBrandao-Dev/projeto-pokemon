@@ -1,7 +1,7 @@
 <template>
   <div class="personagem espacar">
     <h2>Monstro</h2>
-    <small>{{ monstro.specie }}</small>
+    <small v-show="monstro.specie">{{ monstro.specie }} - Exp.{{ monstro.experience }}</small>
     <img :src="monstro.picture" :title="monstro.specie" />
     <div class="caixa-vida">
       <div class="vida" :style="getVidaMonstro"></div>
@@ -17,6 +17,7 @@
         monstro: {
           vida: 100,
           picture: 'https://img.icons8.com/dotty/80/000000/monster-face.png',
+          experience: 0,
           ataque: {
             minimo: 5,
             maximo: 15
