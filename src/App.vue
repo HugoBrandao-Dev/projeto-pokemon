@@ -117,8 +117,16 @@
     width: 45%;
   }
 
+  .parsonagem h2, .personagem small {
+    text-transform: capitalize;
+  }
+
   .personagem h2 {
     font-size: 14pt;
+  }
+
+  .personagem small {
+    font-size: 10pt;
   }
 
   .caixa-vida {

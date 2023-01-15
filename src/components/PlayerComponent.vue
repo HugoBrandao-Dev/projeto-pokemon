@@ -1,6 +1,7 @@
 <template>
   <div class="personagem espacar">
     <h2>Jogador</h2>
+    <small>Tobias</small>
     <img :src="jogador.picture" />
     <div class="caixa-vida">
       <div class="vida" :style="getVidaJogador"></div>
