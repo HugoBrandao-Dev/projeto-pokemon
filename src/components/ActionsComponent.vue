@@ -142,8 +142,15 @@
           .then(resPlayer => {
             axios.get(`https://pokeapi.co/api/v2/pokemon/${ this.getValorRandom(1,151) }`)
               .then(resNpc => {
+                // Player's pokemon config
                 this.jogador.picture = resPlayer.data.sprites.back_default
+                this.jogador.specie = resPlayer.data.species.name
+                this.jogador.exp = resPlayer.data.base_experience
+
+                // NPC's pokemon config
                 this.monstro.picture = resNpc.data.sprites.front_default
+                this.monstro.specie = resNpc.data.species.name
+                this.monstro.exp = resNpc.data.base_experience
               })
               .catch(error => {
                 console.log(error)

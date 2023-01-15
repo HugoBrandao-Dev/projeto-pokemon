@@ -1,8 +1,8 @@
 <template>
   <div class="personagem espacar">
     <h2>Monstro</h2>
-    <small>Josias</small>
-    <img :src="monstro.picture" />
+    <small>{{ monstro.specie }}</small>
+    <img :src="monstro.picture" :title="monstro.specie" />
     <div class="caixa-vida">
       <div class="vida" :style="getVidaMonstro"></div>
     </div>

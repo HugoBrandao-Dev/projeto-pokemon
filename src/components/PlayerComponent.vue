@@ -1,8 +1,8 @@
 <template>
   <div class="personagem espacar">
     <h2>Jogador</h2>
-    <small>Tobias</small>
-    <img :src="jogador.picture" />
+    <small>{{ jogador.specie }}</small>
+    <img :src="jogador.picture" :title="jogador.specie" />
     <div class="caixa-vida">
       <div class="vida" :style="getVidaJogador"></div>
     </div>
@@ -17,6 +17,7 @@
         jogador: {
           vida: 100,
           picture: 'https://img.icons8.com/dotty/80/000000/user.png',
+          specie: '',
           ataque: {
             normal: {
               minimo: 5,
