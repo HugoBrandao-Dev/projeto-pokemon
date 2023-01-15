@@ -1,6 +1,6 @@
 <template>
   <div class="personagem espacar">
-    <h2>Monstro<img src="https://img.icons8.com/dotty/80/000000/monster-face.png" /></h2>
+    <h2>Monstro<img :src="monstro.picture" /></h2>
     <div class="caixa-vida">
       <div class="vida" :style="getVidaMonstro"></div>
     </div>
@@ -14,6 +14,7 @@
       return {
         monstro: {
           vida: 100,
+          picture: 'https://img.icons8.com/dotty/80/000000/monster-face.png',
           ataque: {
             minimo: 5,
             maximo: 15

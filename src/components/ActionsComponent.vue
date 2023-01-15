@@ -143,7 +143,7 @@
             axios.get(`https://pokeapi.co/api/v2/pokemon/${ this.getValorRandom(1,151) }`)
               .then(resNpc => {
                 this.jogador.picture = resPlayer.data.sprites.back_default
-                console.log(resNpc.data)
+                this.monstro.picture = resNpc.data.sprites.front_default
               })
               .catch(error => {
                 console.log(error)
