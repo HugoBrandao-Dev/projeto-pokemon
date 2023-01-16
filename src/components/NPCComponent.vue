@@ -19,8 +19,14 @@
           picture: 'https://img.icons8.com/dotty/80/000000/monster-face.png',
           experience: 0,
           ataque: {
-            minimo: 5,
-            maximo: 15
+            normal: {
+              minimo: 5,
+              maximo: 15
+            },
+            especial: {
+              minimo: 10,
+              maximo: 30
+            }
           }
         }
       }

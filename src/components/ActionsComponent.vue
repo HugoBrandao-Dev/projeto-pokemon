@@ -81,8 +81,8 @@
       },
       vezMonstroAtacar() {
         if (this.monstro.vida != 0) {
-          let minimo = this.monstro.ataque.minimo
-          let maximo = this.monstro.ataque.maximo
+          let minimo = this.monstro.ataque.normal.minimo
+          let maximo = this.monstro.ataque.normal.maximo
 
           // O jogador perde vida baseada no valor máximo e minimo de ataque do monstro
           let forcaAtaque = this.getValorRandom(minimo, maximo)
@@ -139,6 +139,20 @@
       getValorRandom(min, max) {
         return Math.floor((Math.random() * (max - min + 1)) + min)
       },
+      // Define o limite máximo e mínimo de ataque, tanto o jogador quanto do NPC.
+      setMinMaxAttack() {
+        // Jogador
+        let playerAttackMin = Math.round(this.jogador.experience / 10)
+        let playerAttackMax = Math.round((this.jogador.experience / 10) * 2)
+        this.jogador.ataque.normal.minimo = playerAttackMin
+        this.jogador.ataque.normal.maximo = playerAttackMax
+
+        // NPC
+        let npcAttackMin = Math.round(this.monstro.experience / 10)
+        let npcAttackMax = Math.round((this.monstro.experience / 10) * 2)
+        this.monstro.ataque.normal.minimo = npcAttackMin
+        this.monstro.ataque.normal.maximo = npcAttackMax
+      },
       setCharacteres() {
         axios.get(`https://pokeapi.co/api/v2/pokemon/${ this.getValorRandom(1,151) }`)
           .then(resPlayer => {
@@ -153,6 +167,7 @@
                 this.monstro.picture = resNpc.data.sprites.front_default
                 this.monstro.specie = resNpc.data.species.name
                 this.monstro.experience = resNpc.data.base_experience
+                this.setMinMaxAttack()
               })
               .catch(error => {
                 console.log(error)
