@@ -39,6 +39,13 @@
       logActions: Array
     },
     methods: {
+      /*
+        Calcula quanto um dano representa em % da vida de quem recebe esse dano, tendo como
+        base a experiencia que cada pokemon possui.
+      */
+      getPercentageDamage(exp, damage) {
+        return (damage * 100 / exp)
+      },
       vezJogadorAtacar(especial) {
         if (this.jogador.vida != 0) {
           let minimo = 0
@@ -54,10 +61,12 @@
           // O monstro perde vida baseada no valor máximo e minimo de ataque do jogador
           let forcaAtaque = this.getValorRandom(minimo, maximo)
 
-          if ((this.monstro.vida - forcaAtaque) < 0) {
+          let percentageDamage = Math.round(this.getPercentageDamage(this.monstro.experience, forcaAtaque))
+
+          if ((this.monstro.vida - percentageDamage) < 0) {
             this.monstro.vida = 0
           } else {
-            this.monstro.vida -= forcaAtaque
+            this.monstro.vida -= percentageDamage
           }
           return forcaAtaque
         }
@@ -87,10 +96,12 @@
           // O jogador perde vida baseada no valor máximo e minimo de ataque do monstro
           let forcaAtaque = this.getValorRandom(minimo, maximo)
 
-          if ((this.jogador.vida - forcaAtaque) < 0) {
+          let percentageDamage = Math.round(this.getPercentageDamage(this.jogador.experience, forcaAtaque))
+
+          if ((this.jogador.vida - percentageDamage) < 0) {
             this.jogador.vida = 0
           } else {
-            this.jogador.vida -= forcaAtaque
+            this.jogador.vida -= percentageDamage
           }
           return forcaAtaque
         }
