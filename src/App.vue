@@ -124,7 +124,7 @@
     width: 45%;
   }
 
-  .parsonagem h2, .personagem small {
+  .personagem h2, .personagem small {
     text-transform: capitalize;
   }
 
