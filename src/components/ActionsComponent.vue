@@ -152,17 +152,35 @@
       },
       // Define o limite máximo e mínimo de ataque, tanto o jogador quanto do NPC.
       setMinMaxAttack() {
-        // Jogador
+
+        /* ######### Jogador attack config ######### */
+
         let playerAttackMin = Math.round(this.jogador.experience / 10)
         let playerAttackMax = Math.round((this.jogador.experience / 10) * 2)
+
+        // Normal attack
         this.jogador.ataque.normal.minimo = playerAttackMin
         this.jogador.ataque.normal.maximo = playerAttackMax
 
-        // NPC
+        // Special attack
+        this.jogador.ataque.especial.minimo = playerAttackMin
+        this.jogador.ataque.especial.maximo = playerAttackMax
+
+        /* ######### NPC attack config ######### */
+
         let npcAttackMin = Math.round(this.monstro.experience / 10)
         let npcAttackMax = Math.round((this.monstro.experience / 10) * 2)
+
+        // Normal attack
         this.monstro.ataque.normal.minimo = npcAttackMin
         this.monstro.ataque.normal.maximo = npcAttackMax
+      },
+      /*
+        A capacidade de recuperação é baseada na experiencia do Pokemon
+      */
+      setMinMaxRecovery() {
+        this.jogador.cura.capacidadeMinima = Math.round(this.jogador.experience / 10)
+        this.jogador.cura.capacidadeMaxima = Math.round((this.jogador.experience / 10) * 2)
       },
       setCharacteres() {
         axios.get(`https://pokeapi.co/api/v2/pokemon/${ this.getValorRandom(1,151) }`)
@@ -179,6 +197,7 @@
                 this.monstro.specie = resNpc.data.species.name
                 this.monstro.experience = resNpc.data.base_experience
                 this.setMinMaxAttack()
+                this.setMinMaxRecovery()
               })
               .catch(error => {
                 console.log(error)
