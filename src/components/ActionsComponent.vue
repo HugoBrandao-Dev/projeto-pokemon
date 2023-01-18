@@ -1,13 +1,28 @@
 <template>
   <section id="acoes" class="espacar centralizar">
     <div class="centralizar" v-if="statusPartida.emAndamento">
-      <button id="btn-atacar" type="button" class="btn" @click="atacarNormal">Ataque<img
-          src="https://img.icons8.com/ios-glyphs/30/000000/sword.png" /></button>
-      <button id="btn-especial" type="button" class="btn" @click="atacarEspecial">Ataque especial<img
-          src="https://img.icons8.com/dusk/30/000000/sword.png" /></button>
-      <button id="btn-curar" type="button" class="btn" @click="curarJogador">Curar<img
-          src="https://img.icons8.com/ios-glyphs/30/000000/hand-with-a-pill.png" /></button>
-      <button id="btn-desistir" type="button" class="btn" @click="desistir">Desistir</button>
+      <button id="btn-atacar" type="button" class="btn" @click="atacarNormal">
+        Ataque
+        <img src="https://img.icons8.com/ios-glyphs/30/000000/sword.png" />
+      </button>
+      <div class="special-attacks">
+        <button 
+          v-for="special in this.jogador.ataque.especiais" 
+          :key="special.name"
+          @click="atacarEspecial"
+          type="button" 
+          class="btn btn-especial">
+            {{ special.name }}
+          <img src="https://img.icons8.com/dusk/30/000000/sword.png" />
+        </button>
+      </div>
+      <button id="btn-curar" type="button" class="btn" @click="curarJogador">
+        Curar
+        <img src="https://img.icons8.com/ios-glyphs/30/000000/hand-with-a-pill.png" />
+      </button>
+      <button id="btn-desistir" type="button" class="btn" @click="desistir">
+        Desistir
+      </button>
     </div>
     <div v-else>
       <button id="btn-iniciar" type="button" class="btn" @click="iniciar">Iniciar nova partida</button>
@@ -162,10 +177,6 @@
         this.jogador.ataque.normal.minimo = playerAttackMin
         this.jogador.ataque.normal.maximo = playerAttackMax
 
-        // Special attack
-        this.jogador.ataque.especial.minimo = playerAttackMin
-        this.jogador.ataque.especial.maximo = playerAttackMax
-
         /* ######### NPC attack config ######### */
 
         let npcAttackMin = Math.round(this.monstro.experience / 10)
@@ -198,6 +209,8 @@
                 this.monstro.experience = resNpc.data.base_experience
                 this.setMinMaxAttack()
                 this.setMinMaxRecovery()
+                this.$emit('setAbilities', { abilities: resPlayer.data.abilities })
+                console.log(this.jogador.ataque.especiais)
               })
               .catch(error => {
                 console.log(error)

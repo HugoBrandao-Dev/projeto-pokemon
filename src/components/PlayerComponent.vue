@@ -24,10 +24,9 @@
               minimo: 5,
               maximo: 10
             },
-            especial: {
-              minimo: 10,
-              maximo: 20
-            }
+            especiais: [
+              
+            ]
           },
           cura: {
             capacidadeMinima: 10,

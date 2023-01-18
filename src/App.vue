@@ -6,7 +6,13 @@
       <NPCComponent @npcStatus="npcStatus($event)" />
     </section>
     <MatchComponent @match="statusMatch($event)" />
-    <ActionsComponent @clearLog="clearLog" :player="jogador" :npc="monstro" :statusMatch="match" :logActions="log" />
+    <ActionsComponent 
+      @clearLog="clearArrays" 
+      @setAbilities="setSpecialAbilities($event)"
+      :player="jogador" 
+      :npc="monstro" 
+      :statusMatch="match" 
+      :logActions="log" />
     <LogsComponent @logActions="logActions($event)" />
   </div>
 </template>
@@ -19,6 +25,9 @@
   import MatchComponent from './components/MatchComponent'
   import ActionsComponent from './components/ActionsComponent'
   import LogsComponent from './components/LogsComponent'
+
+  // Bibliotecas
+  import axios from 'axios'
 
   export default {
     name: 'App',
@@ -51,9 +60,26 @@
       logActions($event) {
         this.log = $event.logAcoes
       },
-      clearLog() {
+      clearArrays() {
         this.log.splice(0)
-      }
+        this.jogador.ataque.especiais.splice(0)
+      },
+      setSpecialAbilities($event) {
+        let abilities = $event.abilities
+        abilities.forEach(abilityInfo => {
+          let ability = abilityInfo.ability
+          axios.get(ability.url)
+            .then(res => {
+              this.jogador.ataque.especiais.push({
+                name: ability.name.split('-').join(' '),
+                effect: res.data.effect_entries[1].short_effect
+              })
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+      },
     },
   }
 </script>
@@ -188,7 +214,7 @@
     border-color: #ff3333;
   }
 
-  #btn-especial {
+  .btn-especial {
     background-color: #3399ff;
     border-color: #3399ff;
   }
