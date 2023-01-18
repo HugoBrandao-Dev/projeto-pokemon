@@ -72,7 +72,8 @@
             .then(res => {
               this.jogador.ataque.especiais.push({
                 name: ability.name.split('-').join(' '),
-                effect: res.data.effect_entries[1].short_effect
+                effect: res.data.effect_entries[1].short_effect,
+                power: Math.round(this.jogador.ataque.normal.maximo * 1.5)
               })
             })
             .catch(error => {

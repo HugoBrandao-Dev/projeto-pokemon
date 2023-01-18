@@ -65,16 +65,14 @@
         if (this.jogador.vida != 0) {
           let minimo = 0
           let maximo = 0
+          let forcaAtaque = 0
           if (especial) {
-            minimo = this.jogador.ataque.especial.minimo
-            maximo = this.jogador.ataque.especial.maximo
+            forcaAtaque = this.jogador.ataque.especiais[0].power
           } else {
             minimo = this.jogador.ataque.normal.minimo
             maximo = this.jogador.ataque.normal.maximo
+            forcaAtaque = this.getValorRandom(minimo, maximo)
           }
-
-          // O monstro perde vida baseada no valor máximo e minimo de ataque do jogador
-          let forcaAtaque = this.getValorRandom(minimo, maximo)
 
           let percentageDamage = Math.round(this.getPercentageDamage(this.monstro.experience, forcaAtaque))
 
@@ -210,7 +208,6 @@
                 this.setMinMaxAttack()
                 this.setMinMaxRecovery()
                 this.$emit('setAbilities', { abilities: resPlayer.data.abilities })
-                console.log(this.jogador.ataque.especiais)
               })
               .catch(error => {
                 console.log(error)
