@@ -261,5 +261,23 @@
 </script>
 
 <style>
-  
+  #acoes div {
+    align-items: flex-start;
+  }
+  #acoes div, #acoes div .special-attacks {
+    display: flex;
+  }
+  #acoes div .special-attacks {
+    flex-direction: column;
+  }
+  .btn-especial {
+    margin-bottom: 5px;
+    text-transform: capitalize;
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .btn-especial:last-child {
+    margin-bottom: 0px;
+  }
 </style>
