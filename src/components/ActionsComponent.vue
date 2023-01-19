@@ -5,7 +5,7 @@
         Ataque
         <img src="https://img.icons8.com/ios-glyphs/30/000000/sword.png" />
       </button>
-      <div class="special-attacks">
+      <!-- <div class="special-attacks">
         <button 
           v-for="special in this.jogador.ataque.especiais" 
           :key="special.name"
@@ -15,7 +15,7 @@
             {{ special.name }}
           <img src="https://img.icons8.com/dusk/30/000000/sword.png" />
         </button>
-      </div>
+      </div> -->
       <button id="btn-curar" type="button" class="btn" @click="curarJogador">
         Curar
         <img src="https://img.icons8.com/ios-glyphs/30/000000/hand-with-a-pill.png" />
@@ -25,14 +25,14 @@
       </button>
     </div>
     <div v-else>
-      <button id="btn-iniciar" type="button" class="btn" @click="iniciar">Iniciar nova partida</button>
+      <button id="btn-iniciar" type="button" class="btn" @click="iniciar">
+        Iniciar nova partida
+      </button>
     </div>
   </section>
 </template>
 
 <script>
-  import axios from 'axios'
-
   export default {
     data() {
       return {
@@ -191,45 +191,15 @@
         this.jogador.cura.capacidadeMinima = Math.round(this.jogador.experience / 10)
         this.jogador.cura.capacidadeMaxima = Math.round((this.jogador.experience / 10) * 2)
       },
-      setCharacteres() {
-        axios.get(`https://pokeapi.co/api/v2/pokemon/${ this.getValorRandom(1,151) }`)
-          .then(resPlayer => {
-            axios.get(`https://pokeapi.co/api/v2/pokemon/${ this.getValorRandom(1,151) }`)
-              .then(resNpc => {
-                // Player's pokemon config
-                this.jogador.picture = resPlayer.data.sprites.back_default
-                this.jogador.specie = resPlayer.data.species.name
-                this.jogador.experience = resPlayer.data.base_experience
-
-                // NPC's pokemon config
-                this.monstro.picture = resNpc.data.sprites.front_default
-                this.monstro.specie = resNpc.data.species.name
-                this.monstro.experience = resNpc.data.base_experience
-                this.setMinMaxAttack()
-                this.setMinMaxRecovery()
-                this.$emit('setAbilities', { abilities: resPlayer.data.abilities })
-              })
-              .catch(error => {
-                console.log(error)
-              })
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      },
       setIniciarPartida() {
-        this.jogador = this.player
-        this.monstro = this.npc
         this.statusPartida = this.statusMatch
-        this.setCharacteres()
         this.$emit("clearLog")
+        this.$emit("generatePokemons")
         this.logAcoes = this.logActions
         this.statusPartida.emAndamento = true
         this.statusPartida.mensagem = ''
         this.statusPartida.mostrarResultado = false
         this.statusPartida.status = ''
-        this.jogador.vida = 100
-        this.monstro.vida = 100
       },
       setFinalizarPartida(status, mensagem) {
         this.statusPartida.emAndamento = false

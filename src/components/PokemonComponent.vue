@@ -1,26 +1,44 @@
 <template>
   <div class="personagem espacar">
-    <h2>{{ user.name }}</h2>
-    <small v-show="user.pokemon.info.specie">
-      {{ user.pokemon.info.specie }} - Exp.{{ user.pokemon.base_status.experience }}
+    <h2>{{ player.name }}</h2>
+    <small v-show="pokemon.info.specie">
+      {{ pokemon.info.specie }} - Exp.{{ pokemon.base_status.experience }}
     </small>
-    <img :src="user.pokemon.info.picture" :title="user.pokemon.info.specie" />
+    <img :src="pokemon.info.picture" :title="pokemon.info.specie" />
     <div class="caixa-vida">
       <div class="vida" :style="getVidaJogador"></div>
     </div>
-    <div>{{ getVidaJogador.width }}</div>
+    <div>{{ getVidaJogador.width }}</div> 
   </div>
 </template>
 
 <script>
   export default {
+    data() {
+      return {
+        pokemon: {
+          life: 100,
+          base_status: {
+            hp: 100,
+            experience: 0
+          },
+          info: {
+            specie: '',
+            picture: 'https://img.icons8.com/dotty/80/000000/user.png'
+          },
+        },
+        player: {
+          name: 'Player'
+        }
+      }
+    },
     props: {
       user: Object
     },
     computed: {
       getVidaJogador() {
-        let life = this.user.pokemon.life
-        let base_hp = this.user.pokemon.base_status.hp
+        let life = this.pokemon.life 
+        let base_hp = this.pokemon.base_status.hp
         let percentageLife = Math.round(life * 100 / base_hp)
         return {
           width: `${ percentageLife }%`,
