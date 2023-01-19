@@ -2,17 +2,18 @@
   <div id="app">
     <HeaderComponent />
     <section id="jogadores">
-      <PlayerComponent @playerStatus="playerStatus($event)" />
-      <NPCComponent @npcStatus="npcStatus($event)" />
+      <PokemonComponent :user="jogador" />
+      <PokemonComponent :user="monstro" />
     </section>
     <MatchComponent @match="statusMatch($event)" />
+    <!-- 
     <ActionsComponent 
       @clearLog="clearArrays" 
       @setAbilities="setSpecialAbilities($event)"
       :player="jogador" 
       :npc="monstro" 
       :statusMatch="match" 
-      :logActions="log" />
+      :logActions="log" /> -->
     <LogsComponent @logActions="logActions($event)" />
   </div>
 </template>
@@ -20,10 +21,9 @@
 <script>
   // Componentes
   import HeaderComponent from './components/HeaderComponent'
-  import PlayerComponent from './components/PlayerComponent'
-  import NPCComponent from './components/NPCComponent'
+  import PokemonComponent from './components/PokemonComponent'
   import MatchComponent from './components/MatchComponent'
-  import ActionsComponent from './components/ActionsComponent'
+  // import ActionsComponent from './components/ActionsComponent'
   import LogsComponent from './components/LogsComponent'
 
   // Bibliotecas
@@ -41,11 +41,66 @@
     },
     components: {
       HeaderComponent,
-      PlayerComponent,
-      NPCComponent,
+      PokemonComponent,
       MatchComponent,
-      ActionsComponent,
-      LogsComponent
+      LogsComponent,
+    },
+    created() {
+      axios.get(`https://pokeapi.co/api/v2/pokemon/3`)
+        .then(resPlayer => {
+          axios.get(`https://pokeapi.co/api/v2/pokemon/23`)
+            .then(resNPC => {
+              let pokemonPlayer = resPlayer.data
+              this.jogador = {
+                name: 'Jogador',
+                pokemon: {
+                  life: pokemonPlayer.stats[0].base_stat,
+                  base_status: {
+                    hp: pokemonPlayer.stats[0].base_stat,
+                    attack: pokemonPlayer.stats[1].base_stat,
+                    special_attack: pokemonPlayer.stats[3].base_stat,
+                    defense: pokemonPlayer.stats[2].base_stat,
+                    special_defense: pokemonPlayer.stats[4].base_stat,
+                    speed: pokemonPlayer.stats[5].base_stat,
+                    experience: pokemonPlayer.base_experience
+                  },
+                  info: {
+                    picture: pokemonPlayer.sprites.back_default,
+                    specie: pokemonPlayer.species.name,
+                    special_attacks: []
+                  }
+                }
+              }
+
+              let pokemonNPC = resNPC.data
+              this.monstro = {
+                name: 'Monstro',
+                pokemon: {
+                  life: pokemonNPC.stats[0].base_stat,
+                  base_status: {
+                    hp: pokemonNPC.stats[0].base_stat,
+                    attack: pokemonNPC.stats[1].base_stat,
+                    special_attack: pokemonNPC.stats[3].base_stat,
+                    defense: pokemonNPC.stats[2].base_stat,
+                    special_defense: pokemonNPC.stats[4].base_stat,
+                    speed: pokemonNPC.stats[5].base_stat,
+                    experience: pokemonNPC.base_experience
+                  },
+                  info: {
+                    picture: pokemonNPC.sprites.front_default,
+                    specie: pokemonNPC.species.name,
+                    special_attacks: []
+                  }
+                }
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     methods: {
       playerStatus($event) {
@@ -80,7 +135,7 @@
               console.log(error)
             })
         })
-      },
+      }
     },
   }
 </script>
