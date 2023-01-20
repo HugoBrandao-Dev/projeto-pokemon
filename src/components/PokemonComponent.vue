@@ -66,6 +66,37 @@
   }
 </script>
 
-<style>
-  
+<style scoped>
+  /* Individuais */
+
+  .personagem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 45%;
+  }
+
+  .personagem h2, .personagem small {
+    text-transform: capitalize;
+  }
+
+  .personagem h2 {
+    font-size: 14pt;
+  }
+
+  .personagem small {
+    font-size: 10pt;
+  }
+
+  .caixa-vida {
+    border: 3px dotted #d9d9d9;
+    width: 100%;
+    height: 40px;
+    margin: 10px 0px;
+  }
+
+  .vida {
+    height: 100%;
+    width: 100%;
+  }
 </style>
