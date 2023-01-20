@@ -5,9 +5,9 @@
         Ataque
         <img src="https://img.icons8.com/ios-glyphs/30/000000/sword.png" />
       </button>
-      <!-- <div class="special-attacks">
+      <div class="special-attacks">
         <button 
-          v-for="special in this.jogador.ataque.especiais" 
+          v-for="special in this.jogador.pokemon.info.special_attacks" 
           :key="special.name"
           @click="atacarEspecial"
           type="button" 
@@ -15,7 +15,7 @@
             {{ special.name }}
           <img src="https://img.icons8.com/dusk/30/000000/sword.png" />
         </button>
-      </div> -->
+      </div> 
       <button id="btn-curar" type="button" class="btn" @click="curarJogador">
         Curar
         <img src="https://img.icons8.com/ios-glyphs/30/000000/hand-with-a-pill.png" />
@@ -192,6 +192,8 @@
         this.jogador.cura.capacidadeMaxima = Math.round((this.jogador.experience / 10) * 2)
       },
       setIniciarPartida() {
+        this.jogador = this.player
+        this.monstro = this.npc
         this.statusPartida = this.statusMatch
         this.$emit("clearLog")
         this.$emit("generatePokemons")

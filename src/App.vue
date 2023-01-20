@@ -68,16 +68,14 @@
         this.log.splice(0)
         this.jogador.pokemon.info.special_attacks.splice(0)
       },
-      setSpecialAbilities($event) {
-        let abilities = $event.abilities
+      setSpecialAbilities(player, abilities) {
         abilities.forEach(abilityInfo => {
           let ability = abilityInfo.ability
           axios.get(ability.url)
             .then(res => {
-              this.jogador.ataque.especiais.push({
+              player.pokemon.info.special_attacks.push({
                 name: ability.name.split('-').join(' '),
                 effect: res.data.effect_entries[1].short_effect,
-                power: Math.round(this.jogador.ataque.normal.maximo * 1.5)
               })
             })
             .catch(error => {
@@ -116,6 +114,7 @@
                 this.jogador.pokemon.base_status.experience = pokemonPlayer.base_experience
                 this.jogador.pokemon.info.picture = pokemonPlayer.sprites.back_default
                 this.jogador.pokemon.info.specie = pokemonPlayer.species.name
+                this.setSpecialAbilities(this.jogador, pokemonPlayer.abilities)
 
                 /* ################ NPC ################ */
                 let pokemonNPC = resNPC.data
@@ -130,6 +129,7 @@
                 this.monstro.pokemon.base_status.experience = pokemonNPC.base_experience
                 this.monstro.pokemon.info.picture = pokemonNPC.sprites.front_default
                 this.monstro.pokemon.info.specie = pokemonNPC.species.name
+                this.setSpecialAbilities(this.monstro, pokemonNPC.abilities)
               })
               .catch(error => {
                 console.log(error)
