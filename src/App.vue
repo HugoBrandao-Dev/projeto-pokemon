@@ -2,8 +2,8 @@
   <div id="app">
     <HeaderComponent />
     <section id="jogadores">
-      <PokemonComponent :user="jogador" />
-      <PokemonComponent :user="monstro" />
+      <PokemonComponent @player="setPokemonPlayer($event)" />
+      <PokemonComponent @player="setPokemonNPC($event)" />
     </section>
     <MatchComponent @match="statusMatch($event)" />
     
@@ -34,8 +34,12 @@
     name: 'App',
     data() {
       return {
-        jogador: {},
-        monstro: {},
+        jogador: {
+          data: 123
+        },
+        monstro: {
+          data: 321
+        },
         match: {},
         log: []
       }
@@ -62,7 +66,7 @@
       },
       clearArrays() {
         this.log.splice(0)
-        this.jogador.ataque.especiais.splice(0)
+        this.jogador.pokemon.info.special_attacks.splice(0)
       },
       setSpecialAbilities($event) {
         let abilities = $event.abilities
@@ -84,6 +88,12 @@
       getValorRandom(min, max) {
         return Math.floor((Math.random() * (max - min + 1)) + min)
       },
+      setPokemonPlayer($event) {
+        this.jogador = $event.player
+      },
+      setPokemonNPC($event) {
+        this.monstro = $event.player
+      },
       getPokemons() {
         let pokemonPlayer1 = this.getValorRandom(1,151)
         let pokemonPlayer2 = this.getValorRandom(1,151)
@@ -92,49 +102,34 @@
           .then(resPlayer => {
             axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemonPlayer2 }`)
               .then(resNPC => {
-                let pokemonPlayer = resPlayer.data
-                this.jogador = {
-                  name: 'Jogador',
-                  pokemon: {
-                    life: pokemonPlayer.stats[0].base_stat,
-                    base_status: {
-                      hp: pokemonPlayer.stats[0].base_stat,
-                      attack: pokemonPlayer.stats[1].base_stat,
-                      special_attack: pokemonPlayer.stats[3].base_stat,
-                      defense: pokemonPlayer.stats[2].base_stat,
-                      special_defense: pokemonPlayer.stats[4].base_stat,
-                      speed: pokemonPlayer.stats[5].base_stat,
-                      experience: pokemonPlayer.base_experience
-                    },
-                    info: {
-                      picture: pokemonPlayer.sprites.back_default,
-                      specie: pokemonPlayer.species.name,
-                      special_attacks: []
-                    }
-                  }
-                }
 
+                /* ################ Player ################ */
+                let pokemonPlayer = resPlayer.data
+                this.jogador.name = 'Jogador'
+                this.jogador.pokemon.life = pokemonPlayer.stats[0].base_stat
+                this.jogador.pokemon.base_status.hp = pokemonPlayer.stats[0].base_stat
+                this.jogador.pokemon.base_status.attack = pokemonPlayer.stats[1].base_stat
+                this.jogador.pokemon.base_status.special_attack = pokemonPlayer.stats[3].base_stat
+                this.jogador.pokemon.base_status.defense = pokemonPlayer.stats[2].base_stat
+                this.jogador.pokemon.base_status.special_defense = pokemonPlayer.stats[4].base_stat
+                this.jogador.pokemon.base_status.speed = pokemonPlayer.stats[5].base_stat
+                this.jogador.pokemon.base_status.experience = pokemonPlayer.base_experience
+                this.jogador.pokemon.info.picture = pokemonPlayer.sprites.back_default
+                this.jogador.pokemon.info.specie = pokemonPlayer.species.name
+
+                /* ################ NPC ################ */
                 let pokemonNPC = resNPC.data
-                this.monstro = {
-                  name: 'Monstro',
-                  pokemon: {
-                    life: pokemonNPC.stats[0].base_stat,
-                    base_status: {
-                      hp: pokemonNPC.stats[0].base_stat,
-                      attack: pokemonNPC.stats[1].base_stat,
-                      special_attack: pokemonNPC.stats[3].base_stat,
-                      defense: pokemonNPC.stats[2].base_stat,
-                      special_defense: pokemonNPC.stats[4].base_stat,
-                      speed: pokemonNPC.stats[5].base_stat,
-                      experience: pokemonNPC.base_experience
-                    },
-                    info: {
-                      picture: pokemonNPC.sprites.front_default,
-                      specie: pokemonNPC.species.name,
-                      special_attacks: []
-                    }
-                  }
-                }
+                this.monstro.name = 'NPC'
+                this.monstro.pokemon.life = pokemonNPC.stats[0].base_stat
+                this.monstro.pokemon.base_status.hp = pokemonNPC.stats[0].base_stat
+                this.monstro.pokemon.base_status.attack = pokemonNPC.stats[1].base_stat
+                this.monstro.pokemon.base_status.special_attack = pokemonNPC.stats[3].base_stat
+                this.monstro.pokemon.base_status.defense = pokemonNPC.stats[2].base_stat
+                this.monstro.pokemon.base_status.special_defense = pokemonNPC.stats[4].base_stat
+                this.monstro.pokemon.base_status.speed = pokemonNPC.stats[5].base_stat
+                this.monstro.pokemon.base_status.experience = pokemonNPC.base_experience
+                this.monstro.pokemon.info.picture = pokemonNPC.sprites.front_default
+                this.monstro.pokemon.info.specie = pokemonNPC.species.name
               })
               .catch(error => {
                 console.log(error)

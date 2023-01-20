@@ -1,14 +1,14 @@
 <template>
   <div class="personagem espacar">
     <h2>{{ player.name }}</h2>
-    <small v-show="pokemon.info.specie">
-      {{ pokemon.info.specie }} - Exp.{{ pokemon.base_status.experience }}
+    <small v-show="player.pokemon.info.specie">
+      {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.base_status.experience }}
     </small>
-    <img :src="pokemon.info.picture" :title="pokemon.info.specie" />
+    <img :src="player.pokemon.info.picture" :title="player.pokemon.info.specie" />
     <div class="caixa-vida">
       <div class="vida" :style="getVidaJogador"></div>
     </div>
-    <div>{{ getVidaJogador.width }}</div> 
+    <div>{{ getVidaJogador.width }}</div>
   </div>
 </template>
 
@@ -16,29 +16,35 @@
   export default {
     data() {
       return {
-        pokemon: {
-          life: 100,
-          base_status: {
-            hp: 100,
-            experience: 0
-          },
-          info: {
-            specie: '',
-            picture: 'https://img.icons8.com/dotty/80/000000/user.png'
-          },
-        },
         player: {
-          name: 'Player'
+          name: 'Player',
+          pokemon: {
+            life: 100,
+            base_status: {
+              hp: 100,
+              attack: 0,
+              special_attack: 0,
+              defence: 0,
+              special_defence: 0,
+              speed: 0,
+              experience: 0,
+            },
+            info: {
+              specie: '',
+              picture: 'https://img.icons8.com/dotty/80/000000/user.png',
+              special_attacks: []
+            },
+          },
         }
       }
     },
-    props: {
-      user: Object
+    created() {
+      this.$emit('player', { player: this.player })
     },
     computed: {
       getVidaJogador() {
-        let life = this.pokemon.life 
-        let base_hp = this.pokemon.base_status.hp
+        let life = this.player.pokemon.life 
+        let base_hp = this.player.pokemon.base_status.hp
         let percentageLife = Math.round(life * 100 / base_hp)
         return {
           width: `${ percentageLife }%`,
