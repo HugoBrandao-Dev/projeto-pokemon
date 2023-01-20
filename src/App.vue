@@ -186,12 +186,12 @@
 
   /* Seções */
 
-  #jogadores, #acoes, #logs {
+  #jogadores, #logs {
     box-shadow: 0px 0px 5px #595959;
     width: 100%;
   }
 
-  #acoes, #logs, #mensagem-resultado {
+  #logs, #mensagem-resultado {
     margin-top: 20px;
   }
 
@@ -218,67 +218,6 @@
     padding: 10px;
     width: 100%;
     background-color: #ff3333;
-    color: #fff;
-  }
-
-  /* Botões */
-
-  .btn {
-    padding: 8px 10px;
-    font-weight: bold;
-    margin-right: 20px;
-    border: 3px outset;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    outline: none;
-  }
-
-  #btn-atacar {
-    background-color: #ff3333;
-    border-color: #ff3333;
-  }
-
-  .btn-especial {
-    background-color: #3399ff;
-    border-color: #3399ff;
-  }
-
-  #btn-curar {
-    background-color: #ffff66;
-    border-color: #ffff66;
-    color: black;
-  }
-
-  #btn-desistir {
-    background-color: #404040;
-    border-color: #404040;
-  }
-
-  #btn-iniciar {
-    background-color: #33cc33;
-    color: #fff;
-    border-color: #33cc33;
-  }
-
-  /* Status da partida */
-
-  .desistiu {
-    background-color: #404040;
-    box-shadow: 0 0 10px #404040;
-    color: #fff;
-  }
-
-  .ganhou {
-    background-color: #33cc33;
-    box-shadow: 0 0 10px #33cc33;
-    color: #fff;
-  }
-
-  .perdeu {
-    background-color: #ff3333;
-    box-shadow: 0 0 10px #ff3333;
     color: #fff;
   }
 </style>
