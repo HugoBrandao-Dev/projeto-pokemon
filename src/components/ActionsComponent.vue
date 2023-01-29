@@ -222,27 +222,6 @@
       getValorRandom(min, max) {
         return Math.floor((Math.random() * (max - min + 1)) + min)
       },
-      // Define o limite máximo e mínimo de ataque, tanto o jogador quanto do NPC.
-      setMinMaxAttack() {
-
-        /* ######### Jogador attack config ######### */
-
-        let playerAttackMin = Math.round(this.jogador.experience / 10)
-        let playerAttackMax = Math.round((this.jogador.experience / 10) * 2)
-
-        // Normal attack
-        this.jogador.ataque.normal.minimo = playerAttackMin
-        this.jogador.ataque.normal.maximo = playerAttackMax
-
-        /* ######### NPC attack config ######### */
-
-        let npcAttackMin = Math.round(this.monstro.experience / 10)
-        let npcAttackMax = Math.round((this.monstro.experience / 10) * 2)
-
-        // Normal attack
-        this.monstro.ataque.normal.minimo = npcAttackMin
-        this.monstro.ataque.normal.maximo = npcAttackMax
-      },
       /*
         A capacidade de recuperação é baseada na experiencia do Pokemon
       */
