@@ -30,4 +30,24 @@
   .espacar {
     padding: 10px;
   }
+
+  /* Status da partida */
+
+  .desistiu {
+    background-color: #404040;
+    box-shadow: 0 0 10px #404040;
+    color: #fff;
+  }
+
+  .ganhou {
+    background-color: #33cc33;
+    box-shadow: 0 0 10px #33cc33;
+    color: #fff;
+  }
+
+  .perdeu {
+    background-color: #ff3333;
+    box-shadow: 0 0 10px #ff3333;
+    color: #fff;
+  }
 </style>
