@@ -55,35 +55,41 @@
     },
     methods: {
       /*
-        Calcula quanto um dano representa em % da vida de quem recebe esse dano, tendo como
-        base a experiencia que cada pokemon possui.
+      O cálculo do sucesso de acerto do golpe leva em consideração as velocidades dos pokemons.
       */
-      getPercentageDamage(exp, damage) {
-        return (damage * 100 / exp)
-      },
-      vezJogadorAtacar(especial) {
-        if (this.jogador.vida != 0) {
-          let minimo = 0
-          let maximo = 0
-          let forcaAtaque = 0
-          if (especial) {
-            forcaAtaque = this.jogador.ataque.especiais[0].power
-          } else {
-            minimo = this.jogador.ataque.normal.minimo
-            maximo = this.jogador.ataque.normal.maximo
-            forcaAtaque = this.getValorRandom(minimo, maximo)
-          }
+      getHitSuccessfully(origin, target) {
+        let speedOrigin = origin.pokemon.base_status.speed
+        let speedTarget = target.pokemon.base_status.speed
+        let isHitted = false
 
-          let percentageDamage = Math.round(this.getPercentageDamage(this.monstro.experience, forcaAtaque))
+        let speedDifference = Math.round(speedOrigin - speedTarget)
+        let randomNumber = this.getValorRandom(1,100)
 
-          if ((this.monstro.vida - percentageDamage) < 0) {
-            this.monstro.vida = 0
+        // Quando os speeds dos dois pokemons são iguais, a chance de acerto do hit é de 50%.
+        if (speedDifference == 0) {
+          isHitted = randomNumber >= 50
+        } else if (speedDifference > 0) {
+
+          // Quando o agressor é mais RÁPIDO, MAS MENOS DE 2x, o alvo tem 75% de ser atingido.
+          if (speedDifference * 2 < speedTarget) {
+            isHitted = randomNumber < 75
+
+          // Quando o agressor é mais RÁPIDO, E MAIS DE 2x, o alvo tem 95% de ser atingido.
           } else {
-            this.monstro.vida -= percentageDamage
+            isHitted = randomNumber < 95
           }
-          return forcaAtaque
+        } else {
+
+          // Quando o agressor é mais LENTO, MAS MENOS DE 2x, o alvo tem 25% de ser atingido.
+          if (Math.abs(speedDifference) * 2 < speedOrigin) {
+            isHitted = randomNumber > 75
+
+          // Quando o agressor é mais LENTO, E MAIS MENOS DE 2x, o alvo tem 5% de ser atingido.
+          } else {
+            isHitted = randomNumber > 95
+          }
         }
-        return 0
+        return isHitted
       },
       vezJogadorCurar() {
         if (this.jogador.vida != 0) {
@@ -101,30 +107,83 @@
         }
         return 0
       },
-      vezMonstroAtacar() {
-        if (this.monstro.vida != 0) {
-          let minimo = this.monstro.ataque.normal.minimo
-          let maximo = this.monstro.ataque.normal.maximo
+      // taxCritical é o valor máximo do intervalo para ser considerado um DANO CRÍTICO
+      // taxHigh é o valor máximo do intervalo para ser considerador um DANO ALTO
+      getDamage(attack = 1, taxCritical = 5, taxHigh = 25) {
+        // Número randômico para o tipo de dano, uma chance (%) para acontecer um tipo de dano.
+        let baseNumber = this.getValorRandom(1, 100)
+        let min = 0
+        let max = 0
 
-          // O jogador perde vida baseada no valor máximo e minimo de ataque do monstro
-          let forcaAtaque = this.getValorRandom(minimo, maximo)
+        // Parâmetros para DANO CRÍTICO
+        if (baseNumber <= taxCritical) {
 
-          let percentageDamage = Math.round(this.getPercentageDamage(this.jogador.experience, forcaAtaque))
+          // O menor valor será 75% do valor do ataque.
+          min = 0.75
 
-          if ((this.jogador.vida - percentageDamage) < 0) {
-            this.jogador.vida = 0
-          } else {
-            this.jogador.vida -= percentageDamage
-          }
-          return forcaAtaque
+          // O maior valor possível será 100% do valor do ataque.
+          max = attack
+
+        // Parâmetros para DANO ALTO
+        } else if (baseNumber > taxCritical && baseNumber <= taxHigh) {
+
+          // O menor valor será 50% do valor do ataque.
+          min = 0.5
+
+          // O maior valor possível será 75% do valor do ataque.
+          max = attack * 0.75
+
+        // Parâmetros para DANO NORMAL
+        } else {
+
+          // O menor valor será 1% do valor do ataque
+          min = 0.01
+
+          // O maior valor possível será 50% do valor do ataque
+          max = attack * 0.5
         }
-        return 0
+        return this.getValorRandom((attack * min), max)
+      },
+      reducedDamage(pokemon, target) {
+        let damage = 0
+        /*
+        Quanto o ataque representa (%) na defesa do alvo. 
+        Por exemplo:
+        Atacante tem ATAQUE de 40
+        Alvo tem DEFESA de 50
+        40 é 80% da defesa.
+        Ou seja, o DANO FINAL SERÁ REDUZIDO EM 20%.
+        */
+        let representativePercentage = (pokemon.attack * 100) / target.defense
+
+        let attack = this.getDamage(pokemon.attack)
+
+        // O dano é redurizo, com base na diferença porcentual entre ataque do atacante e defesa do alvo.
+        damage = (attack * representativePercentage) / 100
+
+        return damage
+      },
+      giveDamage(pokemon, target) {
+        let damage = 0
+
+        // Se o atacante tiver um attack menor que a defesa do alvo, então seu dano é reduzido.
+        if (pokemon.base_status.attack < target.defense) {
+          damage = Math.round(this.reducedDamage(pokemon.base_status, target.base_status))
+        } else {
+          damage = Math.round(this.getDamage(pokemon.base_status.attack))
+        }
+        if (target.life - damage <= 0) {
+          target.life = 0
+        } else {
+          target.life -= damage
+        }
+        return damage
       },
       atacarNormal() {
-        let danoDoJogador = this.vezJogadorAtacar(false)
+        let danoDoJogador = this.giveDamage(this.jogador.pokemon, this.monstro.pokemon)
         this.setAcao('dano', 'monstro', danoDoJogador)
 
-        let danoDoMonstro = this.vezMonstroAtacar()
+        let danoDoMonstro = this.giveDamage(this.monstro.pokemon, this.jogador.pokemon)
         this.setAcao('dano', 'jogador', danoDoMonstro)
         this.verificarVencedor()
       },
