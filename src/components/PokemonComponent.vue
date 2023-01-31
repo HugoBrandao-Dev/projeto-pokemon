@@ -5,6 +5,13 @@
       {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.base_status.experience }}
     </small>
     <img :src="player.pokemon.info.picture" :title="player.pokemon.info.specie" />
+    <small v-show="player.pokemon.info.specie">
+      HP: <span class="pokemon-info">{{ player.pokemon.base_status.hp }}</span> |
+      Ata.: <span class="pokemon-info">{{ player.pokemon.base_status.attack }}</span> | 
+      Def.: <span class="pokemon-info">{{ player.pokemon.base_status.defense }}</span> | 
+      Esp. Ata.: <span class="pokemon-info">{{ player.pokemon.base_status.special_attack }}</span> | 
+      Esp. Def.: <span class="pokemon-info">{{ player.pokemon.base_status.special_defense }}</span>
+    </small>
     <div class="caixa-vida">
       <div class="vida" :style="getVidaJogador"></div>
     </div>
@@ -86,6 +93,10 @@
 
   .personagem small {
     font-size: 10pt;
+  }
+
+  .personagem .pokemon-info {
+    font-weight: bolder;
   }
 
   .caixa-vida {
