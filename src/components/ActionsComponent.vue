@@ -312,7 +312,7 @@
 
   #acoes {
     margin-top: 20px;
-    box-shadow: 0px 0px 5px #595959;
+    box-shadow: 0px 0px 5px #ffffff;
     width: 100%;
   }
   
