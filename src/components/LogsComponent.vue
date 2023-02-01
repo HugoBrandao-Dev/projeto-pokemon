@@ -20,5 +20,31 @@
 </script>
 
 <style scoped>
+
+  /* Log da batalha */
   
+  #logs {
+    box-shadow: 0px 0px 5px #595959;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .log-acao {
+    margin: 5px 0px;
+    text-align: center;
+  }
+
+  .monstro {
+    padding: 10px;
+    width: 100%;
+    background-color: #33cc33;
+    color: #fff;
+  }
+
+  .jogador {
+    padding: 10px;
+    width: 100%;
+    background-color: #ff3333;
+    color: #fff;
+  }
 </style>
