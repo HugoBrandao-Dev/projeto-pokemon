@@ -154,6 +154,11 @@
     box-sizing: border-box;
   }
 
+  body {
+    background-color: #47476b;
+    color: #ffffff;
+  }
+
   h1, h2 {
     font-weight: bold;
   }
