@@ -119,7 +119,7 @@
         if (baseNumber <= taxCritical) {
 
           // O menor valor será 75% do valor do ataque.
-          min = 0.75
+          min = 0.76
 
           // O maior valor possível será 100% do valor do ataque.
           max = attack
@@ -128,7 +128,7 @@
         } else if (baseNumber > taxCritical && baseNumber <= taxHigh) {
 
           // O menor valor será 50% do valor do ataque.
-          min = 0.5
+          min = 0.26
 
           // O maior valor possível será 75% do valor do ataque.
           max = attack * 0.75
@@ -137,10 +137,10 @@
         } else {
 
           // O menor valor será 1% do valor do ataque
-          min = 0.01
+          min = 0.1
 
           // O maior valor possível será 50% do valor do ataque
-          max = attack * 0.5
+          max = attack * 0.25
         }
         return this.getValorRandom((attack * min), max)
       },
@@ -180,6 +180,7 @@
         return damage
       },
       atacarNormal() {
+        console.clear()
         let danoDoJogador = this.giveDamage(this.jogador.pokemon, this.monstro.pokemon)
         this.setAcao('dano', 'monstro', danoDoJogador)
 
