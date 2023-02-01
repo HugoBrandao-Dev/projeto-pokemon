@@ -182,6 +182,7 @@
       atacarNormal() {
         let danoDoJogador = this.giveDamage(this.jogador.pokemon, this.monstro.pokemon)
         this.setAcao('dano', 'monstro', danoDoJogador)
+        this.verificarVencedor()
 
         let danoDoMonstro = this.giveDamage(this.monstro.pokemon, this.jogador.pokemon)
         this.setAcao('dano', 'jogador', danoDoMonstro)
