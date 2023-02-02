@@ -114,6 +114,7 @@
         let baseNumber = this.getValorRandom(1, 100)
         let min = 0
         let max = 0
+        let logDamage = {damage: 0, type: ''}
 
         // Parâmetros para DANO CRÍTICO
         if (baseNumber <= taxCritical) {
@@ -124,6 +125,8 @@
           // O maior valor possível será 100% do valor do ataque.
           max = attack
 
+          logDamage.type = 'crítico'
+
         // Parâmetros para DANO ALTO
         } else if (baseNumber > taxCritical && baseNumber <= taxHigh) {
 
@@ -132,6 +135,8 @@
 
           // O maior valor possível será 75% do valor do ataque.
           max = attack * 0.75
+
+          logDamage.type = 'alto'
 
         // Parâmetros para DANO NORMAL
         } else {
@@ -142,7 +147,9 @@
           // O maior valor possível será 50% do valor do ataque
           max = attack * 0.25
         }
-        return this.getValorRandom((attack * min), max)
+
+        logDamage.damage = this.getValorRandom((attack * min), max)
+        return logDamage
       },
       reducedDamage(pokemon, target) {
         let damage = 0
@@ -156,7 +163,7 @@
         */
         let representativePercentage = (pokemon.attack * 100) / target.defense
 
-        let attack = this.getDamage(pokemon.attack)
+        let attack = this.getDamage(pokemon.attack).damage
 
         // O dano é redurizo, com base na diferença porcentual entre ataque do atacante e defesa do alvo.
         damage = (attack * representativePercentage) / 100
@@ -164,29 +171,30 @@
         return damage
       },
       giveDamage(pokemon, target) {
-        let damage = 0
+        let logDamage = { damage: 0, type: ''}
 
         // Se o atacante tiver um attack menor que a defesa do alvo, então seu dano é reduzido.
         if (pokemon.base_status.attack < target.defense) {
-          damage = Math.round(this.reducedDamage(pokemon.base_status, target.base_status))
+          logDamage.damage = Math.round(this.reducedDamage(pokemon.base_status, target.base_status))
         } else {
-          damage = Math.round(this.getDamage(pokemon.base_status.attack))
+          let log = this.getDamage(pokemon.base_status.attack)
+          logDamage.damage = Math.round(log.damage)
+          logDamage.type = log.type
         }
-        if (target.life - damage <= 0) {
+        if (target.life - logDamage.damage <= 0) {
           target.life = 0
         } else {
-          target.life -= damage
+          target.life -= logDamage.damage
         }
-        return damage
+        return logDamage
       },
       atacarNormal() {
-        console.clear()
-        let danoDoJogador = this.giveDamage(this.jogador.pokemon, this.monstro.pokemon)
-        this.setAcao('dano', 'monstro', danoDoJogador)
+        let logDanoDoJogador = this.giveDamage(this.jogador.pokemon, this.monstro.pokemon)
+        this.setAcao(logDanoDoJogador.type, 'monstro', logDanoDoJogador.damage)
         this.verificarVencedor()
 
-        let danoDoMonstro = this.giveDamage(this.monstro.pokemon, this.jogador.pokemon)
-        this.setAcao('dano', 'jogador', danoDoMonstro)
+        let logDanoDoMonstro = this.giveDamage(this.monstro.pokemon, this.jogador.pokemon)
+        this.setAcao(logDanoDoMonstro.type, 'jogador', logDanoDoMonstro.damage)
         this.verificarVencedor()
       },
       atacarEspecial() {
@@ -211,7 +219,9 @@
           if (tipo == 'cura') {
             mensagem = `Você curou ${valor}.`
           } else {
-            mensagem = `O ${destino} recebeu ${valor} de dano.`
+            let withType = `O ${ destino } recebeu ${ valor } de dano [${ tipo.toUpperCase() }].`
+            let noType = `O ${ destino } recebeu ${ valor } de dano.`
+            mensagem = tipo ?  withType : noType
           }
           this.logAcoes.unshift({
             id: `${destino}${Date.now()}${tipo}`,
