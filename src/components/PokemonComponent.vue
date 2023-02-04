@@ -1,17 +1,46 @@
 <template>
   <div class="personagem espacar">
     <h2>{{ player.name }}</h2>
-    <small v-show="player.pokemon.info.specie">
-      {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.base_status.experience }}
-    </small>
-    <img :src="player.pokemon.info.picture" :title="player.pokemon.info.specie" />
-    <small v-show="player.pokemon.info.specie">
-      HP: <span class="pokemon-info">{{ player.pokemon.base_status.hp }}</span> |
-      Ata.: <span class="pokemon-info">{{ player.pokemon.base_status.attack }}</span> | 
-      Def.: <span class="pokemon-info">{{ player.pokemon.base_status.defense }}</span> | 
-      Esp. Ata.: <span class="pokemon-info">{{ player.pokemon.base_status.special_attack }}</span> | 
-      Esp. Def.: <span class="pokemon-info">{{ player.pokemon.base_status.special_defense }}</span>
-    </small>
+    <div class="pokemon" :class="{'npc-display': player.name == 'NPC'}">
+      <div class="pokemon-infos">
+        <ul v-show="player.pokemon.info.specie">
+          <li>HP:
+            <span class="pokemon-info">
+              {{ player.pokemon.base_status.hp }}
+            </span>
+          </li>
+          <li>Ata.:
+            <span class="pokemon-info">
+              {{ player.pokemon.base_status.attack }}
+            </span>
+          </li>
+          <li>Def.:
+            <span class="pokemon-info">
+              {{ player.pokemon.base_status.defense }}
+            </span>
+          </li>
+          <li>Esp. Ata.:
+            <span class="pokemon-info">
+              {{ player.pokemon.base_status.special_attack }}
+            </span>
+          </li>
+          <li>Esp. Def.:
+            <span class="pokemon-info">
+              {{ player.pokemon.base_status.special_defense }}
+            </span>
+          </li>
+        </ul>
+        <small >
+          
+        </small>
+      </div>
+      <div class="pokemon-desc">
+        <small v-show="player.pokemon.info.specie">
+          {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.base_status.experience }}
+        </small>
+        <img :src="player.pokemon.info.picture" :title="player.pokemon.info.specie" />
+      </div>
+    </div>
     <div class="caixa-vida">
       <div class="vida" :style="getVidaJogador"></div>
     </div>
@@ -83,20 +112,41 @@
     width: 45%;
   }
 
-  .personagem h2, .personagem small {
+  .personagem h2 {
+    font-size: 14pt;
+    margin-bottom: 40px;
     text-transform: capitalize;
   }
 
-  .personagem h2 {
-    font-size: 14pt;
+  .personagem .pokemon {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: auto center;
   }
 
-  .personagem small {
-    font-size: 10pt;
+  .npc-display {
+    flex-direction: row-reverse;
+  }
+
+  .pokemon ul li {
+    list-style: none;
+    font-size: 8pt;
   }
 
   .personagem .pokemon-info {
     font-weight: bolder;
+  }
+
+  .personagem .pokemon .pokemon-desc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pokemon .pokemon-desc img {
+    height: 96px;
+    width: 96px;
   }
 
   .caixa-vida {
