@@ -50,4 +50,10 @@
     box-shadow: 0 0 10px #ff3333;
     color: #fff;
   }
+
+  .empatou {
+    background-color: #ffcc00;
+    box-shadow: 0 0 10px #ffcc00;
+    color: #fff;
+  }
 </style>

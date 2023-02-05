@@ -261,7 +261,9 @@
         this.logAcoes = []
       },
       verificarVencedor() {
-        if (this.jogador.pokemon.life == 0) {
+        if (this.jogador.pokemon.life == 0 && this.monstro.pokemon.life == 0) {
+          this.setFinalizarPartida('empatou', 'Houve empate!!')
+        } else if (this.jogador.pokemon.life == 0) {
           this.setFinalizarPartida('perdeu', 'Você perdeu :(')
         } else if (this.monstro.pokemon.life == 0) {
           this.setFinalizarPartida('ganhou', "Você venceu !! \\o/")
