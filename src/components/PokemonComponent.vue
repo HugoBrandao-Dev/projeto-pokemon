@@ -45,6 +45,13 @@
       <div class="vida" :style="getVidaJogador"></div>
     </div>
     <div>{{ getVidaJogador.width }}</div>
+    <ul class="balls">
+      <li v-for="(link, index) in balls" :key="index" class="ball">
+          <span v-if="Object.values(player.balls)[index] <= 99 ">{{ Object.values(player.balls)[index] }}</span>
+          <span v-else>99+</span>
+        <img :src="link">
+      </li>      
+    </ul>
   </div>
 </template>
 
@@ -55,9 +62,9 @@
         player: {
           name: 'Player',
           balls: {
-            poke_ball: 20,
+            poke_ball: 150,
             great_ball: 10,
-            ultra_ball: 5,
+            ultra_ball: 800,
             master_ball: 2
           },
           pokemon: {
@@ -79,6 +86,9 @@
           },
         }
       }
+    },
+    props: {
+      balls: Array
     },
     created() {
       this.$emit('player', { player: this.player })
@@ -168,5 +178,35 @@
   .vida {
     height: 100%;
     width: 100%;
+  }
+
+  .balls {
+    margin-top: 10px;
+    display: flex;
+  }
+
+  .balls .ball {
+    border: 1px solid #fff;
+    margin-right: 15px;
+    position: relative;
+    display: flex;
+  }
+
+  .balls .ball:last-child {
+    margin-right: 0px;
+  }
+
+  .balls .ball span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3399ff;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    font-size: 8px;
+    position: absolute;
+    left: 22px;
+    top: -6px;
   }
 </style>

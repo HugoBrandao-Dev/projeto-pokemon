@@ -2,7 +2,7 @@
   <div id="app">
     <HeaderComponent />
     <section id="jogadores">
-      <PokemonComponent @player="setPokemonPlayer($event)" />
+      <PokemonComponent @player="setPokemonPlayer($event)" :balls="items.ballsLinks" />
       <PokemonComponent @player="setPokemonNPC($event)" />
     </section>
     <MatchComponent @match="statusMatch($event)" />
@@ -37,7 +37,10 @@
         jogador: {},
         monstro: {},
         match: {},
-        log: []
+        log: [],
+        items: {
+          ballsLinks: []
+        }
       }
     },
     components: {
@@ -111,6 +114,17 @@
                 this.jogador.pokemon.info.picture = pokemonPlayer.sprites.back_default
                 this.jogador.pokemon.info.specie = pokemonPlayer.species.name
                 this.setSpecialAbilities(this.jogador, pokemonPlayer.abilities)
+
+                for (let cont = 1; cont <= 4; cont++) {
+                  axios.get(`https://pokeapi.co/api/v2/item/${ cont }/`)
+                    .then(resBalls => {
+                      let link = resBalls.data.sprites.default
+                      this.items.ballsLinks.push(link)
+                    })
+                    .catch(error => {
+                      console.log(error)
+                    })
+                }
 
                 /* ################ NPC ################ */
                 let pokemonNPC = resNPC.data
