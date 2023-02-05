@@ -1,7 +1,7 @@
 <template>
   <div class="personagem espacar">
     <h2>{{ player.name }}</h2>
-    <div class="pokemon" :class="{'npc-display': player.name == 'NPC'}">
+    <div class="pokemon" :class="{'npc-display': player.name == 'NPC', 'no-pokemon': !player.pokemon.info.specie}">
       <div class="pokemon-infos">
         <ul v-show="player.pokemon.info.specie">
           <li>HP:
@@ -67,7 +67,7 @@
             },
             info: {
               specie: '',
-              picture: 'https://img.icons8.com/dotty/80/000000/user.png',
+              picture: 'https://img.icons8.com/dotty/96/ffffff/user.png',
               special_attacks: []
             },
           },
@@ -123,6 +123,10 @@
     display: flex;
     justify-content: space-between;
     margin: auto center;
+  }
+
+  .personagem .no-pokemon {
+    justify-content: center;
   }
 
   .npc-display {
