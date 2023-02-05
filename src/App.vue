@@ -167,6 +167,10 @@
     font-size: 2rem;
   }
 
+  ul li {
+    list-style: none;
+  }
+
   .centralizar {
     display: flex;
     justify-content: center;

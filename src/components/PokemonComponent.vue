@@ -54,6 +54,12 @@
       return {
         player: {
           name: 'Player',
+          balls: {
+            poke_ball: 20,
+            great_ball: 10,
+            ultra_ball: 5,
+            master_ball: 2
+          },
           pokemon: {
             life: 100,
             base_status: {
@@ -134,7 +140,6 @@
   }
 
   .pokemon ul li {
-    list-style: none;
     font-size: 8pt;
   }
 
