@@ -34,12 +34,8 @@
     name: 'App',
     data() {
       return {
-        jogador: {
-          data: 123
-        },
-        monstro: {
-          data: 321
-        },
+        jogador: {},
+        monstro: {},
         match: {},
         log: []
       }
