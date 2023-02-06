@@ -39,7 +39,8 @@
         match: {},
         log: [],
         items: {
-          ballsLinks: []
+          ballsLinks: [],
+          fruitsLinks: []
         }
       }
     },
@@ -103,6 +104,18 @@
             })
         }
       },
+      getFruitsIcons() {
+        let fruits = ['jaboca-berry', 'razz-berry', 'bluk-berry']
+        fruits.forEach(fruit => {
+          axios.get(`https://pokeapi.co/api/v2/item/${ fruit }`)
+            .then(res => {
+              this.items.fruitsLinks.push(res.data.sprites.default)
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+      },
       getPokemons() {
         let pokemonPlayer1 = this.getValorRandom(1,151)
         let pokemonPlayer2 = this.getValorRandom(1,151)
@@ -127,6 +140,7 @@
                 this.jogador.pokemon.info.specie = pokemonPlayer.species.name
                 this.setSpecialAbilities(this.jogador, pokemonPlayer.abilities)
                 this.getBallsIcons()
+                this.getFruitsIcons()
 
                 /* ################ NPC ################ */
                 let pokemonNPC = resNPC.data
