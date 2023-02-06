@@ -139,8 +139,12 @@
                 this.jogador.pokemon.info.picture = pokemonPlayer.sprites.back_default
                 this.jogador.pokemon.info.specie = pokemonPlayer.species.name
                 this.setSpecialAbilities(this.jogador, pokemonPlayer.abilities)
-                this.getBallsIcons()
-                this.getFruitsIcons()
+                if (this.items.ballsLinks.length === 0) {
+                  this.getBallsIcons()
+                }
+                if (this.items.fruitsLinks.length === 0) {
+                  this.getFruitsIcons()
+                }
 
                 /* ################ NPC ################ */
                 let pokemonNPC = resNPC.data
