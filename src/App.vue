@@ -2,7 +2,7 @@
   <div id="app">
     <HeaderComponent />
     <section id="jogadores">
-      <PokemonComponent @player="setPokemonPlayer($event)" :balls="items.ballsLinks" />
+      <PokemonComponent @player="setPokemonPlayer($event)" :items="items" />
       <PokemonComponent @player="setPokemonNPC($event)" />
     </section>
     <MatchComponent @match="statusMatch($event)" />

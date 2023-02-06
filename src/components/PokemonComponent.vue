@@ -46,7 +46,7 @@
     </div>
     <div>{{ getVidaJogador.width }}</div>
     <ul class="balls">
-      <li v-for="(link, index) in balls" :key="index" class="ball">
+      <li v-for="(link, index) in items.ballsLinks" :key="index" class="ball">
           <span v-if="Object.values(player.balls)[index] <= 99 ">{{ Object.values(player.balls)[index] }}</span>
           <span v-else>99+</span>
         <img :src="link">
@@ -88,7 +88,10 @@
       }
     },
     props: {
-      balls: Array
+      items: {
+        type: Object,
+        default: () => ({})
+      }
     },
     created() {
       this.$emit('player', { player: this.player })
