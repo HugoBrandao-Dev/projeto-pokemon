@@ -49,7 +49,7 @@
             {{ player.items.balls[ball.name] }}
           </span>
           <span v-else>99+</span>
-          <img :src="ball.iconLink">
+          <img :src="ball.iconLink" :title="ball.name.replace('-', ' ')">
         </li>      
       </ul>
       <ul class="fruits">
@@ -58,7 +58,7 @@
             {{ player.items.fruits[fruit.name] }}
           </span>
           <span v-else>99+</span>
-          <img :src="fruit.iconLink">
+          <img :src="fruit.iconLink" :title="fruit.name.replace('-', ' ')">
         </li>
       </ul>
     </div>
