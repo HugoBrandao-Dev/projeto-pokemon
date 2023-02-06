@@ -93,16 +93,16 @@
         this.monstro = $event.player
       },
       getBallsIcons() {
-        for (let cont = 1; cont <= 4; cont++) {
-          axios.get(`https://pokeapi.co/api/v2/item/${ cont }/`)
-            .then(resBalls => {
-              let link = resBalls.data.sprites.default
-              this.items.ballsLinks.push(link)
+        let balls = ['poke-ball', 'great-ball', 'ultra-ball', 'master-ball']
+        balls.forEach(ball => {
+          axios.get(`https://pokeapi.co/api/v2/item/${ ball }`)
+            .then(res => {
+              this.items.ballsLinks.push(res.data.sprites.default)
             })
             .catch(error => {
               console.log(error)
             })
-        }
+        })
       },
       getFruitsIcons() {
         let fruits = ['jaboca-berry', 'razz-berry', 'bluk-berry']
