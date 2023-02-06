@@ -44,17 +44,21 @@
     <div>{{ getVidaJogador.width }}</div>
     <div class="items">
       <ul class="balls">
-        <li v-for="(link, index) in items.ballsLinks" :key="index" class="ball">
-            <span v-if="Object.values(player.balls)[index] <= 99 ">{{ Object.values(player.balls)[index] }}</span>
-            <span v-else>99+</span>
-          <img :src="link">
+        <li v-for="ball in items.ballsLinks" :key="ball.name" class="ball">
+          <span v-if="player.items.balls[ball.name] <= 99">
+            {{ player.items.balls[ball.name] }}
+          </span>
+          <span v-else>99+</span>
+          <img :src="ball.iconLink">
         </li>      
       </ul>
       <ul class="fruits">
-        <li v-for="(link, index) in items.fruitsLinks" :key="index" class="fruit">
-          <span v-if="Object.values(player.fruits)[index] <= 99 ">{{ Object.values(player.fruits)[index] }}</span>
+        <li v-for="fruit in items.fruitsLinks" :key="fruit.name" class="fruit">
+          <span v-if="player.items.fruits[fruit.name] <= 99">
+            {{ player.items.fruits[fruit.name] }}
+          </span>
           <span v-else>99+</span>
-          <img :src="link">
+          <img :src="fruit.iconLink">
         </li>
       </ul>
     </div>
@@ -68,16 +72,18 @@
       return {
         player: {
           name: 'Player',
-          balls: {
-            poke_ball: 150,
-            great_ball: 10,
-            ultra_ball: 800,
-            master_ball: 2
-          },
-          fruits: {
-            jaboca_berry: 10, 
-            razz_berry: 5, 
-            bluk_berry: 1
+          items: {
+            balls: {
+            'poke-ball': 150,
+            'great-ball': 10,
+            'ultra-ball': 800,
+            'master-ball': 2
+            },
+            fruits: {
+              'jaboca-berry': 10, 
+              'razz-berry': 5, 
+              'bluk-berry': 1
+            },
           },
           pokemon: {
             life: 100,

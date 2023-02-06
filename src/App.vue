@@ -97,7 +97,10 @@
         balls.forEach(ball => {
           axios.get(`https://pokeapi.co/api/v2/item/${ ball }`)
             .then(res => {
-              this.items.ballsLinks.push(res.data.sprites.default)
+              this.items.ballsLinks.push({
+                name: ball,
+                iconLink: res.data.sprites.default
+              })
             })
             .catch(error => {
               console.log(error)
@@ -109,7 +112,10 @@
         fruits.forEach(fruit => {
           axios.get(`https://pokeapi.co/api/v2/item/${ fruit }`)
             .then(res => {
-              this.items.fruitsLinks.push(res.data.sprites.default)
+              this.items.fruitsLinks.push({
+                name: fruit,
+                iconLink: res.data.sprites.default
+              })
             })
             .catch(error => {
               console.log(error)
