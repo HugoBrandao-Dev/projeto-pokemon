@@ -91,6 +91,18 @@
       setPokemonNPC($event) {
         this.monstro = $event.player
       },
+      getBallsIcons() {
+        for (let cont = 1; cont <= 4; cont++) {
+          axios.get(`https://pokeapi.co/api/v2/item/${ cont }/`)
+            .then(resBalls => {
+              let link = resBalls.data.sprites.default
+              this.items.ballsLinks.push(link)
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        }
+      },
       getPokemons() {
         let pokemonPlayer1 = this.getValorRandom(1,151)
         let pokemonPlayer2 = this.getValorRandom(1,151)
@@ -114,17 +126,7 @@
                 this.jogador.pokemon.info.picture = pokemonPlayer.sprites.back_default
                 this.jogador.pokemon.info.specie = pokemonPlayer.species.name
                 this.setSpecialAbilities(this.jogador, pokemonPlayer.abilities)
-
-                for (let cont = 1; cont <= 4; cont++) {
-                  axios.get(`https://pokeapi.co/api/v2/item/${ cont }/`)
-                    .then(resBalls => {
-                      let link = resBalls.data.sprites.default
-                      this.items.ballsLinks.push(link)
-                    })
-                    .catch(error => {
-                      console.log(error)
-                    })
-                }
+                this.getBallsIcons()
 
                 /* ################ NPC ################ */
                 let pokemonNPC = resNPC.data
