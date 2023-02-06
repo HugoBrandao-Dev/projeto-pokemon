@@ -195,23 +195,23 @@
     width: 100%;
   }
 
-  .balls {
+  .balls, .fruits {
     margin-top: 10px;
     display: flex;
   }
 
-  .balls .ball {
+  .balls .ball, .fruits .fruit {
     border: 1px solid #fff;
     margin-right: 15px;
     position: relative;
     display: flex;
   }
 
-  .balls .ball:last-child {
+  .balls .ball:last-child, .fruits .fruit:last-child {
     margin-right: 0px;
   }
 
-  .balls .ball span {
+  .balls .ball span, .fruits .fruit span {
     display: flex;
     justify-content: center;
     align-items: center;
