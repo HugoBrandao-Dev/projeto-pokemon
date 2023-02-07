@@ -238,6 +238,17 @@
     display: flex;
   }
 
+  .fruits .fruit {
+    border: none;
+  }
+
+  .fruits .fruit .btn {
+    background-color: #e6e600;
+    border-color: #e6e600;
+    padding: 0;
+    margin-right: 0px;
+  }
+
   .balls .ball:last-child, .fruits .fruit:last-child {
     margin-right: 0px;
   }
