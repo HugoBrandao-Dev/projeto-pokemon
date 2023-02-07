@@ -224,6 +224,11 @@
   .vida {
     height: 100%;
     width: 100%;
+
+    transition-property: width;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+    transition-delay: 0.1s;
   }
 
   .balls, .fruits {
