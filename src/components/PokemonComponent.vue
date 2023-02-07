@@ -54,7 +54,7 @@
       </ul>
       <ul class="fruits">
         <li v-for="fruit in items.fruitsLinks" :key="fruit.name" class="fruit">
-          <button @click="heal(fruit.name)">
+          <button @click="heal(fruit.name)" class="btn">
             <span v-if="player.items.fruits[fruit.name] <= 99">
               {{ player.items.fruits[fruit.name] }}
             </span>

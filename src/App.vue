@@ -221,6 +221,18 @@
     padding: 10px;
   }
 
+  .btn {
+    padding: 8px 10px;
+    font-weight: bold;
+    margin-right: 20px;
+    border: 3px outset;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    outline: none;
+  }
+
   /* ############### CORPO ############### */
 
   #app {
