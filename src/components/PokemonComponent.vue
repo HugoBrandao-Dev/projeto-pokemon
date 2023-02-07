@@ -54,11 +54,13 @@
       </ul>
       <ul class="fruits">
         <li v-for="fruit in items.fruitsLinks" :key="fruit.name" class="fruit">
-          <span v-if="player.items.fruits[fruit.name] <= 99">
-            {{ player.items.fruits[fruit.name] }}
-          </span>
-          <span v-else>99+</span>
-          <img :src="fruit.iconLink" :title="fruit.name.replace('-', ' ')">
+          <button @click="heal(fruit.name)">
+            <span v-if="player.items.fruits[fruit.name] <= 99">
+              {{ player.items.fruits[fruit.name] }}
+            </span>
+            <span v-else>99+</span>
+            <img :src="fruit.iconLink" :title="fruit.name.replace('-', ' ')">
+          </button>
         </li>
       </ul>
     </div>
@@ -135,6 +137,29 @@
           return '#ff471a'
         }
       },
+      heal(fruit = 'jaboca-berry') {
+        if (this.player.items.fruits[fruit] > 0) {
+          this.player.items.fruits[fruit]--
+          switch(fruit) {
+            case 'jaboca-berry':
+              if (this.player.pokemon.life + 10 > this.player.pokemon.base_status.hp) {
+                this.player.pokemon.life = this.player.pokemon.base_status.hp
+              } else {
+                this.player.pokemon.life += 10
+              }
+              break
+            case 'razz-berry':
+              if (this.player.pokemon.life + 20 > this.player.pokemon.base_status.hp) {
+                this.player.pokemon.life = this.player.pokemon.base_status.hp
+              } else {
+                this.player.pokemon.life += 20
+              }
+              break
+            default:
+              this.player.pokemon.life = this.player.pokemon.base_status.hp
+          }
+        }
+      }
     }
   }
 </script>

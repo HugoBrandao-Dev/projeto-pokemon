@@ -15,11 +15,7 @@
             {{ special.name }}
           <img src="https://img.icons8.com/dusk/30/000000/sword.png" />
         </button>
-      </div> 
-      <button id="btn-curar" type="button" class="btn" @click="curarJogador">
-        Curar
-        <img src="https://img.icons8.com/ios-glyphs/30/000000/hand-with-a-pill.png" />
-      </button>
+      </div>
       <button id="btn-desistir" type="button" class="btn" @click="desistir">
         Desistir
       </button>
@@ -90,22 +86,6 @@
           }
         }
         return isHitted
-      },
-      vezJogadorCurar() {
-        if (this.jogador.vida != 0) {
-          let capMinima = this.jogador.cura.capacidadeMinima
-          let capMaxima = this.jogador.cura.capacidadeMaxima
-
-          let forcaCura = this.getValorRandom(capMinima, capMaxima)
-
-          if (this.jogador.vida + forcaCura >= 100) {
-            this.jogador.vida = 100
-          } else {
-            this.jogador.vida += forcaCura
-          }
-          return forcaCura
-        }
-        return 0
       },
       // taxCritical é o valor máximo do intervalo para ser considerado um DANO CRÍTICO
       // taxHigh é o valor máximo do intervalo para ser considerador um DANO ALTO
@@ -205,14 +185,6 @@
         this.setAcao('dano', 'jogador', danoDoMonstro)
         this.verificarVencedor()
       },
-      curarJogador() {
-        let curaDoJogador = this.vezJogadorCurar()
-        this.setAcao('cura', 'jogador', curaDoJogador)
-
-        let danoDoMonstro = this.vezMonstroAtacar()
-        this.setAcao('dano', 'jogador', danoDoMonstro)
-        this.verificarVencedor()
-      },
       setAcao(tipo, destino, valor) {
         if (valor != 0) {
           let mensagem = ''
@@ -304,12 +276,6 @@
   .btn-especial {
     background-color: #3399ff;
     border-color: #3399ff;
-  }
-
-  #btn-curar {
-    background-color: #ffff66;
-    border-color: #ffff66;
-    color: black;
   }
 
   #btn-desistir {
