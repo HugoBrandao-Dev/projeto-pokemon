@@ -52,12 +52,6 @@
       LogsComponent,
     },
     methods: {
-      playerStatus($event) {
-        this.jogador = $event.jogador
-      },
-      npcStatus($event) {
-        this.monstro = $event.monstro
-      },
       statusMatch($event) {
         this.match = $event.status
       },
@@ -82,9 +76,6 @@
               console.log(error)
             })
         })
-      },
-      getValorRandom(min, max) {
-        return Math.floor((Math.random() * (max - min + 1)) + min)
       },
       setPokemonPlayer($event) {
         this.jogador = $event.player
