@@ -82,6 +82,7 @@
       },
       setPokemonNPC($event) {
         this.monstro = $event.player
+        this.monstro.name = 'NPC'
       },
       async getBallsIcons() {
         let balls = ['poke-ball', 'great-ball', 'ultra-ball', 'master-ball']
@@ -224,7 +225,6 @@
                 .then(resPokemon => {
                   /* ################ Player ################ */
                   let pokemonPlayer = resPokemon.data
-                  player.name = 'Jogador'
                   player.pokemon.life = pokemonPlayer.stats[0].base_stat
                   player.pokemon.base_status.hp = pokemonPlayer.stats[0].base_stat
                   player.pokemon.base_status.attack = pokemonPlayer.stats[1].base_stat
@@ -233,7 +233,11 @@
                   player.pokemon.base_status.special_defense = pokemonPlayer.stats[4].base_stat
                   player.pokemon.base_status.speed = pokemonPlayer.stats[5].base_stat
                   player.pokemon.base_status.experience = pokemonPlayer.base_experience
-                  player.pokemon.info.picture = pokemonPlayer.sprites.back_default
+                  if (player.name == 'Player') {
+                    player.pokemon.info.picture = pokemonPlayer.sprites.back_default
+                  } else {
+                    player.pokemon.info.picture = pokemonPlayer.sprites.front_default
+                  }
                   player.pokemon.info.specie = pokemonPlayer.species.name
                   this.setSpecialAbilities(player, pokemonPlayer.abilities)
                 })
