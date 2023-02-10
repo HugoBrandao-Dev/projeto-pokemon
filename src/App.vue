@@ -9,7 +9,7 @@
     
     <ActionsComponent 
       @clearLog="clearArrays" 
-      @generatePokemons="getPokemons"
+      @generatePokemons="setPokemons"
       @setAbilities="setSpecialAbilities($event)"
       :player="jogador" 
       :npc="monstro" 
@@ -68,14 +68,14 @@
         this.log.splice(0)
         this.jogador.pokemon.info.special_attacks.splice(0)
       },
-      setSpecialAbilities(player, abilities) {
+      async setSpecialAbilities(player, abilities) {
         abilities.forEach(abilityInfo => {
           let ability = abilityInfo.ability
           axios.get(ability.url)
             .then(res => {
               player.pokemon.info.special_attacks.push({
                 name: ability.name.split('-').join(' '),
-                effect: res.data.effect_entries[1].short_effect,
+                effect: res.data.effect_entries[1].short_effect || '',
               })
             })
             .catch(error => {
@@ -92,7 +92,7 @@
       setPokemonNPC($event) {
         this.monstro = $event.player
       },
-      getBallsIcons() {
+      async getBallsIcons() {
         let balls = ['poke-ball', 'great-ball', 'ultra-ball', 'master-ball']
         balls.forEach(ball => {
           axios.get(`https://pokeapi.co/api/v2/item/${ ball }`)
@@ -107,7 +107,7 @@
             })
         })
       },
-      getFruitsIcons() {
+      async getFruitsIcons() {
         let fruits = ['jaboca-berry', 'razz-berry', 'bluk-berry']
         fruits.forEach(fruit => {
           axios.get(`https://pokeapi.co/api/v2/item/${ fruit }`)
@@ -122,60 +122,168 @@
             })
         })
       },
-      getPokemons() {
-        let pokemonPlayer1 = this.getValorRandom(1,151)
-        let pokemonPlayer2 = this.getValorRandom(1,151)
-
-        axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemonPlayer1 }`)
-          .then(resPlayer => {
-            axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemonPlayer2 }`)
-              .then(resNPC => {
-
-                /* ################ Player ################ */
-                let pokemonPlayer = resPlayer.data
-                this.jogador.name = 'Jogador'
-                this.jogador.pokemon.life = pokemonPlayer.stats[0].base_stat
-                this.jogador.pokemon.base_status.hp = pokemonPlayer.stats[0].base_stat
-                this.jogador.pokemon.base_status.attack = pokemonPlayer.stats[1].base_stat
-                this.jogador.pokemon.base_status.special_attack = pokemonPlayer.stats[3].base_stat
-                this.jogador.pokemon.base_status.defense = pokemonPlayer.stats[2].base_stat
-                this.jogador.pokemon.base_status.special_defense = pokemonPlayer.stats[4].base_stat
-                this.jogador.pokemon.base_status.speed = pokemonPlayer.stats[5].base_stat
-                this.jogador.pokemon.base_status.experience = pokemonPlayer.base_experience
-                this.jogador.pokemon.info.picture = pokemonPlayer.sprites.back_default
-                this.jogador.pokemon.info.specie = pokemonPlayer.species.name
-                this.setSpecialAbilities(this.jogador, pokemonPlayer.abilities)
-                if (this.items.ballsLinks.length === 0) {
-                  this.getBallsIcons()
-                }
-                if (this.items.fruitsLinks.length === 0) {
-                  this.getFruitsIcons()
-                }
-
-                /* ################ NPC ################ */
-                let pokemonNPC = resNPC.data
-                this.monstro.name = 'NPC'
-                this.monstro.pokemon.life = pokemonNPC.stats[0].base_stat
-                this.monstro.pokemon.base_status.hp = pokemonNPC.stats[0].base_stat
-                this.monstro.pokemon.base_status.attack = pokemonNPC.stats[1].base_stat
-                this.monstro.pokemon.base_status.special_attack = pokemonNPC.stats[3].base_stat
-                this.monstro.pokemon.base_status.defense = pokemonNPC.stats[2].base_stat
-                this.monstro.pokemon.base_status.special_defense = pokemonNPC.stats[4].base_stat
-                this.monstro.pokemon.base_status.speed = pokemonNPC.stats[5].base_stat
-                this.monstro.pokemon.base_status.experience = pokemonNPC.base_experience
-                this.monstro.pokemon.info.picture = pokemonNPC.sprites.front_default
-                this.monstro.pokemon.info.specie = pokemonNPC.species.name
-                this.setSpecialAbilities(this.monstro, pokemonNPC.abilities)
-              })
-              .catch(error => {
-                console.log(error)
-              })
+      // rateHigh é a taxa (%) para que um pokemon de 3ª evolução seja pego.
+      // rateHigh é a taxa (%) para que um pokemon de 2ª evolução seja pego.
+      getLimitsFromGeneration(generation) {
+        let min = 0
+        let max = 0
+        
+        switch(generation) {
+          case 1:
+            min = 1
+            max = 151
+            break
+          case 2:
+            min = 152
+            max = 251
+            break
+          case 3:
+            min = 252
+            max = 386
+            break
+          case 4:
+            min = 387
+            max = 493
+            break
+          default:
+            min = 494
+            max = 649
+        }
+        
+        return [ min, max ]
+      },
+      
+      /*
+        Buscará a cadeia evolutiva de cada espécie de pokemon e guardará os IDs máximo e mínimo.
+        Uma cadeia evolutiva de um pokemon corresponde a um mesmo ID de chain.
+      */
+      async getChainsInterval(min = 1, max = 151) {
+        let chains = { min: 0, max: 0 }
+        
+        /*
+        Fará as buscas por pokemons tendo como parâmetros os valores máximo e mínimo de busca informados
+        */
+        for (let cont = min; cont <= max; cont++) {
+          await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${ cont }/`)
+            .then(resSpecie => {
+              let link = resSpecie.data.evolution_chain.url
+              let arrayLink = link.split('/')
+              let idSpecie = parseInt(arrayLink[arrayLink.length - 2])
+              if (chains.min == 0 && chains.max == 0) {
+                chains.min = idSpecie
+                chains.max = idSpecie
+              } else if (idSpecie < chains.min) {
+                chains.min = idSpecie
+              } else if (idSpecie > chains.max) {
+                chains.max = idSpecie
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        }
+        return [chains.min, chains.max]
+      },
+      getRandom(min, max) {
+        return Math.round(Math.random() * (max - min) + min)
+      },
+      getLevel(rateHigh = 25, rateMiddle = 50) {
+        let myRandom = this.getRandom(1, 100)
+        
+        if (myRandom <= rateHigh) {
+          return 3
+        } else if (myRandom <= rateMiddle) {
+          return 2
+        } else {
+          return 1
+        }
+      },
+      
+      // min é o menor valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
+      // max é o maior valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
+      async setPokemon(player, level = 1, min = 1, max = 78, selectedChainId = 0) {
+        let chainId = selectedChainId || this.getRandom(min, max)
+        
+        axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ chainId }/`)
+          .then(res => {
+          
+            // Pega a forma base
+            let pokemons = [res.data.chain.species.name]
+            
+            // Pega a(s) primeira(s) evolução(ões)
+            let lengthEvolution_2 = res.data.chain.evolves_to.length
+            if (lengthEvolution_2) {
+              let position_2 = this.getRandom(0, lengthEvolution_2 - 1)
+              let pokemon_2 = res.data.chain.evolves_to[position_2].species.name
+              pokemons.push(pokemon_2)
+              
+              // Pega a(s) segunda(s) evolução(ões)
+              let lengthEvolution_3 = res.data.chain.evolves_to[0].evolves_to.length
+              if (lengthEvolution_3) {
+                let position_3 = this.getRandom(0, lengthEvolution_3 - 1)
+                let pokemon_3 = res.data.chain.evolves_to[position_2].evolves_to[position_3].species.name
+                pokemons.push(pokemon_3)
+              }
+            }
+            
+            // Verifica se o pokemon tem a forma/evolução buscada.
+            if (pokemons[level-1]) {
+              let pokemonId = pokemons[level-1]
+              axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemonId }`)
+                .then(resPokemon => {
+                  /* ################ Player ################ */
+                  let pokemonPlayer = resPokemon.data
+                  player.name = 'Jogador'
+                  player.pokemon.life = pokemonPlayer.stats[0].base_stat
+                  player.pokemon.base_status.hp = pokemonPlayer.stats[0].base_stat
+                  player.pokemon.base_status.attack = pokemonPlayer.stats[1].base_stat
+                  player.pokemon.base_status.special_attack = pokemonPlayer.stats[3].base_stat
+                  player.pokemon.base_status.defense = pokemonPlayer.stats[2].base_stat
+                  player.pokemon.base_status.special_defense = pokemonPlayer.stats[4].base_stat
+                  player.pokemon.base_status.speed = pokemonPlayer.stats[5].base_stat
+                  player.pokemon.base_status.experience = pokemonPlayer.base_experience
+                  player.pokemon.info.picture = pokemonPlayer.sprites.back_default
+                  player.pokemon.info.specie = pokemonPlayer.species.name
+                  this.setSpecialAbilities(player, pokemonPlayer.abilities)
+                })
+                .catch(error => {
+                  console.log(error)
+                })
+            } else {
+              console.log(`OPS!! O pokemon ${ pokemons[0] } não tem a ${ level }ª evolução.`)
+              
+              // Caso não haja a forma/evolução deseada, se busca a forma/evolução anterior.
+              this.setPokemon(player, level-1, min, max, chainId)
+            }
           })
           .catch(error => {
             console.log(error)
           })
+      },
+      async setPokemons() {
+        // Jogador
+        let limitsJogador = this.getLimitsFromGeneration(1)
+        let chainsJogador = await this.getChainsInterval(...limitsJogador)
+        let levelJogador = this.getLevel(1,2)
+        console.log(levelJogador)
+        await this.setPokemon(this.jogador, levelJogador, ...chainsJogador)
+
+        // NPC
+        let limitsNPC = this.getLimitsFromGeneration(1)
+        let chainsNPC = await this.getChainsInterval(...limitsNPC)
+        let levelNPC = this.getLevel(1,2)
+        console.log(levelNPC)
+
+        await this.setPokemon(this.monstro, levelNPC, ...chainsNPC)
+
+        if (this.items.ballsLinks.length === 0) {
+          await this.getBallsIcons()
+        }
+        if (this.items.fruitsLinks.length === 0) {
+          await this.getFruitsIcons()
+        }
       }
-    },
+    }
   }
 </script>
 
