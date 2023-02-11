@@ -36,6 +36,13 @@
       return {
         jogador: {},
         monstro: {},
+        configurations: {
+          generation: {
+            id: 1,
+            intervalPokemonsIds: []
+          },
+          limitsChains: []
+        },
         match: {},
         log: [],
         items: {
@@ -50,6 +57,68 @@
       ActionsComponent,
       MatchComponent,
       LogsComponent,
+    },
+    created() {
+      let min = 0
+      let max = 0
+
+      switch(this.configurations.generation.id) {
+          case 1:
+            min = 1
+            max = 151
+            break
+          case 2:
+            min = 152
+            max = 251
+            break
+          case 3:
+            min = 252
+            max = 386
+            break
+          case 4:
+            min = 387
+            max = 493
+            break
+          default:
+            min = 494
+            max = 649
+        }
+
+        this.configurations.generation.intervalPokemonsIds.push(min)
+        this.configurations.generation.intervalPokemonsIds.push(max)
+
+        /*
+          Buscará a cadeia evolutiva de cada espécie de pokemon e guardará os IDs máximo e mínimo.
+          Uma cadeia evolutiva de um pokemon corresponde a um mesmo ID de chain.
+        */
+        let setChains = async () => {
+          let chains = { min: 0, max: 0 }
+
+          for (let cont = min; cont <= max; cont++) {
+            let response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${ cont }/`)
+            try {
+              let link = response.data.evolution_chain.url
+              let arrayLink = link.split('/')
+              let idSpecie = parseInt(arrayLink[arrayLink.length - 2])
+              if (chains.min == 0 && chains.max == 0) {
+                chains.min = idSpecie
+                chains.max = idSpecie
+              } else if (idSpecie < chains.min) {
+                chains.min = idSpecie
+              } else if (idSpecie > chains.max) {
+                chains.max = idSpecie
+              }
+            } catch (error) {
+              console.log(error)
+            }
+          }
+
+          this.configurations.limitsChains.push(chains.min)
+          this.configurations.limitsChains.push(chains.max)
+          console.log('Já pode iniciar a partida.')
+        }
+
+        setChains()
     },
     methods: {
       statusMatch($event) {
@@ -116,66 +185,6 @@
           }
         }
         
-      },
-      getLimitsFromGeneration(generation) {
-        let min = 0
-        let max = 0
-        
-        switch(generation) {
-          case 1:
-            min = 1
-            max = 151
-            break
-          case 2:
-            min = 152
-            max = 251
-            break
-          case 3:
-            min = 252
-            max = 386
-            break
-          case 4:
-            min = 387
-            max = 493
-            break
-          default:
-            min = 494
-            max = 649
-        }
-        
-        return [ min, max ]
-      },
-      
-      /*
-        Buscará a cadeia evolutiva de cada espécie de pokemon e guardará os IDs máximo e mínimo.
-        Uma cadeia evolutiva de um pokemon corresponde a um mesmo ID de chain.
-      */
-      async getChainsInterval(min = 1, max = 151) {
-        let chains = { min: 0, max: 0 }
-        
-        /*
-        Fará as buscas por pokemons tendo como parâmetros os valores máximo e mínimo de busca informados
-        */
-        for (let cont = min; cont <= max; cont++) {
-          await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${ cont }/`)
-            .then(resSpecie => {
-              let link = resSpecie.data.evolution_chain.url
-              let arrayLink = link.split('/')
-              let idSpecie = parseInt(arrayLink[arrayLink.length - 2])
-              if (chains.min == 0 && chains.max == 0) {
-                chains.min = idSpecie
-                chains.max = idSpecie
-              } else if (idSpecie < chains.min) {
-                chains.min = idSpecie
-              } else if (idSpecie > chains.max) {
-                chains.max = idSpecie
-              }
-            })
-            .catch(error => {
-              console.log(error)
-            })
-        }
-        return [chains.min, chains.max]
       },
       getRandom(min, max) {
         return Math.round(Math.random() * (max - min) + min)
@@ -264,15 +273,13 @@
       async setPokemons() {
 
         // Configurações das escolhas dos pokemons.
-        let limits = this.getLimitsFromGeneration(1)
-        let chains = await this.getChainsInterval(...limits)
         let level = this.getLevel(1,2)
 
         // Jogador
-        this.setPokemon(this.jogador, level, ...chains)
+        this.setPokemon(this.jogador, level, ...this.configurations.limitsChains)
 
         // NPC
-        this.setPokemon(this.monstro, level, ...chains)
+        this.setPokemon(this.monstro, level, ...this.configurations.limitsChains)
 
         // if (this.items.ballsLinks.length === 0) {
           this.items.ballsLinks = []
