@@ -21,7 +21,7 @@
       </button>
     </div>
     <div v-else>
-      <button id="btn-iniciar" type="button" class="btn" @click="iniciar">
+      <button id="btn-iniciar" type="button" class="btn" :disabled="!startable" @click="iniciar">
         Iniciar nova partida
       </button>
     </div>
@@ -47,7 +47,8 @@
       player: Object,
       npc: Object,
       statusMatch: Object,
-      logActions: Array
+      logActions: Array,
+      startable: Boolean
     },
     methods: {
       /*
@@ -287,6 +288,12 @@
     background-color: #33cc33;
     color: #fff;
     border-color: #33cc33;
+  }
+
+  #btn-iniciar:disabled {
+    background-color: #b3b3b3;
+    border-color: #b3b3b3;
+    cursor: wait;
   }
 
   #acoes {

@@ -14,7 +14,8 @@
       :player="jogador" 
       :npc="monstro" 
       :statusMatch="match" 
-      :logActions="log" />
+      :logActions="log" 
+      :startable="configurations.canStart" />
     <LogsComponent @logActions="logActions($event)" />
   </div>
 </template>
@@ -37,6 +38,7 @@
         jogador: {},
         monstro: {},
         configurations: {
+          canStart: false,
           generation: {
             id: 1,
             intervalPokemonsIds: []
@@ -115,7 +117,7 @@
 
           this.configurations.limitsChains.push(chains.min)
           this.configurations.limitsChains.push(chains.max)
-          console.log('Já pode iniciar a partida.')
+          this.configurations.canStart = true
         }
 
         setChains()
