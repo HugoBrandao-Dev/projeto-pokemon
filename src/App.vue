@@ -40,8 +40,7 @@
         configurations: {
           canStart: false,
           generation: {
-            id: 1,
-            intervalPokemonsIds: []
+            id: 1
           },
           limitsChains: []
         },
@@ -61,42 +60,46 @@
       LogsComponent,
     },
     created() {
-      let min = 0
-      let max = 0
+       let pokemonsIDsInterval = this.getPokemonsIDsInterval(this.configurations.generation.id)
+       this.setPokemonsChainsInterval(...pokemonsIDsInterval)
+    },
+    methods: {
+      getPokemonsIDsInterval(generation) {
+        let min = 0
+        let max = 0
 
-      switch(this.configurations.generation.id) {
-          case 1:
-            min = 1
-            max = 151
-            break
-          case 2:
-            min = 152
-            max = 251
-            break
-          case 3:
-            min = 252
-            max = 386
-            break
-          case 4:
-            min = 387
-            max = 493
-            break
-          default:
-            min = 494
-            max = 649
-        }
+        switch(generation) {
+            case 1:
+              min = 1
+              max = 151
+              break
+            case 2:
+              min = 152
+              max = 251
+              break
+            case 3:
+              min = 252
+              max = 386
+              break
+            case 4:
+              min = 387
+              max = 493
+              break
+            default:
+              min = 494
+              max = 649
+          }
 
-        this.configurations.generation.intervalPokemonsIds.push(min)
-        this.configurations.generation.intervalPokemonsIds.push(max)
-
-        /*
-          Buscará a cadeia evolutiva de cada espécie de pokemon e guardará os IDs máximo e mínimo.
-          Uma cadeia evolutiva de um pokemon corresponde a um mesmo ID de chain.
-        */
-        let setChains = async () => {
+          return [min, max]
+      },
+      /*
+        Buscará a cadeia evolutiva de cada espécie de pokemon e guardará os IDs máximo e mínimo.
+        Uma cadeia evolutiva de um pokemon corresponde a um mesmo ID de chain.
+      */
+      async setPokemonsChainsInterval(minPokemonID = 1, maxPokemonID = 78) {
           let chains = { min: 0, max: 0 }
 
-          for (let cont = min; cont <= max; cont++) {
+          for (let cont = minPokemonID; cont <= maxPokemonID; cont++) {
             let response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${ cont }/`)
             try {
               let link = response.data.evolution_chain.url
@@ -118,11 +121,7 @@
           this.configurations.limitsChains.push(chains.min)
           this.configurations.limitsChains.push(chains.max)
           this.configurations.canStart = true
-        }
-
-        setChains()
-    },
-    methods: {
+      },
       statusMatch($event) {
         this.match = $event.status
       },
