@@ -86,36 +86,37 @@
       },
       async getBallsIcons() {
         let balls = ['poke-ball', 'great-ball', 'ultra-ball', 'master-ball']
-        balls.forEach(ball => {
-          axios.get(`https://pokeapi.co/api/v2/item/${ ball }`)
-            .then(res => {
-              this.items.ballsLinks.push({
-                name: ball,
-                iconLink: res.data.sprites.default
-              })
+
+        for (let ball of balls) {
+          try {
+            let response = await axios.get(`https://pokeapi.co/api/v2/item/${ ball }`)
+            this.items.ballsLinks.push({
+              name: ball,
+              iconLink: response.data.sprites.default
             })
-            .catch(error => {
-              console.log(error)
-            })
-        })
+          }
+          catch(error) {
+            console.log(error)
+          }
+        }
       },
       async getFruitsIcons() {
         let fruits = ['jaboca-berry', 'razz-berry', 'bluk-berry']
-        fruits.forEach(fruit => {
-          axios.get(`https://pokeapi.co/api/v2/item/${ fruit }`)
-            .then(res => {
-              this.items.fruitsLinks.push({
-                name: fruit,
-                iconLink: res.data.sprites.default
-              })
+
+        for (let fruit of fruits) {
+          try {
+            let response = await axios.get(`https://pokeapi.co/api/v2/item/${ fruit }`)
+            this.items.fruitsLinks.push({
+              name: fruit,
+              iconLink: response.data.sprites.default
             })
-            .catch(error => {
-              console.log(error)
-            })
-        })
+          }
+          catch (error) {
+            console.log(error)
+          }
+        }
+        
       },
-      // rateHigh é a taxa (%) para que um pokemon de 3ª evolução seja pego.
-      // rateHigh é a taxa (%) para que um pokemon de 2ª evolução seja pego.
       getLimitsFromGeneration(generation) {
         let min = 0
         let max = 0
@@ -179,6 +180,8 @@
       getRandom(min, max) {
         return Math.round(Math.random() * (max - min) + min)
       },
+      // rateHigh chance (%) mínima para sair a terceira evolução do pokemon;
+      // rateMiddle chance (%) mínima para sair a segunda evolução do pokemon;
       getLevel(rateHigh = 25, rateMiddle = 50) {
         let myRandom = this.getRandom(1, 100)
         
@@ -223,7 +226,8 @@
               let pokemonId = pokemons[level-1]
               axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemonId }`)
                 .then(resPokemon => {
-                  /* ################ Player ################ */
+                  
+                  // Importando os status base para o pokemon.
                   let pokemonPlayer = resPokemon.data
                   player.pokemon.life = pokemonPlayer.stats[0].base_stat
                   player.pokemon.base_status.hp = pokemonPlayer.stats[0].base_stat
@@ -233,13 +237,15 @@
                   player.pokemon.base_status.special_defense = pokemonPlayer.stats[4].base_stat
                   player.pokemon.base_status.speed = pokemonPlayer.stats[5].base_stat
                   player.pokemon.base_status.experience = pokemonPlayer.base_experience
+                  player.pokemon.info.specie = pokemonPlayer.species.name
+                  this.setSpecialAbilities(player, pokemonPlayer.abilities)
+
+                  // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
                   if (player.name == 'Player') {
                     player.pokemon.info.picture = pokemonPlayer.sprites.back_default
                   } else {
                     player.pokemon.info.picture = pokemonPlayer.sprites.front_default
                   }
-                  player.pokemon.info.specie = pokemonPlayer.species.name
-                  this.setSpecialAbilities(player, pokemonPlayer.abilities)
                 })
                 .catch(error => {
                   console.log(error)
@@ -247,7 +253,7 @@
             } else {
               console.log(`OPS!! O pokemon ${ pokemons[0] } não tem a ${ level }ª evolução.`)
               
-              // Caso não haja a forma/evolução deseada, se busca a forma/evolução anterior.
+              // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
               this.setPokemon(player, level-1, min, max, chainId)
             }
           })
@@ -256,27 +262,26 @@
           })
       },
       async setPokemons() {
+
+        // Configurações das escolhas dos pokemons.
+        let limits = this.getLimitsFromGeneration(1)
+        let chains = await this.getChainsInterval(...limits)
+        let level = this.getLevel(1,2)
+
         // Jogador
-        let limitsJogador = this.getLimitsFromGeneration(1)
-        let chainsJogador = await this.getChainsInterval(...limitsJogador)
-        let levelJogador = this.getLevel(1,2)
-        console.log(levelJogador)
-        await this.setPokemon(this.jogador, levelJogador, ...chainsJogador)
+        this.setPokemon(this.jogador, level, ...chains)
 
         // NPC
-        let limitsNPC = this.getLimitsFromGeneration(1)
-        let chainsNPC = await this.getChainsInterval(...limitsNPC)
-        let levelNPC = this.getLevel(1,2)
-        console.log(levelNPC)
+        this.setPokemon(this.monstro, level, ...chains)
 
-        await this.setPokemon(this.monstro, levelNPC, ...chainsNPC)
-
-        if (this.items.ballsLinks.length === 0) {
-          await this.getBallsIcons()
-        }
-        if (this.items.fruitsLinks.length === 0) {
-          await this.getFruitsIcons()
-        }
+        // if (this.items.ballsLinks.length === 0) {
+          this.items.ballsLinks = []
+          this.getBallsIcons()
+        // }
+        // if (this.items.fruitsLinks.length === 0) {
+          this.items.fruitsLinks = []
+          this.getFruitsIcons()
+        // }
       }
     }
   }
