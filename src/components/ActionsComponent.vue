@@ -3,7 +3,7 @@
     <div class="centralizar" v-if="statusPartida.emAndamento">
       <button id="btn-atacar" type="button" class="btn" @click="atacarNormal">
         Ataque
-        <img src="https://img.icons8.com/ios-glyphs/30/000000/sword.png" />
+        <img src="https://img.icons8.com/ios-glyphs/30/ffffff/sword.png" />
       </button>
       <div class="special-attacks">
         <button 
@@ -18,6 +18,7 @@
       </div>
       <button id="btn-desistir" type="button" class="btn" @click="desistir">
         Desistir
+        <img src="https://img.icons8.com/ios-glyphs/30/ffffff/exit.png" />
       </button>
     </div>
     <div v-else>
