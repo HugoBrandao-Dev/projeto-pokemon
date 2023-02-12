@@ -282,14 +282,14 @@
         // NPC
         this.setPokemon(this.monstro, level, ...this.configurations.limitsChains)
 
-        // if (this.items.ballsLinks.length === 0) {
+        if (this.items.ballsLinks.length === 0) {
           this.items.ballsLinks = []
           this.getBallsIcons()
-        // }
-        // if (this.items.fruitsLinks.length === 0) {
+        }
+        if (this.items.fruitsLinks.length === 0) {
           this.items.fruitsLinks = []
           this.getFruitsIcons()
-        // }
+        }
       }
     }
   }
