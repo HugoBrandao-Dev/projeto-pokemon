@@ -45,11 +45,13 @@
     <div class="items">
       <ul class="balls">
         <li v-for="ball in items.ballsLinks" :key="ball.name" class="ball">
-          <span v-if="player.items.balls[ball.name] <= 99">
-            {{ player.items.balls[ball.name] }}
-          </span>
-          <span v-else>99+</span>
-          <img :src="ball.iconLink" :title="ball.name.replace('-', ' ')">
+          <button class="btn">
+            <span v-if="player.items.balls[ball.name] <= 99">
+              {{ player.items.balls[ball.name] }}
+            </span>
+            <span v-else>99+</span>
+            <img :src="ball.iconLink" :title="ball.name.replace('-', ' ')">
+          </button>
         </li>      
       </ul>
       <ul class="fruits">
@@ -243,15 +245,23 @@
     display: flex;
   }
 
-  .fruits .fruit {
+  .balls .ball, .fruits .fruit {
     border: none;
+  }
+
+  .fruits .fruit .btn, .balls .ball .btn {
+    padding: 0;
+    margin-right: 0px;
   }
 
   .fruits .fruit .btn {
     background-color: #e6e600;
     border-color: #e6e600;
-    padding: 0;
-    margin-right: 0px;
+  }
+
+  .balls .ball .btn {
+    background-color: #3399ff;
+    border-color: #3399ff;
   }
 
   .balls .ball:last-child, .fruits .fruit:last-child {
@@ -270,5 +280,10 @@
     position: absolute;
     left: 22px;
     top: -6px;
+  }
+
+  .balls .ball span {
+    color: #3399ff;
+    background-color: #fff;
   }
 </style>
