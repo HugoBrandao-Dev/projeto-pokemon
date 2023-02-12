@@ -274,13 +274,14 @@
       async setPokemons() {
 
         // Configurações das escolhas dos pokemons.
-        let level = this.getLevel(1,2)
+        let levelPlayer = this.getLevel(1,2)
+        let levelNPC = this.getLevel(1,2)
 
         // Jogador
-        this.setPokemon(this.jogador, level, ...this.configurations.limitsChains)
+        this.setPokemon(this.jogador, levelPlayer, ...this.configurations.limitsChains)
 
         // NPC
-        this.setPokemon(this.monstro, level, ...this.configurations.limitsChains)
+        this.setPokemon(this.monstro, levelNPC, ...this.configurations.limitsChains)
 
         if (this.items.ballsLinks.length === 0) {
           this.items.ballsLinks = []
