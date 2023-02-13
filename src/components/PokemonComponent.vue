@@ -141,24 +141,26 @@
       },
       heal(fruit = 'jaboca-berry') {
         if (this.player.items.fruits[fruit] > 0) {
-          this.player.items.fruits[fruit]--
-          switch(fruit) {
-            case 'jaboca-berry':
-              if (this.player.pokemon.life + 10 > this.player.pokemon.base_status.hp) {
+          if (this.player.pokemon.life !== 0 && this.player.pokemon.life !== this.player.pokemon.base_status.hp) {
+            this.player.items.fruits[fruit]--
+            switch(fruit) {
+              case 'jaboca-berry':
+                if (this.player.pokemon.life + 10 > this.player.pokemon.base_status.hp) {
+                  this.player.pokemon.life = this.player.pokemon.base_status.hp
+                } else {
+                  this.player.pokemon.life += 10
+                }
+                break
+              case 'razz-berry':
+                if (this.player.pokemon.life + 20 > this.player.pokemon.base_status.hp) {
+                  this.player.pokemon.life = this.player.pokemon.base_status.hp
+                } else {
+                  this.player.pokemon.life += 20
+                }
+                break
+              default:
                 this.player.pokemon.life = this.player.pokemon.base_status.hp
-              } else {
-                this.player.pokemon.life += 10
-              }
-              break
-            case 'razz-berry':
-              if (this.player.pokemon.life + 20 > this.player.pokemon.base_status.hp) {
-                this.player.pokemon.life = this.player.pokemon.base_status.hp
-              } else {
-                this.player.pokemon.life += 20
-              }
-              break
-            default:
-              this.player.pokemon.life = this.player.pokemon.base_status.hp
+            }
           }
         }
       }
