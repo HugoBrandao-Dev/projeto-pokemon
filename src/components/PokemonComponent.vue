@@ -102,6 +102,12 @@
             },
             info: {
               specie: '',
+              /*
+              1: Pokemon base;
+              2: segunda evolução;
+              3: terceira evolução.
+              */
+              evolution: 0,
               picture: 'https://img.icons8.com/dotty/96/ffffff/user.png',
               special_attacks: []
             },

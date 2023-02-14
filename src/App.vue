@@ -277,6 +277,9 @@
         let levelPlayer = this.getLevel(1,2)
         let levelNPC = this.getLevel(1,2)
 
+        this.jogador.pokemon.info.evolution = levelPlayer
+        this.monstro.pokemon.info.evolution = levelNPC
+
         // Jogador
         this.setPokemon(this.jogador, levelPlayer, ...this.configurations.limitsChains)
 
