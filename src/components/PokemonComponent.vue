@@ -45,7 +45,7 @@
     <div class="items">
       <ul class="balls">
         <li v-for="ball in items.ballsLinks" :key="ball.name" class="ball">
-          <button class="btn">
+          <button @click="throwPokeball(ball.name)" class="btn">
             <span v-if="player.items.balls[ball.name] <= 99">
               {{ player.items.balls[ball.name] }}
             </span>
@@ -168,6 +168,12 @@
                 this.player.pokemon.life = this.player.pokemon.base_status.hp
             }
           }
+        }
+      },
+      throwPokeball(ball) {
+        if (this.player.items.balls[ball] > 0) {
+          this.player.items.balls[ball]--
+          this.$emit('thrownPokeball', { ball })
         }
       }
     }

@@ -2,7 +2,10 @@
   <div id="app">
     <HeaderComponent />
     <section id="jogadores">
-      <PokemonComponent @player="setPokemonPlayer($event)" :items="items" />
+      <PokemonComponent 
+        @player="setPokemonPlayer($event)"
+        @thrownPokeball="catchPokemon($event)"
+        :items="items" />
       <PokemonComponent @player="setPokemonNPC($event)" />
     </section>
     <MatchComponent @match="statusMatch($event)" />
@@ -146,6 +149,46 @@
               console.log(error)
             })
         })
+      },
+      catchPokemon($event) {
+        let rate = this.getRandom(1, 100)
+
+        switch ($event.ball) {
+          case 'poke-ball':
+            rate *= 1
+            break
+          case 'great-ball':
+            rate *= 1.5
+            break
+          case 'ultra-ball':
+            rate *= 2
+            break
+          default:
+            rate *= 100
+        }
+
+        switch (this.monstro.pokemon.info.evolution) {
+          case 1:
+            if (rate > 50) {
+              alert('Sucesso na captura!')
+            } else {
+              alert('O pokémon fugiu!')
+            }
+            break
+          case 2:
+            if (rate > 75) {
+              alert('Sucesso na captura!')
+            } else {
+              alert('O pokémon fugiu!')
+            }
+            break
+          default:
+            if (rate > 90) {
+              alert('Sucesso na captura!')
+            } else {
+              alert('O pokémon fugiu!')
+            }
+        }
       },
       setPokemonPlayer($event) {
         this.jogador = $event.player
