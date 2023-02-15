@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <AlertComponent />
     <HeaderComponent />
     <section id="jogadores">
       <PokemonComponent 
@@ -26,6 +27,7 @@
 
 <script>
   // Componentes
+  import AlertComponent from './components/AlertComponent'
   import HeaderComponent from './components/HeaderComponent'
   import PokemonComponent from './components/PokemonComponent'
   import MatchComponent from './components/MatchComponent'
@@ -57,6 +59,7 @@
       }
     },
     components: {
+      AlertComponent,
       HeaderComponent,
       PokemonComponent,
       ActionsComponent,
