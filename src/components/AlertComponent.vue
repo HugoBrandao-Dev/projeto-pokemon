@@ -8,13 +8,16 @@
         </p>
       </div>
       <div v-else>
-        <strong>Pokemon selecionado: {{ pokemon }}</strong>
+        <p class="selected-pokemon">
+          <strong>Pokemon selecionado: </strong><span>{{ pokemon }}</span>
+        </p>
+
         <div v-for="(item, index) in myWindow.content" :key="index" class="pokemons-list">
           <figure>
             <label>
               <input type="radio" :value="item.pokemon" v-model="pokemon">
               <img :src="item.img">
-              <figcaption>{{ item.pokemon }}</figcaption>
+              <figcaption>{{ item.pokemon }} | Exp. {{ item.exp }}</figcaption>
             </label>
           </figure>
         </div>
@@ -38,28 +41,35 @@
           content: [
             {
               pokemon: 'tobias',
+              exp: 120,
               img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
             },
             {
               pokemon: 'dinorá',
+              exp: 120,
               img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png'
             },
             {
               pokemon: 'josias',
+              exp: 120,
               img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png'
             },
             {
               pokemon: 'doralice',
+              exp: 120,
               img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png'
             },
             {
               pokemon: 'jeremias',
+              exp: 120,
               img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png'
             },{
               pokemon: 'uiarapuru',
+              exp: 120,
               img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png'
             },{
               pokemon: 'ubirajara',
+              exp: 120,
               img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'
             }
           ]
@@ -98,9 +108,14 @@
     background-color: #ff3333;
     border-color: #ff3333;
   }
+
   .btn-blue {
     background-color: #3399ff;
     border-color: #3399ff;
+  }
+
+  .selected-pokemon span {
+    text-transform: capitalize;
   }
 
   /* TIPOS DE MENSAGEM */
