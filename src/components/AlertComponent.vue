@@ -141,6 +141,7 @@
   }
 
   .pokemon input {
+    visibility: hidden;
     width: 0;
   }
 
