@@ -2,7 +2,23 @@
   <div id="window">
     <h1 class="title espacar" :class="myWindow.type">{{ myWindow.title }}</h1>
     <div class="message espacar">
-       {{ myWindow.content[0] }}
+      <div v-if="typeof myWindow.content[0] == 'string'">
+        <p v-for="(msg, index) in myWindow.content" :key="index">
+          {{ msg }}
+        </p>
+      </div>
+      <div v-else>
+        <strong>Pokemon selecionado: {{ pokemon }}</strong>
+        <div v-for="(item, index) in myWindow.content" :key="index" class="pokemons-list">
+          <figure>
+            <label>
+              <input type="radio" :value="item.pokemon" v-model="pokemon">
+              <img :src="item.img">
+              <figcaption>{{ item.pokemon }}</figcaption>
+            </label>
+          </figure>
+        </div>
+      </div>
     </div>
     <div class="buttons espacar">
       <button class="btn btn-red">Cancelar</button>
@@ -20,7 +36,32 @@
           type: 'info',
           title: 'Título',
           content: [
-            `qwersadfasfqwersfsdfasklfqwoeriiuoqwerdsfkjopaioew rqwerjqwoerjfdfsd`
+            {
+              pokemon: 'tobias',
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
+            },
+            {
+              pokemon: 'dinorá',
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png'
+            },
+            {
+              pokemon: 'josias',
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png'
+            },
+            {
+              pokemon: 'doralice',
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png'
+            },
+            {
+              pokemon: 'jeremias',
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png'
+            },{
+              pokemon: 'uiarapuru',
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png'
+            },{
+              pokemon: 'ubirajara',
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'
+            }
           ]
         }
       }
