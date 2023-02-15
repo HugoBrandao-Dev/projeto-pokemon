@@ -378,6 +378,10 @@
     list-style: none;
   }
 
+  strong {
+    font-weight: bolder;
+  }
+
   .img-disabled {
     filter: grayscale(100%);
   }
