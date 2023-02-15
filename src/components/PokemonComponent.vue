@@ -56,12 +56,12 @@
       </ul>
       <ul class="fruits">
         <li v-for="fruit in items.fruitsLinks" :key="fruit.name" class="fruit">
-          <button @click="heal(fruit.name)" class="btn">
+          <button @click="heal(fruit.name)" class="btn" :disabled="!canUseFruits">
             <span v-if="player.items.fruits[fruit.name] <= 99">
               {{ player.items.fruits[fruit.name] }}
             </span>
             <span v-else>99+</span>
-            <img :src="fruit.iconLink" :title="fruit.name.replace('-', ' ')">
+            <img :src="fruit.iconLink" :title="fruit.name.replace('-', ' ')" :class="{ 'img-disabled': !canUseFruits }">
           </button>
         </li>
       </ul>
@@ -137,6 +137,12 @@
       },
       canCatchPokemon() {
         if (!this.match.emAndamento && this.match.status == 'ganhou') {
+          return true
+        }
+        return false
+      },
+      canUseFruits() {
+        if (this.match.emAndamento) {
           return true
         }
         return false
@@ -270,7 +276,12 @@
     background-color: #e6e6e6;
     border-color: #d9d9d9;
   }
-  
+
+  .fruits .fruit button:disabled {
+    background-color: #e6e6e6;
+    border-color: #d9d9d9;
+  }
+
   .balls .ball, .fruits .fruit {
     border: none;
   }
