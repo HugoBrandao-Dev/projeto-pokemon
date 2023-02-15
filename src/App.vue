@@ -5,7 +5,8 @@
       <PokemonComponent 
         @player="setPokemonPlayer($event)"
         @thrownPokeball="catchPokemon($event)"
-        :items="items" />
+        :items="items"
+        :match="match" />
       <PokemonComponent @player="setPokemonNPC($event)" />
     </section>
     <MatchComponent @match="statusMatch($event)" />
@@ -372,6 +373,10 @@
 
   ul li {
     list-style: none;
+  }
+
+  .img-disabled {
+    filter: grayscale(100%);
   }
 
   .centralizar {

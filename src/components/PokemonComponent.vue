@@ -45,12 +45,12 @@
     <div class="items">
       <ul class="balls">
         <li v-for="ball in items.ballsLinks" :key="ball.name" class="ball">
-          <button @click="throwPokeball(ball.name)" class="btn">
+          <button @click="throwPokeball(ball.name)" class="btn" :disabled="!canCatchPokemon">
             <span v-if="player.items.balls[ball.name] <= 99">
               {{ player.items.balls[ball.name] }}
             </span>
             <span v-else>99+</span>
-            <img :src="ball.iconLink" :title="ball.name.replace('-', ' ')">
+            <img :src="ball.iconLink" :title="ball.name.replace('-', ' ')" :class="{ 'img-disabled': !canCatchPokemon }">
           </button>
         </li>      
       </ul>
@@ -119,7 +119,8 @@
       items: {
         type: Object,
         default: () => ({})
-      }
+      },
+      match: Object
     },
     created() {
       this.$emit('player', { player: this.player })
@@ -133,6 +134,12 @@
           width: `${ percentageLife }%`,
           backgroundColor: this.getCorBarra( percentageLife )
         }
+      },
+      canCatchPokemon() {
+        if (!this.match.emAndamento && this.match.status == 'ganhou') {
+          return true
+        }
+        return false
       }
     },
     methods: {
@@ -259,6 +266,11 @@
     display: flex;
   }
 
+  .balls .ball button:disabled {
+    background-color: #e6e6e6;
+    border-color: #d9d9d9;
+  }
+  
   .balls .ball, .fruits .fruit {
     border: none;
   }
@@ -271,6 +283,11 @@
   .fruits .fruit .btn {
     background-color: #e6e600;
     border-color: #e6e600;
+  }
+
+  .balls .ball .btn {
+    background-color: #3399ff;
+    border-color: #3399ff;
   }
 
   .balls .ball .btn {
