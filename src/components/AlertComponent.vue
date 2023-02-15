@@ -89,11 +89,6 @@
     flex-direction: column;
   }
 
-  #window hr {
-    margin: 0 auto;
-    width: 50%;
-  }
-
   #window .buttons {
     margin-top: 10px;
     display: flex;
@@ -112,6 +107,10 @@
   .btn-blue {
     background-color: #3399ff;
     border-color: #3399ff;
+  }
+
+  .selected-pokemon {
+    margin-bottom: 10px;
   }
 
   .selected-pokemon span {
@@ -135,9 +134,10 @@
   /* POKEMONS */
 
   .pokemons {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 200px);
+    grid-gap: 2rem; /* 3 */
+    justify-content: space-between;
   }
 
   .pokemon input {
@@ -145,6 +145,18 @@
   }
 
   .pokemon {
-    width: 20%;
+    background-color: #f2f2f2;
+    padding: 5px;
   }
+
+  .pokemon:last-child {
+    margin-right: 0px;
+  }
+
+  .pokemon figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
 </style>
