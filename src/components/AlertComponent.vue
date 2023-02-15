@@ -12,14 +12,14 @@
           <strong>Pokemon selecionado: </strong><span>{{ pokemon }}</span>
         </p>
 
-        <div v-for="(item, index) in myWindow.content" :key="index" class="pokemons-list">
-          <figure>
-            <label>
-              <input type="radio" :value="item.pokemon" v-model="pokemon">
-              <img :src="item.img">
-              <figcaption>{{ item.pokemon }} | Exp. {{ item.exp }}</figcaption>
-            </label>
-          </figure>
+        <div class="pokemons">
+          <label v-for="(item, index) in myWindow.content" :key="index" class="pokemon">
+            <figure>
+                <input type="radio" :value="item.pokemon" v-model="pokemon">
+                <img :src="item.img">
+                <figcaption class="pokemon-desc">{{ item.pokemon }} | Exp. {{ item.exp }}</figcaption>
+            </figure>
+          </label>
         </div>
       </div>
     </div>
@@ -130,5 +130,21 @@
 
   .alert {
     background-color: #e6e600;
+  }
+
+  /* POKEMONS */
+
+  .pokemons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .pokemon input {
+    width: 0;
+  }
+
+  .pokemon {
+    width: 20%;
   }
 </style>
