@@ -159,4 +159,12 @@
     align-items: center;
   }
 
+  .pokemon figcaption {
+    font-size: 8pt;
+    padding: 3px 6px;
+    border-radius: 12px;
+    background-color: #3399ff;
+    color: #fff;
+  }
+
 </style>
