@@ -9,15 +9,15 @@
       </div>
       <div v-else>
         <p class="selected-pokemon">
-          <strong>Pokemon selecionado: </strong><span>{{ pokemon }}</span>
+          <strong>Pokemon selecionado: </strong><span>{{ pokemon.specie }}</span>
         </p>
 
         <div class="pokemons">
           <label v-for="(item, index) in myWindow.content" :key="index" class="pokemon">
             <figure>
-                <input type="radio" :value="item.pokemon" v-model="pokemon">
+                <input type="radio" :value="item" v-model="pokemon">
                 <img :src="item.img">
-                <figcaption class="pokemon-desc">{{ item.pokemon }} | Exp. {{ item.exp }}</figcaption>
+                <figcaption class="pokemon-desc">{{ item.specie }} | Exp. {{ item.exp }}</figcaption>
             </figure>
           </label>
         </div>
@@ -25,7 +25,7 @@
     </div>
     <div class="buttons espacar">
       <button class="btn btn-red">Cancelar</button>
-      <button class="btn btn-blue">OK</button>      
+      <button class="btn btn-blue" @click="selectPokemon()">OK</button>      
     </div>
   </div>
 </template>
@@ -34,45 +34,49 @@
   export default {
     data() {
       return {
-        pokemon: '',
+        pokemon: { },
         myWindow: {
           type: 'info',
           title: 'Título',
           content: [
             {
-              pokemon: 'tobias',
-              exp: 120,
+              specie: 'Bulbasaur',
+              exp: 123,
+              chain: 1,
+              level: 1,
               img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
             },
             {
-              pokemon: 'dinorá',
+              specie: 'Charmander',
               exp: 120,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png'
-            },
-            {
-              pokemon: 'josias',
-              exp: 120,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png'
-            },
-            {
-              pokemon: 'doralice',
-              exp: 120,
+              chain: 2,
+              level: 1,
               img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png'
             },
             {
-              pokemon: 'jeremias',
-              exp: 120,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png'
-            },{
-              pokemon: 'uiarapuru',
-              exp: 120,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png'
-            },{
-              pokemon: 'ubirajara',
-              exp: 120,
+              specie: 'Squertol',
+              exp: 125,
+              chain: 3,
+              level: 1,
               img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'
+            },
+            {
+              specie: 'Mandruva',
+              exp: 100,
+              chain: 4,
+              level: 1,
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png'
             }
           ]
+        }
+      }
+    },
+    methods: {
+      selectPokemon() {
+        if (this.pokemon.specie) {
+          this.$emit('selectedPokemon', { chain: this.pokemon.chain, level: this.pokemon.level })
+        } else {
+          alert('Selecione um pokemon')
         }
       }
     }

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <AlertComponent v-show="selectingPokemon" />
+    <AlertComponent v-show="selectingPokemon"
+      @selectedPokemon="selectedPokemon($event)" />
     <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
       <HeaderComponent />
       <section id="jogadores">
@@ -325,17 +326,17 @@
             console.log(error)
           })
       },
+      selectedPokemon($event) {
+        let { chain, level } = $event
+        this.setPokemon(this.jogador, level, ...this.configurations.limitsChains, chain)
+        this.match.selecionarPokemon = false
+      },
       async setPokemons() {
 
         // Configurações das escolhas dos pokemons.
-        let levelPlayer = this.getLevel(1,2)
         let levelNPC = this.getLevel(1,2)
 
-        this.jogador.pokemon.info.evolution = levelPlayer
         this.monstro.pokemon.info.evolution = levelNPC
-
-        // Jogador
-        this.setPokemon(this.jogador, levelPlayer, ...this.configurations.limitsChains)
 
         // NPC
         this.setPokemon(this.monstro, levelNPC, ...this.configurations.limitsChains)
