@@ -219,23 +219,23 @@
         switch (this.monstro.pokemon.info.evolution) {
           case 1:
             if (rate > 50) {
-              alert('Sucesso na captura!')
+              this.setMessage('info', 'Sucesso', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
             } else {
-              alert('O pokémon fugiu!')
+              this.setMessage('alert', 'Fujiu', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fujiu.`])
             }
             break
           case 2:
             if (rate > 75) {
-              alert('Sucesso na captura!')
+              this.setMessage('info', 'Sucesso', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
             } else {
-              alert('O pokémon fugiu!')
+              this.setMessage('alert', 'Fujiu', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fujiu.`])
             }
             break
           default:
             if (rate > 90) {
-              alert('Sucesso na captura!')
+              this.setMessage('info', 'Sucesso', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
             } else {
-              alert('O pokémon fugiu!')
+              this.setMessage('alert', 'Fujiu', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fujiu.`])
             }
         }
       },
