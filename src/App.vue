@@ -1,27 +1,29 @@
 <template>
   <div id="app">
-    <AlertComponent v-show="match.selecionarPokemon" />
-    <HeaderComponent />
-    <section id="jogadores">
-      <PokemonComponent 
-        @player="setPokemonPlayer($event)"
-        @thrownPokeball="catchPokemon($event)"
-        :items="items"
-        :match="match" />
-      <PokemonComponent @player="setPokemonNPC($event)" />
-    </section>
-    <MatchComponent @match="statusMatch($event)" />
-    
-    <ActionsComponent 
-      @clearLog="clearArrays" 
-      @generatePokemons="setPokemons"
-      @setAbilities="setSpecialAbilities($event)"
-      :player="jogador" 
-      :npc="monstro" 
-      :statusMatch="match" 
-      :logActions="log" 
-      :startable="configurations.canStart" />
-    <LogsComponent @logActions="logActions($event)" />
+    <AlertComponent v-show="selectingPokemon" />
+    <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
+      <HeaderComponent />
+      <section id="jogadores">
+        <PokemonComponent 
+          @player="setPokemonPlayer($event)"
+          @thrownPokeball="catchPokemon($event)"
+          :items="items"
+          :match="match" />
+        <PokemonComponent @player="setPokemonNPC($event)" />
+      </section>
+      <MatchComponent @match="statusMatch($event)" />
+      
+      <ActionsComponent 
+        @clearLog="clearArrays" 
+        @generatePokemons="setPokemons"
+        @setAbilities="setSpecialAbilities($event)"
+        :player="jogador" 
+        :npc="monstro" 
+        :statusMatch="match" 
+        :logActions="log" 
+        :startable="configurations.canStart" />
+      <LogsComponent @logActions="logActions($event)" />
+    </div>
   </div>
 </template>
 
@@ -69,6 +71,11 @@
     created() {
        let pokemonsIDsInterval = this.getPokemonsIDsInterval(this.configurations.generation.id)
        this.setPokemonsChainsInterval(...pokemonsIDsInterval)
+    },
+    computed: {
+      selectingPokemon() {
+        return this.match.selecionarPokemon && this.match.emAndamento
+      }
     },
     methods: {
       getPokemonsIDsInterval(generation) {
@@ -410,7 +417,9 @@
 
   /* ############### CORPO ############### */
 
-  #app {
+  #app #main {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -431,4 +440,11 @@
     display: flex;
     justify-content: space-between;
   }
+
+  /* ALERTA DE SELEÇÃO DE POKEMON */
+
+  .selecting-pokemon {
+    filter: blur(3px);
+  }
+
 </style>

@@ -9,7 +9,7 @@
       return {
         statusPartida: {
           emAndamento: false,
-          selecionarPokemon: false,
+          selecionarPokemon: true,
           mostrarResultado: false,
           status: '',
           mensagem: ''

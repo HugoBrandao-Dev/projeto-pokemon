@@ -82,9 +82,11 @@
 <style scoped>
   #window {
     position: absolute;
+    z-index: 2;
     background-color: #fff;
     width: 70%;
     top: 50px;
+    left: 15%; /* (100% - width) / 2 = 15% */
     display: flex;
     flex-direction: column;
   }
