@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <AlertComponent v-show="selectingPokemon"
+      @alert="setAlert($event)"
       @selectedPokemon="selectedPokemon($event)" />
     <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
       <HeaderComponent />
@@ -44,6 +45,38 @@
     name: 'App',
     data() {
       return {
+        DATABASE_FAKE: {
+          pokemonsJogador: [
+            {
+              specie: 'Bulbasaur',
+              exp: 123,
+              chain: 1,
+              level: 1,
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
+            },
+            {
+              specie: 'Charmander',
+              exp: 120,
+              chain: 2,
+              level: 1,
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png'
+            },
+            {
+              specie: 'Squertol',
+              exp: 125,
+              chain: 3,
+              level: 1,
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'
+            },
+            {
+              specie: 'Mandruva',
+              exp: 100,
+              chain: 4,
+              level: 1,
+              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png'
+            }
+          ]
+        },
         jogador: {},
         monstro: {},
         configurations: {
@@ -54,6 +87,7 @@
           limitsChains: []
         },
         match: {},
+        myWindow: {},
         log: [],
         items: {
           ballsLinks: [],
@@ -136,6 +170,9 @@
           this.configurations.limitsChains.push(chains.min)
           this.configurations.limitsChains.push(chains.max)
           this.configurations.canStart = true
+      },
+      setAlert($event) {
+        this.myWindow = $event.myWindow
       },
       statusMatch($event) {
         this.match = $event.status
@@ -329,9 +366,14 @@
       selectedPokemon($event) {
         let { chain, level } = $event
         this.setPokemon(this.jogador, level, ...this.configurations.limitsChains, chain)
+
         this.match.selecionarPokemon = false
       },
       async setPokemons() {
+        this.match.selecionarPokemon = true
+        this.myWindow.type = 'info'
+        this.myWindow.title = 'Selecione seu pokemon'
+        this.myWindow.content = this.DATABASE_FAKE.pokemonsJogador
 
         // Configurações das escolhas dos pokemons.
         let levelNPC = this.getLevel(1,2)

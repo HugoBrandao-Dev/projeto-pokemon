@@ -38,38 +38,12 @@
         myWindow: {
           type: 'info',
           title: 'Título',
-          content: [
-            {
-              specie: 'Bulbasaur',
-              exp: 123,
-              chain: 1,
-              level: 1,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
-            },
-            {
-              specie: 'Charmander',
-              exp: 120,
-              chain: 2,
-              level: 1,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png'
-            },
-            {
-              specie: 'Squertol',
-              exp: 125,
-              chain: 3,
-              level: 1,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'
-            },
-            {
-              specie: 'Mandruva',
-              exp: 100,
-              chain: 4,
-              level: 1,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png'
-            }
-          ]
+          content: []
         }
       }
+    },
+    created() {
+      this.$emit('alert', { myWindow: this.myWindow })
     },
     methods: {
       selectPokemon() {
