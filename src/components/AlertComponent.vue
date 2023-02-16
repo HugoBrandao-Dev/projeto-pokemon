@@ -1,5 +1,5 @@
 <template>
-  <div id="window">
+  <div id="window" v-show="myWindow.type">
     <h1 class="title espacar" :class="myWindow.type">{{ myWindow.title }}</h1>
     <div class="message espacar">
       <div v-if="typeof myWindow.content[0] == 'string'">
@@ -36,8 +36,8 @@
       return {
         pokemon: { },
         myWindow: {
-          type: 'info',
-          title: 'Título',
+          type: '',
+          title: '',
           content: []
         }
       }
@@ -47,6 +47,11 @@
     },
     methods: {
       selectPokemon() {
+        // Reseta a janela, para que ela desapareca.
+        this.myWindow.type = ''
+        this.myWindow.title = ''
+        this.myWindow.content = []
+        
         if (this.pokemon.specie) {
           this.$emit('selectedPokemon', { chain: this.pokemon.chain, level: this.pokemon.level })
         } else {

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AlertComponent v-show="selectingPokemon"
+    <AlertComponent
       @alert="setAlert($event)"
       @selectedPokemon="selectedPokemon($event)" />
     <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
