@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AlertComponent />
+    <AlertComponent v-show="match.selecionarPokemon" />
     <HeaderComponent />
     <section id="jogadores">
       <PokemonComponent 

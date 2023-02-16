@@ -173,7 +173,6 @@
       atacarNormal() {
         let logDanoDoJogador = this.giveDamage(this.jogador.pokemon, this.monstro.pokemon)
         this.setAcao(logDanoDoJogador.type, 'monstro', logDanoDoJogador.damage)
-        this.verificarVencedor()
 
         let logDanoDoMonstro = this.giveDamage(this.monstro.pokemon, this.jogador.pokemon)
         this.setAcao(logDanoDoMonstro.type, 'jogador', logDanoDoMonstro.damage)
