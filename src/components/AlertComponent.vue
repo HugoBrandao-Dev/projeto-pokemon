@@ -6,6 +6,9 @@
         <p v-for="(msg, index) in myWindow.content" :key="index">
           {{ msg }}
         </p>
+        <div class="buttons espacar">
+          <button class="btn btn-blue" @click="resetMyWindow()">OK</button>      
+        </div>
       </div>
       <div v-else>
         <p class="selected-pokemon">
@@ -21,11 +24,11 @@
             </figure>
           </label>
         </div>
+        <div class="buttons espacar">
+          <button class="btn btn-red">Cancelar</button>
+          <button class="btn btn-blue" @click="selectPokemon()">OK</button>      
+        </div>
       </div>
-    </div>
-    <div class="buttons espacar">
-      <button class="btn btn-red">Cancelar</button>
-      <button class="btn btn-blue" @click="selectPokemon()">OK</button>      
     </div>
   </div>
 </template>
@@ -46,12 +49,15 @@
       this.$emit('alert', { myWindow: this.myWindow })
     },
     methods: {
-      selectPokemon() {
+      resetMyWindow() {
         // Reseta a janela, para que ela desapareca.
         this.myWindow.type = ''
         this.myWindow.title = ''
         this.myWindow.content = []
-        
+      },
+      selectPokemon() {
+        this.resetMyWindow()
+
         if (this.pokemon.specie) {
           this.$emit('selectedPokemon', { chain: this.pokemon.chain, level: this.pokemon.level })
         } else {
