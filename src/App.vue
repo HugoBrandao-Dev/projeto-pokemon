@@ -239,6 +239,11 @@
             }
         }
       },
+      setMessage(type, title, content) {
+        this.myWindow.type = type
+        this.myWindow.title = title
+        this.myWindow.content = content
+      },
       setPokemonPlayer($event) {
         this.jogador = $event.player
       },
@@ -371,9 +376,7 @@
       },
       async setPokemons() {
         this.match.selecionarPokemon = true
-        this.myWindow.type = 'info'
-        this.myWindow.title = 'Selecione seu pokemon'
-        this.myWindow.content = this.DATABASE_FAKE.pokemonsJogador
+        this.setMessage('info', 'Selecione seu pokemon', this.DATABASE_FAKE.pokemonsJogador)
 
         // Configurações das escolhas dos pokemons.
         let levelNPC = this.getLevel(1,2)
