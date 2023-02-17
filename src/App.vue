@@ -345,6 +345,8 @@
                   player.pokemon.base_status.speed = pokemonPlayer.stats[5].base_stat
                   player.pokemon.base_status.experience = pokemonPlayer.base_experience
                   player.pokemon.info.specie = pokemonPlayer.species.name
+                  player.pokemon.info.chain = chainId
+                  player.pokemon.info.evolution = level
                   this.setSpecialAbilities(player, pokemonPlayer.abilities)
 
                   // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)

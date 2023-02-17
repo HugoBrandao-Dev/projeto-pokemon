@@ -102,6 +102,7 @@
             },
             info: {
               specie: '',
+              chain: 0,
               /*
               1: Pokemon base;
               2: segunda evolução;
