@@ -27,7 +27,7 @@
           </label>
         </div>
         <div class="buttons espacar">
-          <button class="btn btn-red">Cancelar</button>
+          <button class="btn btn-red" @click="cancelMatch()">Cancelar</button>
           <button class="btn btn-blue" @click="selectPokemon()">OK</button>      
         </div>
       </div>
@@ -61,6 +61,10 @@
         this.myWindow.title = ''
         this.myWindow.content = []
         this.myWindow.response.optionSelected = ''
+      },
+      cancelMatch() {
+        this.$emit('matchCanceled')
+        this.resetMyWindow()
       },
       selectPokemon() {
         this.resetMyWindow()
