@@ -12,7 +12,9 @@
           @thrownPokeball="catchPokemon($event)"
           :items="items"
           :match="match" />
-        <PokemonComponent @player="setPokemonNPC($event)" />
+        <PokemonComponent 
+          @player="setPokemonNPC($event)"
+          :match="match" />
       </section>
       <MatchComponent @match="statusMatch($event)" />
       
@@ -395,7 +397,6 @@
           })
       },
       resetStatus(player) {
-        player.name = 'Player' 
         player.items = {
           balls: {
           'poke-ball': 150,
@@ -410,29 +411,29 @@
           }
         }
         player.pokemon = {
-            life: 100,
-            base_status: {
-              hp: 100,
-              attack: 0,
-              special_attack: 0,
-              defense: 0,
-              special_defense: 0,
-              speed: 0,
-            },
-            info: {
-              specie: '',
-              experience: 0,
-              chain: 0,
-              /*
-              1: Pokemon base;
-              2: segunda evolução;
-              3: terceira evolução.
-              */
-              evolution: 0,
-              picture: 'https://img.icons8.com/dotty/96/ffffff/user.png',
-              special_attacks: []
-            },
-          }
+          life: 100,
+          base_status: {
+            hp: 100,
+            attack: 0,
+            special_attack: 0,
+            defense: 0,
+            special_defense: 0,
+            speed: 0,
+          },
+          info: {
+            specie: '',
+            experience: 0,
+            chain: 0,
+            /*
+            1: Pokemon base;
+            2: segunda evolução;
+            3: terceira evolução.
+            */
+            evolution: 0,
+            picture: 'https://img.icons8.com/dotty/96/ffffff/user.png',
+            special_attacks: []
+          },
+        }
       },
       cancelMatch() {
         this.resetStatus(this.jogador)

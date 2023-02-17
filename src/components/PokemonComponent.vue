@@ -42,7 +42,7 @@
       <div class="vida" :style="getVidaJogador"></div>
     </div>
     <div>{{ getVidaJogador.width }}</div>
-    <div class="items">
+    <div class="items" v-show="player.pokemon.info.specie">
       <ul class="balls">
         <li v-for="ball in items.ballsLinks" :key="ball.name" class="ball">
           <button @click="throwPokeball(ball.name)" class="btn" :disabled="!canCatchPokemon">
@@ -52,7 +52,7 @@
             <span v-else>99+</span>
             <img :src="ball.iconLink" :title="ball.name.replace('-', ' ')" :class="{ 'img-disabled': !canCatchPokemon }">
           </button>
-        </li>      
+        </li>
       </ul>
       <ul class="fruits">
         <li v-for="fruit in items.fruitsLinks" :key="fruit.name" class="fruit">
