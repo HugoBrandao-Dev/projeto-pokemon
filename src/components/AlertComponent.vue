@@ -125,9 +125,11 @@
   /* POKEMONS */
 
   .pokemons {
+    max-height: 312px;
+    overflow: auto;
     display: grid;
     grid-template-columns: repeat(auto-fill, 200px);
-    grid-gap: 2rem; /* 3 */
+    grid-gap: 2rem;
     justify-content: space-between;
   }
 
