@@ -7,7 +7,8 @@
           {{ msg }}
         </p>
         <div class="buttons espacar">
-          <button class="btn btn-blue" @click="resetMyWindow()">OK</button>      
+          <button class="btn btn-red" @click="setResponse('cancel')">Cancelar</button>
+          <button class="btn btn-blue" @click="setResponse('ok')">OK</button>      
         </div>
       </div>
       <div v-else>
@@ -43,7 +44,10 @@
           type: '',
           title: '',
           content: [],
-          response: ''
+          response: {
+            optionSelected: '',
+            execFunction: null
+          },
         }
       }
     },
@@ -56,15 +60,27 @@
         this.myWindow.type = ''
         this.myWindow.title = ''
         this.myWindow.content = []
+        this.myWindow.response.optionSelected = ''
       },
       selectPokemon() {
         this.resetMyWindow()
 
         if (this.pokemon.specie) {
           this.$emit('selectedPokemon', { chain: this.pokemon.chain, level: this.pokemon.evolution })
-        } else {
-          alert('Selecione um pokemon')
         }
+      },
+      setResponse(response) {
+        this.myWindow.response.optionSelected = response
+        if (response == 'ok') {
+          /*
+          Executará uma função somente quando tiver alguma função que foi passada. A função a ser
+          executada deve conter valores padrões previamente definidos para seus argumentos.
+          */ 
+          if (this.myWindow.response.execFunction) {
+            this.myWindow.response.execFunction()
+          }
+        }
+        this.resetMyWindow()
       }
     }
   }
