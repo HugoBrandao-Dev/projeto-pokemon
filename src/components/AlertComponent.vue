@@ -98,6 +98,10 @@
     flex-direction: column;
   }
 
+  #window .title, #window .message, #window .buttons {
+    width: 100%;
+  }
+
   #window .buttons {
     margin-top: 10px;
     display: flex;
