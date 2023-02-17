@@ -2,7 +2,7 @@
   <div id="window" v-show="myWindow.type">
     <h1 class="title espacar" :class="myWindow.type">{{ myWindow.title }}</h1>
     <div class="message espacar">
-      <div v-if="typeof myWindow.content[0] == 'string'">
+      <div v-if="typeof myWindow.content[0] != 'object'">
         <p v-for="(msg, index) in myWindow.content" :key="index">
           {{ msg }}
         </p>
@@ -42,7 +42,8 @@
         myWindow: {
           type: '',
           title: '',
-          content: []
+          content: [],
+          response: ''
         }
       }
     },
