@@ -204,12 +204,13 @@
         })
       },
       // Cadastra um novo pokemon, quando sua captura ocorreu com sucesso.
-      addPokemon() {
+      addPokemon(ball) {
         this.DATABASE_FAKE.pokemonsJogador.push({
           specie: this.monstro.pokemon.info.specie,
           experience: this.monstro.pokemon.info.experience,
           chain: this.monstro.pokemon.info.chain,
           evolution: this.monstro.pokemon.info.evolution,
+          ball: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${ ball }.png`,
           picture: this.monstro.pokemon.info.picture
         })
       },
@@ -258,7 +259,7 @@
         }
 
         if (successfully) {
-          this.addPokemon()
+          this.addPokemon($event.ball)
         }
       },
       setMessage(type, title, content) {
