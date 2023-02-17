@@ -17,8 +17,9 @@
 
         <div class="pokemons">
           <label v-for="(item, index) in myWindow.content" :key="index" class="pokemon">
+            <input type="radio" :value="item" v-model="pokemon">
+            <img class="ball-type" :src="item.ball">
             <figure>
-                <input type="radio" :value="item" v-model="pokemon">
                 <img :src="item.picture">
                 <figcaption class="pokemon-desc">{{ item.specie }} | Exp. {{ item.experience }}</figcaption>
             </figure>
@@ -136,15 +137,23 @@
   .pokemon input {
     visibility: hidden;
     width: 0;
+    height: 0;
   }
 
   .pokemon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: #f2f2f2;
     padding: 5px;
   }
 
   .pokemon:last-child {
     margin-right: 0px;
+  }
+
+  .pokemon .ball-type {
+    align-self: flex-end;
   }
 
   .pokemon figure {

@@ -52,6 +52,7 @@
               experience: 123,
               chain: 1,
               evolution: 1,
+              ball: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png',
               picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
             },
             {
@@ -59,6 +60,7 @@
               experience: 120,
               chain: 2,
               evolution: 1,
+              ball: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png',
               picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png'
             },
             {
@@ -66,6 +68,7 @@
               experience: 125,
               chain: 3,
               evolution: 1,
+              ball: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png',
               picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'
             },
             {
@@ -73,6 +76,7 @@
               experience: 100,
               chain: 4,
               evolution: 1,
+              ball: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png',
               picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png'
             }
           ]
