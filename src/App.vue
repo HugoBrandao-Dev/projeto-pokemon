@@ -343,7 +343,7 @@
                   player.pokemon.base_status.defense = pokemonPlayer.stats[2].base_stat
                   player.pokemon.base_status.special_defense = pokemonPlayer.stats[4].base_stat
                   player.pokemon.base_status.speed = pokemonPlayer.stats[5].base_stat
-                  player.pokemon.base_status.experience = pokemonPlayer.base_experience
+                  player.pokemon.info.experience = pokemonPlayer.base_experience
                   player.pokemon.info.specie = pokemonPlayer.species.name
                   player.pokemon.info.chain = chainId
                   player.pokemon.info.evolution = level

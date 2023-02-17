@@ -33,7 +33,7 @@
       </div>
       <div class="pokemon-desc">
         <small v-show="player.pokemon.info.specie">
-          {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.base_status.experience }}
+          {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.info.experience }}
         </small>
         <img :src="player.pokemon.info.picture" :title="player.pokemon.info.specie" />
       </div>
@@ -98,10 +98,10 @@
               defense: 0,
               special_defense: 0,
               speed: 0,
-              experience: 0,
             },
             info: {
               specie: '',
+              experience: 0,
               chain: 0,
               /*
               1: Pokemon base;
