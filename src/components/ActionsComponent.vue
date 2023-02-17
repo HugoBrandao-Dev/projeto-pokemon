@@ -1,5 +1,6 @@
 <template>
   <section id="acoes" class="espacar centralizar">
+    <AlertComponent @alert="setAlert($event)" />
     <div class="centralizar" v-if="statusPartida.emAndamento">
       <button id="btn-atacar" type="button" class="btn" @click="atacarNormal">
         Ataque
@@ -30,6 +31,8 @@
 </template>
 
 <script>
+  import AlertComponent from './AlertComponent'
+
   export default {
     data() {
       return {
@@ -41,8 +44,12 @@
         },
         jogador: {},
         monstro: {},
-        logAcoes: []
+        logAcoes: [],
+        myWindow: {}
       }
+    },
+    components: {
+      AlertComponent
     },
     props: {
       player: Object,
@@ -52,6 +59,9 @@
       startable: Boolean
     },
     methods: {
+      setAlert($event) {
+        this.myWindow = $event.myWindow
+      },
       /*
       O cálculo do sucesso de acerto do golpe leva em consideração as velocidades dos pokemons.
       */
@@ -226,7 +236,7 @@
         this.statusPartida.mostrarResultado = false
         this.statusPartida.status = ''
       },
-      setFinalizarPartida(status, mensagem) {
+      setFinalizarPartida(status = 'desistiu', mensagem = 'Você desistiu') {
         this.statusPartida.emAndamento = false
         this.statusPartida.mensagem = mensagem
         this.statusPartida.mostrarResultado = true
@@ -243,9 +253,10 @@
         }
       },
       desistir() {
-        if (confirm('Deseja realmente DESISTIR da partida?')) {
-          this.setFinalizarPartida('desistiu', 'Você desistiu')
-        }
+        this.myWindow.type = 'error'
+        this.myWindow.title = 'Deseja realmente sair'
+        this.myWindow.content = []
+        this.myWindow.response.execFunction = this.setFinalizarPartida
       },
       iniciar() {
         this.setIniciarPartida()
