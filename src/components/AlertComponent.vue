@@ -19,8 +19,8 @@
           <label v-for="(item, index) in myWindow.content" :key="index" class="pokemon">
             <figure>
                 <input type="radio" :value="item" v-model="pokemon">
-                <img :src="item.img">
-                <figcaption class="pokemon-desc">{{ item.specie }} | Exp. {{ item.exp }}</figcaption>
+                <img :src="item.picture">
+                <figcaption class="pokemon-desc">{{ item.specie }} | Exp. {{ item.experience }}</figcaption>
             </figure>
           </label>
         </div>
@@ -59,7 +59,7 @@
         this.resetMyWindow()
 
         if (this.pokemon.specie) {
-          this.$emit('selectedPokemon', { chain: this.pokemon.chain, level: this.pokemon.level })
+          this.$emit('selectedPokemon', { chain: this.pokemon.chain, level: this.pokemon.evolution })
         } else {
           alert('Selecione um pokemon')
         }

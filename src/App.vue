@@ -49,31 +49,31 @@
           pokemonsJogador: [
             {
               specie: 'Bulbasaur',
-              exp: 123,
+              experience: 123,
               chain: 1,
-              level: 1,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
+              evolution: 1,
+              picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
             },
             {
               specie: 'Charmander',
-              exp: 120,
+              experience: 120,
               chain: 2,
-              level: 1,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png'
+              evolution: 1,
+              picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png'
             },
             {
               specie: 'Squertol',
-              exp: 125,
+              experience: 125,
               chain: 3,
-              level: 1,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'
+              evolution: 1,
+              picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'
             },
             {
               specie: 'Mandruva',
-              exp: 100,
+              experience: 100,
               chain: 4,
-              level: 1,
-              img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png'
+              evolution: 1,
+              picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png'
             }
           ]
         },
