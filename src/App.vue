@@ -235,26 +235,26 @@
         switch (this.monstro.pokemon.info.evolution) {
           case 1:
             if (rate > 50) {
-              this.setMessage('info', 'Sucesso', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
+              this.setMessage('info', 'Sucesso!', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
               successfully = true
             } else {
-              this.setMessage('alert', 'Fujiu', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fujiu.`])
+              this.setMessage('alert', 'Fugiu!', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fugiu.`])
             }
             break
           case 2:
             if (rate > 75) {
-              this.setMessage('info', 'Sucesso', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
+              this.setMessage('info', 'Sucesso!', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
               successfully = true
             } else {
-              this.setMessage('alert', 'Fujiu', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fujiu.`])
+              this.setMessage('alert', 'Fugiu!', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fugiu.`])
             }
             break
           default:
             if (rate > 90) {
-              this.setMessage('info', 'Sucesso', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
+              this.setMessage('info', 'Sucesso!', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
               successfully = true
             } else {
-              this.setMessage('alert', 'Fujiu', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fujiu.`])
+              this.setMessage('alert', 'Fugiu!', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fugiu.`])
             }
         }
 

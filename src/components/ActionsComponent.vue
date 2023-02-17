@@ -245,16 +245,16 @@
       },
       verificarVencedor() {
         if (this.jogador.pokemon.life == 0 && this.monstro.pokemon.life == 0) {
-          this.setFinalizarPartida('empatou', 'Houve empate!!')
+          this.setFinalizarPartida('empatou', 'Houve empate!')
         } else if (this.jogador.pokemon.life == 0) {
           this.setFinalizarPartida('perdeu', 'Você perdeu :(')
         } else if (this.monstro.pokemon.life == 0) {
-          this.setFinalizarPartida('ganhou', "Você venceu !! \\o/")
+          this.setFinalizarPartida('ganhou', "Você venceu! \\o/")
         }
       },
       desistir() {
         this.myWindow.type = 'error'
-        this.myWindow.title = 'Deseja realmente sair'
+        this.myWindow.title = 'Deseja realmente sair?'
         this.myWindow.content = []
         this.myWindow.response.execFunction = this.setFinalizarPartida
       },
