@@ -199,8 +199,19 @@
             })
         })
       },
+      // Cadastra um novo pokemon, quando sua captura ocorreu com sucesso.
+      addPokemon() {
+        this.DATABASE_FAKE.pokemonsJogador.push({
+          specie: this.monstro.pokemon.info.specie,
+          experience: this.monstro.pokemon.info.experience,
+          chain: this.monstro.pokemon.info.chain,
+          evolution: this.monstro.pokemon.info.evolution,
+          picture: this.monstro.pokemon.info.picture
+        })
+      },
       catchPokemon($event) {
         let rate = this.getRandom(1, 100)
+        let successfully = false
 
         switch ($event.ball) {
           case 'poke-ball':
@@ -220,6 +231,7 @@
           case 1:
             if (rate > 50) {
               this.setMessage('info', 'Sucesso', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
+              successfully = true
             } else {
               this.setMessage('alert', 'Fujiu', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fujiu.`])
             }
@@ -227,6 +239,7 @@
           case 2:
             if (rate > 75) {
               this.setMessage('info', 'Sucesso', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
+              successfully = true
             } else {
               this.setMessage('alert', 'Fujiu', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fujiu.`])
             }
@@ -234,9 +247,14 @@
           default:
             if (rate > 90) {
               this.setMessage('info', 'Sucesso', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
+              successfully = true
             } else {
               this.setMessage('alert', 'Fujiu', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fujiu.`])
             }
+        }
+
+        if (successfully) {
+          this.addPokemon()
         }
       },
       setMessage(type, title, content) {
