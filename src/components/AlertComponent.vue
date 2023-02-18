@@ -19,7 +19,7 @@
         <div class="pokemons">
           <label v-for="item in myWindow.content" :key="item.id" class="pokemon">
             <input type="radio" :value="item" v-model="pokemon">
-            <img class="ball-type" :src="item.info.ball">
+            <img class="ball-type" :src="item.info.ball | assembleBallLink">
             <figure>
                 <img :src="item.info.pictureId">
                 <figcaption class="pokemon-desc">{{ item.info.specie }} | Exp. {{ item.info.experience }}</figcaption>
@@ -53,6 +53,11 @@
     },
     created() {
       this.$emit('alert', { myWindow: this.myWindow })
+    },
+    filters: {
+      assembleBallLink(ball) {
+        return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${ ball }.png`
+      }
     },
     methods: {
       resetMyWindow() {
