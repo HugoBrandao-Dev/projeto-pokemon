@@ -13,16 +13,16 @@
       </div>
       <div v-else>
         <p class="selected-pokemon">
-          <strong>Pokemon selecionado: </strong><span>{{ pokemon.specie }}</span>
+          <strong>Pokemon selecionado: </strong><span>{{ pokemon.info.specie }}</span>
         </p>
 
         <div class="pokemons">
-          <label v-for="(item, index) in myWindow.content" :key="index" class="pokemon">
+          <label v-for="item in myWindow.content" :key="item.id" class="pokemon">
             <input type="radio" :value="item" v-model="pokemon">
-            <img class="ball-type" :src="item.ball">
+            <img class="ball-type" :src="item.info.ball">
             <figure>
-                <img :src="item.picture">
-                <figcaption class="pokemon-desc">{{ item.specie }} | Exp. {{ item.experience }}</figcaption>
+                <img :src="item.info.pictureId">
+                <figcaption class="pokemon-desc">{{ item.info.specie }} | Exp. {{ item.info.experience }}</figcaption>
             </figure>
           </label>
         </div>
@@ -39,7 +39,7 @@
   export default {
     data() {
       return {
-        pokemon: { },
+        pokemon: { info: {} },
         myWindow: {
           type: '',
           title: '',

@@ -51,36 +51,23 @@
         DATABASE_FAKE: {
           pokemonsJogador: [
             {
-              specie: 'Bulbasaur',
-              experience: 123,
-              chain: 1,
-              evolution: 1,
-              ball: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png',
-              picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'
-            },
-            {
-              specie: 'Charmander',
-              experience: 120,
-              chain: 2,
-              evolution: 1,
-              ball: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png',
-              picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png'
-            },
-            {
-              specie: 'Squertol',
-              experience: 125,
-              chain: 3,
-              evolution: 1,
-              ball: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png',
-              picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'
-            },
-            {
-              specie: 'Mandruva',
-              experience: 100,
-              chain: 4,
-              evolution: 1,
-              ball: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png',
-              picture: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png'
+              info: {
+                id: 0,
+                specie: 'bulbasaur',
+                experience: 123,
+                chain: 1,
+                evolution: 1,
+                ball: 'poke-ball',
+                pictureId: 1
+              },
+              plus_status: {
+                hp: 0,
+                attack: 0,
+                special_attack: 0,
+                defense: 0,
+                special_defense: 0,
+                speed: 0,
+              }
             }
           ]
         },
