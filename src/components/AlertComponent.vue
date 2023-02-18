@@ -21,7 +21,7 @@
             <input type="radio" :value="item" v-model="pokemon">
             <img class="ball-type" :src="item.info.ball | assembleBallLink">
             <figure>
-                <img :src="item.info.pictureId">
+                <img :src="item.info.pictureId | assemblePokemonImageLink">
                 <figcaption class="pokemon-desc">{{ item.info.specie }} | Exp. {{ item.info.experience }}</figcaption>
             </figure>
           </label>
@@ -57,6 +57,9 @@
     filters: {
       assembleBallLink(ball) {
         return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${ ball }.png`
+      },
+      assemblePokemonImageLink(id) {
+        return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${ id }.png`
       }
     },
     methods: {
