@@ -49,7 +49,9 @@
     data() {
       return {
         DATABASE_FAKE: {
+          pokemonsOptionsForBeginners: ['bulbasaur', 'charmander', 'pichu', 'squirtle'],
           pokemonsJogador: [
+          /*
             {
               info: {
                 id: 0,
@@ -69,6 +71,7 @@
                 speed: 0,
               }
             }
+            */
           ]
         },
         jogador: {},
@@ -433,14 +436,48 @@
         this.match.mensagem = ''
       },
       selectedPokemon($event) {
-        let { chain, level } = $event
+        let pokemon = $event.pokemon
+        let { chain, level } = pokemon.info
         this.setPokemon(this.jogador, level, ...this.configurations.limitsChains, chain)
+        if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
+          this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
+        }
 
         this.match.selecionarPokemon = false
       },
+      // Separa somente o ID do link de uma chain de um pokemon
+      getChainId(link) {
+        let arrayLink = link.split('/')
+        let id = parseInt(arrayLink[arrayLink.length - 2])
+        return id
+      },
       async setPokemons() {
         this.match.selecionarPokemon = true
-        this.setMessage('info', 'Selecione seu pokemon', this.DATABASE_FAKE.pokemonsJogador)
+        if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
+          let pokemonsWithInfos = []
+          for (let name of this.DATABASE_FAKE.pokemonsOptionsForBeginners) {
+            let pokemon = { info: {}, plus_status: {} }
+            try {
+              let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ name }`)
+              pokemon.info.specie = responsePokemon.data.species.name
+              pokemon.info.experience = responsePokemon.data.base_experience
+              let responseSpecie = await axios.get(responsePokemon.data.species.url)
+              pokemon.info.chain = this.getChainId(responseSpecie.data.evolution_chain.url)
+              pokemon.info.evolution = 1
+              pokemon.info.ball = 'poke-ball'
+              pokemon.info.pictureId = responsePokemon.data.id
+
+            } catch (error) {
+              console.log(error)
+            }
+
+            pokemonsWithInfos.push(pokemon)
+          }
+
+          this.setMessage('info', 'Escolha seu primeiro pokemon:', pokemonsWithInfos)
+        } else {
+          this.setMessage('info', 'Selecione seu pokemon:', this.DATABASE_FAKE.pokemonsJogador)
+        }
 
         // Configurações das escolhas dos pokemons.
         let levelNPC = this.getLevel(1,2)
