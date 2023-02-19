@@ -77,8 +77,8 @@
       selectPokemon() {
         this.resetMyWindow()
 
-        if (this.pokemon.specie) {
-          this.$emit('selectedPokemon', { chain: this.pokemon.chain, level: this.pokemon.evolution })
+        if (this.pokemon.info.specie) {
+          this.$emit('selectedPokemon', { pokemon: this.pokemon })
         }
       },
       setResponse(response) {
