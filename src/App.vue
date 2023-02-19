@@ -210,7 +210,7 @@
             chain: this.monstro.pokemon.info.chain,
             evolution: this.monstro.pokemon.info.evolution,
             ball,
-            pictureId: this.monstro.pokemon.info.picture
+            pictureId: this.getPictureId(this.monstro.pokemon.info.picture)
           },
           plus_status: {
             hp: 0,
@@ -465,6 +465,13 @@
       getChainId(link) {
         let arrayLink = link.split('/')
         let id = parseInt(arrayLink[arrayLink.length - 2])
+        return id
+      },
+      getPictureId(link) {
+        let arrayLink = link.split('/')
+        let lastItem = arrayLink[arrayLink.length - 1]
+        let id = parseInt(lastItem.split('.')[0])
+        console.log(id)
         return id
       },
       async setPokemons() {
