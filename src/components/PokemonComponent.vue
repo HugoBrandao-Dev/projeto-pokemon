@@ -4,7 +4,7 @@
     <div class="pokemon" :class="{'npc-display': player.name == 'NPC', 'no-pokemon': !player.pokemon.info.specie}">
       <div class="pokemon-infos">
         <ul v-show="player.pokemon.info.specie">
-          <li v-for="status in Object.keys(player.pokemon.base_status)" :key="status">
+          <li class="info" v-for="status in Object.keys(player.pokemon.base_status)" :key="status">
             {{ status | formatStatus }}:
             <span class="pokemon-info">
               {{ player.pokemon.base_status[status] }}
@@ -209,6 +209,10 @@
 
   .npc-display {
     flex-direction: row-reverse;
+  }
+
+  .pokemon-infos .info {
+    text-transform: capitalize;
   }
 
   .pokemon ul li {
