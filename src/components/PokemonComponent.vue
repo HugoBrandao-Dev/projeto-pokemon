@@ -4,29 +4,10 @@
     <div class="pokemon" :class="{'npc-display': player.name == 'NPC', 'no-pokemon': !player.pokemon.info.specie}">
       <div class="pokemon-infos">
         <ul v-show="player.pokemon.info.specie">
-          <li>HP:
+          <li v-for="status in Object.keys(player.pokemon.base_status)" :key="status">
+            {{ status | formatStatus }}:
             <span class="pokemon-info">
-              {{ player.pokemon.base_status.hp }}
-            </span>
-          </li>
-          <li>Ata.:
-            <span class="pokemon-info">
-              {{ player.pokemon.base_status.attack }}
-            </span>
-          </li>
-          <li>Def.:
-            <span class="pokemon-info">
-              {{ player.pokemon.base_status.defense }}
-            </span>
-          </li>
-          <li>Esp. Ata.:
-            <span class="pokemon-info">
-              {{ player.pokemon.base_status.special_attack }}
-            </span>
-          </li>
-          <li>Esp. Def.:
-            <span class="pokemon-info">
-              {{ player.pokemon.base_status.special_defense }}
+              {{ player.pokemon.base_status[status] }}
             </span>
           </li>
         </ul>
@@ -147,6 +128,11 @@
           return true
         }
         return false
+      }
+    },
+    filters: {
+      formatStatus(status) {
+        return status.split('_').join(' ')
       }
     },
     methods: {
