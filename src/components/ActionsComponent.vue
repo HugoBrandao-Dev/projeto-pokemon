@@ -181,11 +181,20 @@
         return logDamage
       },
       atacarNormal() {
-        let logDanoDoJogador = this.giveDamage(this.jogador.pokemon, this.monstro.pokemon)
-        this.setAcao(logDanoDoJogador.type, 'monstro', logDanoDoJogador.damage)
+        if (this.getHitSuccessfully(this.jogador, this.monstro)) {
+          let logDanoDoJogador = this.giveDamage(this.jogador.pokemon, this.monstro.pokemon)
+          this.setAcao(logDanoDoJogador.type, 'monstro', logDanoDoJogador.damage)
+        } else {
+          this.setAcao('desviou', 'monstro', 0)
+        }
 
-        let logDanoDoMonstro = this.giveDamage(this.monstro.pokemon, this.jogador.pokemon)
-        this.setAcao(logDanoDoMonstro.type, 'jogador', logDanoDoMonstro.damage)
+        if (this.getHitSuccessfully(this.monstro, this.jogador)) {
+          let logDanoDoMonstro = this.giveDamage(this.monstro.pokemon, this.jogador.pokemon)
+          this.setAcao(logDanoDoMonstro.type, 'jogador', logDanoDoMonstro.damage)
+        } else {
+          this.setAcao('desviou', 'jogador', 0)
+        }
+        
         this.verificarVencedor()
       },
       atacarEspecial() {
@@ -201,6 +210,8 @@
           let mensagem = ''
           if (tipo == 'cura') {
             mensagem = `Você curou ${valor}.`
+          } else if (tipo == 'esquiva') {
+            mensagem = `${ destino } desviou.`
           } else {
             let withType = `O ${ destino } recebeu ${ valor } de dano [${ tipo.toUpperCase() }].`
             let noType = `O ${ destino } recebeu ${ valor } de dano.`
