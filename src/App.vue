@@ -198,14 +198,30 @@
       },
       // Cadastra um novo pokemon, quando sua captura ocorreu com sucesso.
       addPokemon(ball) {
-        this.DATABASE_FAKE.pokemonsJogador.push({
-          specie: this.monstro.pokemon.info.specie,
-          experience: this.monstro.pokemon.info.experience,
-          chain: this.monstro.pokemon.info.chain,
-          evolution: this.monstro.pokemon.info.evolution,
-          ball: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${ ball }.png`,
-          picture: this.monstro.pokemon.info.picture
-        })
+        let newPokemon = {
+          info: {
+            id: function() {
+              this.DATABASE_FAKE.pokemonsJogador.reduce((actual, next) => {
+                return Math.max(actual, next)
+              })
+            },
+            specie: this.monstro.pokemon.info.specie,
+            experience: this.monstro.pokemon.info.experience,
+            chain: this.monstro.pokemon.info.chain,
+            evolution: this.monstro.pokemon.info.evolution,
+            ball,
+            pictureId: this.monstro.pokemon.info.picture
+          },
+          plus_status: {
+            hp: 0,
+            attack: 0,
+            special_attack: 0,
+            defense: 0,
+            special_defense: 0,
+            speed: 0,
+          }
+        }
+        this.DATABASE_FAKE.pokemonsJogador.push(newPokemon)
       },
       catchPokemon($event) {
         let rate = this.getRandom(1, 100)
