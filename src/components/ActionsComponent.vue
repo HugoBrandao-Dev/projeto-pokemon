@@ -206,24 +206,27 @@
         this.verificarVencedor()
       },
       setAcao(tipo, destino, valor) {
-        if (valor != 0) {
-          let mensagem = ''
+        let mensagem = ''
+        let pokemonDestino = this[destino].pokemon.info.specie
+        let pokemonDestinoUpper = pokemonDestino.toUpperCase()
+
+        if (valor != 0) {          
           if (tipo == 'cura') {
             mensagem = `Você curou ${valor}.`
-          } else if (tipo == 'esquiva') {
-            mensagem = `${ destino } desviou.`
           } else {
-            let withType = `O ${ destino } recebeu ${ valor } de dano [${ tipo.toUpperCase() }].`
-            let noType = `O ${ destino } recebeu ${ valor } de dano.`
+            let withType = `O ${ pokemonDestinoUpper } recebeu ${ valor } de dano [${ tipo.toUpperCase() }].`
+            let noType = `O ${ pokemonDestinoUpper } recebeu ${ valor } de dano.`
             mensagem = tipo ?  withType : noType
           }
-          this.logAcoes.unshift({
-            id: `${destino}${Date.now()}${tipo}`,
-            destino,
-            tipo,
-            mensagem
-          })
+        } else {
+          mensagem = `O(a) ${ pokemonDestinoUpper } desviou.`
         }
+        this.logAcoes.unshift({
+          id: `${destino}${Date.now()}${tipo}`,
+          destino,
+          tipo,
+          mensagem
+        })
       },
       getValorRandom(min, max) {
         return Math.floor((Math.random() * (max - min + 1)) + min)
