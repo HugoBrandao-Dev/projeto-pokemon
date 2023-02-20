@@ -82,6 +82,7 @@
             },
             info: {
               specie: '',
+              types: [],
               experience: 0,
               chain: 0,
               /*

@@ -332,7 +332,7 @@
           return 1
         }
       },
-      
+
       // min é o menor valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       // max é o maior valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       async setPokemon(player, level = 1, min = 1, max = 78, selectedChainId = 0) {
@@ -367,25 +367,28 @@
                 .then(resPokemon => {
                   
                   // Importando os status base para o pokemon.
-                  let pokemonPlayer = resPokemon.data
-                  player.pokemon.life = pokemonPlayer.stats[0].base_stat
-                  player.pokemon.base_status.hp = pokemonPlayer.stats[0].base_stat
-                  player.pokemon.base_status.attack = pokemonPlayer.stats[1].base_stat
-                  player.pokemon.base_status.special_attack = pokemonPlayer.stats[3].base_stat
-                  player.pokemon.base_status.defense = pokemonPlayer.stats[2].base_stat
-                  player.pokemon.base_status.special_defense = pokemonPlayer.stats[4].base_stat
-                  player.pokemon.base_status.speed = pokemonPlayer.stats[5].base_stat
-                  player.pokemon.info.experience = pokemonPlayer.base_experience
-                  player.pokemon.info.specie = pokemonPlayer.species.name
+                  let pokemonInfo = resPokemon.data
+                  player.pokemon.life = pokemonInfo.stats[0].base_stat
+                  player.pokemon.base_status.hp = pokemonInfo.stats[0].base_stat
+                  player.pokemon.base_status.attack = pokemonInfo.stats[1].base_stat
+                  player.pokemon.base_status.special_attack = pokemonInfo.stats[3].base_stat
+                  player.pokemon.base_status.defense = pokemonInfo.stats[2].base_stat
+                  player.pokemon.base_status.special_defense = pokemonInfo.stats[4].base_stat
+                  player.pokemon.base_status.speed = pokemonInfo.stats[5].base_stat
+                  player.pokemon.info.experience = pokemonInfo.base_experience
+                  player.pokemon.info.specie = pokemonInfo.species.name
                   player.pokemon.info.chain = chainId
                   player.pokemon.info.evolution = level
-                  this.setSpecialAbilities(player, pokemonPlayer.abilities)
+                  for (let type of pokemonInfo.types) {
+                    player.pokemon.info.types.push(type.type.name)
+                  }
+                  this.setSpecialAbilities(player, pokemonInfo.abilities)
 
                   // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
                   if (player.name == 'Player') {
-                    player.pokemon.info.picture = pokemonPlayer.sprites.back_default
+                    player.pokemon.info.picture = pokemonInfo.sprites.back_default
                   } else {
-                    player.pokemon.info.picture = pokemonPlayer.sprites.front_default
+                    player.pokemon.info.picture = pokemonInfo.sprites.front_default
                   }
                 })
                 .catch(error => {
@@ -485,6 +488,7 @@
               pokemon.info.experience = responsePokemon.data.base_experience
               let responseSpecie = await axios.get(responsePokemon.data.species.url)
               pokemon.info.chain = this.getChainId(responseSpecie.data.evolution_chain.url)
+              pokemon.info.types = responsePokemon.data.types.map(type => type.name)
               pokemon.info.evolution = 1
               pokemon.info.ball = 'poke-ball'
               pokemon.info.pictureId = responsePokemon.data.id
