@@ -1,8 +1,10 @@
 <template>
   <section v-show="logAcoes.length != 0" id="logs" class="espacar">
-    <p v-for="(log) in logAcoes" class="log-acao" :class="log.destino" :key="log.id">
-      {{ log.mensagem }}
-    </p>
+    <ul class="log-acoes">
+      <li v-for="(log) in logAcoes" class="log-acao" :class="log.destino" :key="log.id">
+        {{ log.mensagem }}
+      </li>
+    </ul>
   </section>
 </template>
 
