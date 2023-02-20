@@ -332,7 +332,73 @@
           return 1
         }
       },
-
+      setTypeImageLink(pokemon) {
+        pokemon.info.types.forEach(item => {
+          let style = 'ios-filled' // valor padrão
+          let icon = ''
+          let size = '16' // valor padrão
+          let color = 'ffffff' // valor padrão
+          switch (item.type) {
+            case 'normal':
+              icon = 'scary-hand'
+              break
+            case 'fighting':
+              icon = 'action'
+              break
+            case 'flying':
+              icon = 'wing'
+              break
+            case 'poison':
+              style = 'fluency-systems-filled'
+              icon = 'poison'
+              break
+            case 'ground':
+              style = 'glyph-neue'
+              icon = 'earth-element'
+              break
+            case 'rock':
+              style = 'ios-glyphs'
+              icon = 'rock'
+              break
+            case 'bug':
+              icon = 'insect'
+              break
+            case 'ghost':
+              icon = 'ghost'
+              break
+            case 'fire':
+              style = 'glyph-neue'
+              icon = 'fire-element'
+              break
+            case 'water':
+              icon = 'ocean-wave'
+              break
+            case 'grass':
+              style = 'windows'
+              icon = 'grass'
+              break
+            case 'electric':
+              style = 'fluency-systems-filled'
+              icon = 'lightning-bolt'
+              break
+            case 'psychic':
+              icon = 'millenium-eye'
+              break
+            case 'ice':
+              style = 'external-goofy-solid-kerismaker'
+              icon = 'external-Snow-Flake-weather-goofy-solid-kerismaker'
+              break
+            case 'dragon':
+              style = 'glyph-neue'
+              icon = 'dragon'
+              break
+            default:
+              // Adicionar icones para fairy, steel.
+              icon = 'question-mark'
+          }
+          item.url = `https://img.icons8.com/${ style }/${ size }/${ color }/${ icon }.png`
+        })
+      },
       // min é o menor valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       // max é o maior valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       async setPokemon(player, level = 1, min = 1, max = 78, selectedChainId = 0) {
@@ -379,9 +445,13 @@
                   player.pokemon.info.specie = pokemonInfo.species.name
                   player.pokemon.info.chain = chainId
                   player.pokemon.info.evolution = level
-                  for (let type of pokemonInfo.types) {
-                    player.pokemon.info.types.push(type.type.name)
+                  for (let item of pokemonInfo.types) {
+                    player.pokemon.info.types.push({
+                      type: item.type.name,
+                      url: null
+                    })
                   }
+                  this.setTypeImageLink(player.pokemon)
                   this.setSpecialAbilities(player, pokemonInfo.abilities)
 
                   // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
@@ -432,6 +502,7 @@
           info: {
             specie: '',
             experience: 0,
+            types: [],
             chain: 0,
             /*
             1: Pokemon base;
@@ -488,11 +559,17 @@
               pokemon.info.experience = responsePokemon.data.base_experience
               let responseSpecie = await axios.get(responsePokemon.data.species.url)
               pokemon.info.chain = this.getChainId(responseSpecie.data.evolution_chain.url)
-              pokemon.info.types = responsePokemon.data.types.map(type => type.name)
               pokemon.info.evolution = 1
               pokemon.info.ball = 'poke-ball'
               pokemon.info.pictureId = responsePokemon.data.id
-
+              pokemon.info.types = []
+              for (let item of responsePokemon.data.types) {
+                pokemon.info.types.push({
+                  type: item.type.name,
+                  url: null
+                })
+              }
+              this.setTypeImageLink(pokemon)
             } catch (error) {
               console.log(error)
             }
