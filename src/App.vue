@@ -471,7 +471,6 @@
         let arrayLink = link.split('/')
         let lastItem = arrayLink[arrayLink.length - 1]
         let id = parseInt(lastItem.split('.')[0])
-        console.log(id)
         return id
       },
       async setPokemons() {
