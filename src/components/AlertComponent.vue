@@ -201,6 +201,7 @@
   }
 
   .pokemon figcaption {
+    text-transform: capitalize;
     font-size: 8pt;
     padding: 3px 6px;
     border-radius: 12px;
