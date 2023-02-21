@@ -23,7 +23,7 @@
             {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.info.experience }}
           </small>
         </div>
-        <img :src="player.pokemon.info.picture" :title="player.pokemon.info.specie" />
+        <img :src="player.pokemon.info.picture" :title="player.pokemon.info.specie" class="pokemon-img" />
       </div>
     </div>
     <div class="caixa-vida">
@@ -237,7 +237,7 @@
     align-items: center;
   }
 
-  .pokemon .pokemon-desc img {
+  .pokemon .pokemon-desc .pokemon-img {
     height: 96px;
     width: 96px;
   }
