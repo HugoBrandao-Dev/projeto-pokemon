@@ -13,9 +13,16 @@
         </ul>
       </div>
       <div class="pokemon-desc">
-        <small v-show="player.pokemon.info.specie">
-          {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.info.experience }}
-        </small>
+        <div v-show="player.pokemon.info.specie">
+          <ul class="types">
+            <li v-for="type in player.pokemon.info.types" :key="type.type" class="type" :class="type.type">
+              <img :src="type.url" :title="type.type">
+            </li>
+          </ul>
+          <small>
+            {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.info.experience }}
+          </small>
+        </div>
         <img :src="player.pokemon.info.picture" :title="player.pokemon.info.specie" />
       </div>
     </div>
