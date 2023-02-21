@@ -699,4 +699,93 @@
     filter: blur(3px);
   }
 
+  /* TIPOS DOS POKEMONS */
+
+  .types {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .type {
+    border: ridge 2px #ffffff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .type img {
+    height: 16px;
+  }
+
+  .normal {
+    background-color: #996600;
+  }
+
+  .fighting {
+    background-color: #cc6600;
+  }
+  
+  .grass {
+    background-color: #33cc33;
+  }
+  
+  .poison {
+    background-color: #6600ff;
+  }
+  
+  .ground {
+    background-color: #3e3202;
+  }
+  
+  .rock {
+    background-color: #a6a6a6;
+  }
+  
+  .insect {
+    background-color: #008000;
+  }
+  
+  .ghost {
+    background-color: #262626;
+  }
+  
+  .electric {
+    background-color: #e6e600;
+  }
+  
+  .fire {
+    background-color: #ff0000;
+  }
+  
+  .dragon {
+    background-color: #cc3300;
+  }
+  
+  .water {
+    background-color: #3366ff;
+  }
+  
+  .psychic {
+    background-color: #9900cc;
+  }
+  
+  .ice {
+    background-color: #00ccff;
+  }
+  
+  .flying {
+    background-color: #669999;
+  }
+  
+  .fairy {
+    background-color: #ff0066;
+  }
+
+  .steel {
+    background-color:  #666666;
+  }
+
 </style>
