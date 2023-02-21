@@ -226,7 +226,7 @@
       },
       catchPokemon($event) {
         let rate = this.getRandom(1, 100)
-        let successfully = false
+        let specieUpper = this.monstro.pokemon.info.specie.toUpperCase()
 
         switch ($event.ball) {
           case 'poke-ball':
@@ -242,34 +242,30 @@
             rate *= 100
         }
 
+        let successfully = false
+
         switch (this.monstro.pokemon.info.evolution) {
           case 1:
             if (rate > 50) {
-              this.setMessage('info', 'Sucesso!', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
               successfully = true
-            } else {
-              this.setMessage('alert', 'Fugiu!', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fugiu.`])
             }
             break
           case 2:
             if (rate > 75) {
-              this.setMessage('info', 'Sucesso!', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
               successfully = true
-            } else {
-              this.setMessage('alert', 'Fugiu!', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fugiu.`])
             }
             break
           default:
             if (rate > 90) {
-              this.setMessage('info', 'Sucesso!', [`${ this.monstro.pokemon.info.specie.toUpperCase() } foi capturado(a) com sucesso!`])
               successfully = true
-            } else {
-              this.setMessage('alert', 'Fugiu!', [`Infelizmente, o(a) ${ this.monstro.pokemon.info.specie.toUpperCase() } fugiu.`])
             }
         }
 
         if (successfully) {
+          this.setMessage('info', 'Sucesso!', [`${ specieUpper } foi capturado(a) com sucesso!`])
           this.addPokemon($event.ball)
+        } else {
+          this.setMessage('alert', 'Fugiu!', [`O(a) ${ specieUpper } escapou da ${ $event.ball }.`])
         }
       },
       setMessage(type, title, content) {
