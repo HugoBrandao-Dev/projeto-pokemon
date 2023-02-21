@@ -285,7 +285,7 @@
     background-color: #00ccff;
   }
   
-  .wing {
+  .flying {
     background-color: #669999;
   }
   
