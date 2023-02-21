@@ -22,6 +22,11 @@
             <img class="ball-type" :src="item.info.ball | assembleBallLink">
             <figure>
                 <img :src="item.info.pictureId | assemblePokemonImageLink">
+                <ul class="types">
+                  <li v-for="type in item.info.types" :key="type.type" class="type">
+                    <img :src="type.url" :title="type.type" :class="type.type">
+                  </li>
+                </ul>
                 <figcaption class="pokemon-desc">{{ item.info.specie }} | Exp. {{ item.info.experience }}</figcaption>
             </figure>
           </label>
@@ -203,4 +208,9 @@
     color: #fff;
   }
 
+  /* TIPOS DOS POKEMONS */
+
+  .types {
+    display: flex;
+  }
 </style>
