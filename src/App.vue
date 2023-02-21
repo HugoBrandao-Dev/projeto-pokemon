@@ -393,6 +393,13 @@
               style = 'glyph-neue'
               icon = 'dragon'
               break
+            case 'fairy':
+              style = 'external-others-pike-picture'
+              icon = 'external-Fairy-magic-others-pike-picture-3'
+              break
+            case 'steel':
+              icon = 'steel-i-beam'
+              break
             default:
               // Adicionar icones para fairy, steel.
               icon = 'question-mark'
