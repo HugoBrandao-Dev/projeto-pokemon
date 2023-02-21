@@ -422,6 +422,13 @@
           item.url = `https://img.icons8.com/${ style }/${ size }/${ color }/${ icon }.png`
         })
       },
+      // Setta todos os valores do status base do pokemon.
+      setBaseStatus(arrayOfStatusFromAPI, player) {
+        for (let status of arrayOfStatusFromAPI) {
+          let statusName = status.stat.name.split('-').join('_')
+          player.pokemon.base_status[statusName] = status.base_stat
+        }
+      },
       // min é o menor valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       // max é o maior valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       async setPokemon(player, level = 1, min = 1, max = 78, selectedChainId = 0) {
@@ -458,12 +465,7 @@
                   // Importando os status base para o pokemon.
                   let pokemonInfo = resPokemon.data
                   player.pokemon.life = pokemonInfo.stats[0].base_stat
-                  player.pokemon.base_status.hp = pokemonInfo.stats[0].base_stat
-                  player.pokemon.base_status.attack = pokemonInfo.stats[1].base_stat
-                  player.pokemon.base_status.special_attack = pokemonInfo.stats[3].base_stat
-                  player.pokemon.base_status.defense = pokemonInfo.stats[2].base_stat
-                  player.pokemon.base_status.special_defense = pokemonInfo.stats[4].base_stat
-                  player.pokemon.base_status.speed = pokemonInfo.stats[5].base_stat
+                  this.setBaseStatus(pokemonInfo.stats, player)
                   player.pokemon.info.experience = pokemonInfo.base_experience
                   player.pokemon.info.specie = pokemonInfo.species.name
                   player.pokemon.info.chain = chainId
