@@ -22,6 +22,7 @@
         @clearLog="clearArrays" 
         @generatePokemons="setPokemons"
         @setAbilities="setSpecialAbilities($event)"
+        @increaseExp="increaseExp"
         :player="jogador" 
         :npc="monstro" 
         :statusMatch="match" 
@@ -223,6 +224,24 @@
           }
         }
         this.DATABASE_FAKE.pokemonsJogador.push(newPokemon)
+      },
+      // Aumenta o Experience do pokemon do jogador, caso ele vença a batalha
+      // experienceRate: taxa de aumento da experienca (%);
+      // max: valor máximo do aumento da experiencia (%).
+      increaseExp(experienceRate = 10, max = experienceRate + 5) {
+        let rate = this.getRandom(experienceRate, max)
+        let rateFormated = rate / 100
+        let expMonster = this.monstro.pokemon.info.experience
+        let earned = Math.round(expMonster * rateFormated)
+
+        /*
+        Busca na lista de pokemons do jogador o pokemon que tenha o mesmo ID que o pokemon que foi escolhido para a batalha.
+        */
+        let pokemonFromList = this.DATABASE_FAKE.pokemonsJogador.filter(pokemon => {
+          return pokemon.info.id == this.jogador.pokemon.info.id
+        })
+
+        pokemonFromList[0].info.experience += earned
       },
       catchPokemon($event) {
         let rate = this.getRandom(1, 100)

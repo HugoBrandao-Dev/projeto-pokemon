@@ -263,6 +263,7 @@
         } else if (this.jogador.pokemon.life == 0) {
           this.setFinalizarPartida('perdeu', 'Você perdeu :(')
         } else if (this.monstro.pokemon.life == 0) {
+          this.$emit('increaseExp')
           this.setFinalizarPartida('ganhou', "Você venceu! \\o/")
         }
       },
