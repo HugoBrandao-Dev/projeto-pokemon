@@ -208,6 +208,7 @@
             specie: this.monstro.pokemon.info.specie,
             experience: this.monstro.pokemon.info.experience,
             chain: this.monstro.pokemon.info.chain,
+            types: this.monstro.pokemon.info.types,
             evolution: this.monstro.pokemon.info.evolution,
             ball,
             pictureId: this.getPictureId(this.monstro.pokemon.info.picture)
@@ -445,6 +446,7 @@
                   player.pokemon.info.specie = pokemonInfo.species.name
                   player.pokemon.info.chain = chainId
                   player.pokemon.info.evolution = level
+                  player.pokemon.info.types = []
                   for (let item of pokemonInfo.types) {
                     player.pokemon.info.types.push({
                       type: item.type.name,
