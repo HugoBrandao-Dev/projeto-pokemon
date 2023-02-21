@@ -235,6 +235,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-transform: capitalize;
   }
 
   .pokemon .pokemon-desc .pokemon-img {
