@@ -576,13 +576,16 @@
         let pokemon = $event.pokemon
         let { chain, level } = pokemon.info
 
-        this.jogador.pokemon.info.experience = pokemon.info.experience
         this.setPokemon(this.jogador, level, ...this.configurations.limitsChains, chain)
-        if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
-            pokemon.base_status = this.jogador.pokemon.base_status
-          this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
-        }
 
+        // Caso seja o primeiro pokemon e a primeira batalha do jogador.
+        if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
+          pokemon.base_status = this.jogador.pokemon.base_status
+          this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
+        } else {
+          this.jogador.pokemon.plus_status = pokemon.plus_status
+        }
+        this.jogador.pokemon.info.experience = pokemon.info.experience
         this.match.selecionarPokemon = false
       },
       // Separa somente o ID do link de uma chain de um pokemon
