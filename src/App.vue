@@ -242,6 +242,7 @@
         })
 
         pokemonFromList[0].info.experience += earned
+        this.setPlusStatus(pokemonFromList[0])
       },
       catchPokemon($event) {
         let rate = this.getRandom(1, 100)
@@ -429,6 +430,26 @@
           player.pokemon.base_status[statusName] = status.base_stat
         }
       },
+      /*
+      Método de redifine o plus_status, baseado na experiencia do pokemon (quanto mais batalha, 
+      mais forte)
+      */
+      async setPlusStatus(pokemon) {
+        try {
+          let specie = pokemon.info.specie
+          let response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
+          let baseExp = response.data.base_experience
+          let newExp = pokemon.info.experience
+
+          let percentageDif = 1 - (((baseExp * 100) / newExp) / 100)
+          
+          for (let status of Object.keys(pokemon.plus_status)) {
+            pokemon.plus_status[status] += Math.round(pokemon.base_status[status] * percentageDif)
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      },
       // min é o menor valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       // max é o maior valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       async setPokemon(player, level = 1, min = 1, max = 78, selectedChainId = 0) {
@@ -466,7 +487,6 @@
                   let pokemonInfo = resPokemon.data
                   player.pokemon.life = pokemonInfo.stats[0].base_stat
                   this.setBaseStatus(pokemonInfo.stats, player)
-                  player.pokemon.info.experience = pokemonInfo.base_experience
                   player.pokemon.info.specie = pokemonInfo.species.name
                   player.pokemon.info.chain = chainId
                   player.pokemon.info.evolution = level
@@ -485,6 +505,7 @@
                     player.pokemon.info.picture = pokemonInfo.sprites.back_default
                   } else {
                     player.pokemon.info.picture = pokemonInfo.sprites.front_default
+                    player.pokemon.info.experience = pokemonInfo.base_experience
                   }
                 })
                 .catch(error => {
@@ -554,8 +575,11 @@
       selectedPokemon($event) {
         let pokemon = $event.pokemon
         let { chain, level } = pokemon.info
+
+        this.jogador.pokemon.info.experience = pokemon.info.experience
         this.setPokemon(this.jogador, level, ...this.configurations.limitsChains, chain)
         if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
+            pokemon.base_status = this.jogador.pokemon.base_status
           this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
         }
 
@@ -589,6 +613,14 @@
               pokemon.info.ball = 'poke-ball'
               pokemon.info.pictureId = responsePokemon.data.id
               pokemon.info.types = []
+
+              pokemon.plus_status.hp = 0
+              pokemon.plus_status.attack = 0
+              pokemon.plus_status.special_attack = 0
+              pokemon.plus_status.defense = 0
+              pokemon.plus_status.special_defense = 0
+              pokemon.plus_status.speed = 0
+
               for (let item of responsePokemon.data.types) {
                 pokemon.info.types.push({
                   type: item.type.name,
