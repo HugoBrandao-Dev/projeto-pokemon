@@ -10,7 +10,10 @@
               <span class="pokemon-base-status">
                 {{ player.pokemon.base_status[status] }}
               </span>
-              <span v-if="player.pokemon.plus_status[status] > 0" class="pokemon-plus-status">
+              <span 
+                v-if="player.pokemon.plus_status[status] > 0"
+                title="Aumento devido a experiência." 
+                class="pokemon-plus-status">
                 +{{ player.pokemon.plus_status[status] }}
               </span>
             </p>
@@ -234,14 +237,17 @@
 
   .pokemon-infos .info {
     text-transform: capitalize;
-  }
-
-  .pokemon ul li {
     font-size: 8pt;
   }
 
   .personagem .pokemon-info {
     font-weight: bolder;
+  }
+
+  .pokemon-infos .pokemon-info .pokemon-plus-status {
+    padding: 2px 4px;
+    border-radius: 4px;
+    background-color: #00cc00;
   }
 
   .personagem .pokemon .pokemon-desc {
