@@ -800,7 +800,7 @@
     background-color: #a6a6a6;
   }
   
-  .insect {
+  .bug {
     background-color: #008000;
   }
   
