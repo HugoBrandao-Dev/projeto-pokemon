@@ -6,9 +6,14 @@
         <ul v-show="player.pokemon.info.specie">
           <li class="info" v-for="status in Object.keys(player.pokemon.base_status)" :key="status">
             {{ status | formatStatus }}:
-            <span class="pokemon-info">
-              {{ player.pokemon.base_status[status] }}
-            </span>
+            <p class="pokemon-info">
+              <span class="pokemon-base-status">
+                {{ player.pokemon.base_status[status] }}
+              </span>
+              <span v-if="player.pokemon.plus_status[status] > 0" class="pokemon-plus-status">
+                +{{ player.pokemon.plus_status[status] }}
+              </span>
+            </p>
           </li>
         </ul>
       </div>
