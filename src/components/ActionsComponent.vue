@@ -165,9 +165,10 @@
       giveDamage(pokemon, target) {
         let logDamage = { damage: 0, type: ''}
         let attackTotal = pokemon.base_status.attack + pokemon.plus_status.attack
+        let defenseTotal = target.base_status.defense + target.plus_status.defense
 
         // Se o atacante tiver um attack menor que a defesa do alvo, então seu dano é reduzido.
-        if (attackTotal < target.defense) {
+        if (attackTotal < defenseTotal) {
           logDamage.damage = Math.round(this.reducedDamage(pokemon, target))
         } else {
           let log = this.getDamage(attackTotal)
