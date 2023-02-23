@@ -68,7 +68,6 @@
       getHitSuccessfully(pokemon, target) {
         let pokemonTotalSpeed = pokemon.base_status.speed + pokemon.plus_status.speed
         let targetTotalSpeed = target.base_status.speed + target.plus_status.speed
-        console.log(pokemonTotalSpeed, targetTotalSpeed)
         let isHitted = false
 
         let speedDifference = Math.round(pokemonTotalSpeed - targetTotalSpeed)
