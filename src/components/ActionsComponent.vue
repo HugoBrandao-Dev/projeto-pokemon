@@ -66,11 +66,12 @@
       O cálculo do sucesso de acerto do golpe leva em consideração as velocidades dos pokemons.
       */
       getHitSuccessfully(pokemon, target) {
-        let speedOrigin = pokemon.base_status.speed
-        let speedTarget = target.base_status.speed
+        let pokemonTotalSpeed = pokemon.base_status.speed + pokemon.plus_status.speed
+        let targetTotalSpeed = target.base_status.speed + target.plus_status.speed
+        console.log(pokemonTotalSpeed, targetTotalSpeed)
         let isHitted = false
 
-        let speedDifference = Math.round(speedOrigin - speedTarget)
+        let speedDifference = Math.round(pokemonTotalSpeed - targetTotalSpeed)
         let randomNumber = this.getValorRandom(1,100)
 
         // Quando os speeds dos dois pokemons são iguais, a chance de acerto do hit é de 50%.
@@ -79,7 +80,7 @@
         } else if (speedDifference > 0) {
 
           // Quando o agressor é mais RÁPIDO, MAS MENOS DE 2x, o alvo tem 75% de ser atingido.
-          if (speedDifference * 2 < speedTarget) {
+          if (speedDifference * 2 < targetTotalSpeed) {
             isHitted = randomNumber < 75
 
           // Quando o agressor é mais RÁPIDO, E MAIS DE 2x, o alvo tem 95% de ser atingido.
@@ -89,7 +90,7 @@
         } else {
 
           // Quando o agressor é mais LENTO, MAS MENOS DE 2x, o alvo tem 25% de ser atingido.
-          if (Math.abs(speedDifference) * 2 < speedOrigin) {
+          if (Math.abs(speedDifference) * 2 < pokemonTotalSpeed) {
             isHitted = randomNumber > 75
 
           // Quando o agressor é mais LENTO, E MAIS MENOS DE 2x, o alvo tem 5% de ser atingido.
