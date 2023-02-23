@@ -65,9 +65,9 @@
       /*
       O cálculo do sucesso de acerto do golpe leva em consideração as velocidades dos pokemons.
       */
-      getHitSuccessfully(origin, target) {
-        let speedOrigin = origin.pokemon.base_status.speed
-        let speedTarget = target.pokemon.base_status.speed
+      getHitSuccessfully(pokemon, target) {
+        let speedOrigin = pokemon.base_status.speed
+        let speedTarget = target.base_status.speed
         let isHitted = false
 
         let speedDifference = Math.round(speedOrigin - speedTarget)
@@ -183,14 +183,14 @@
         return logDamage
       },
       atacarNormal() {
-        if (this.getHitSuccessfully(this.jogador, this.monstro)) {
+        if (this.getHitSuccessfully(this.jogador.pokemon, this.monstro.pokemon)) {
           let logDanoDoJogador = this.giveDamage(this.jogador.pokemon, this.monstro.pokemon)
           this.setAcao(logDanoDoJogador.type, 'monstro', logDanoDoJogador.damage)
         } else {
           this.setAcao('desviou', 'monstro', 0)
         }
 
-        if (this.getHitSuccessfully(this.monstro, this.jogador)) {
+        if (this.getHitSuccessfully(this.monstro.pokemon, this.jogador.pokemon)) {
           let logDanoDoMonstro = this.giveDamage(this.monstro.pokemon, this.jogador.pokemon)
           this.setAcao(logDanoDoMonstro.type, 'jogador', logDanoDoMonstro.damage)
         } else {
