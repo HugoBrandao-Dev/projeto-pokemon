@@ -153,9 +153,9 @@
         40 é 80% da defesa.
         Ou seja, o DANO FINAL SERÁ REDUZIDO EM 20%.
         */
-        let representativePercentage = (pokemon.attack * 100) / target.defense
+        let representativePercentage = (pokemon.base_status.attack * 100) / target.base_status.defense
 
-        let attack = this.getDamage(pokemon.attack).damage
+        let attack = this.getDamage(pokemon.base_status.attack).damage
 
         // O dano é redurizo, com base na diferença porcentual entre ataque do atacante e defesa do alvo.
         damage = (attack * representativePercentage) / 100
@@ -167,7 +167,7 @@
 
         // Se o atacante tiver um attack menor que a defesa do alvo, então seu dano é reduzido.
         if (pokemon.base_status.attack < target.defense) {
-          logDamage.damage = Math.round(this.reducedDamage(pokemon.base_status, target.base_status))
+          logDamage.damage = Math.round(this.reducedDamage(pokemon, target))
         } else {
           let log = this.getDamage(pokemon.base_status.attack)
           logDamage.damage = Math.round(log.damage)
