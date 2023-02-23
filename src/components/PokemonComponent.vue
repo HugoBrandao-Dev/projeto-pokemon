@@ -5,7 +5,7 @@
       <div class="pokemon-infos">
         <ul v-show="player.pokemon.info.specie">
           <li class="info" v-for="status in Object.keys(player.pokemon.base_status)" :key="status">
-            {{ status | formatStatus }}:
+            <strong>{{ status | formatStatus }}:</strong>
             <p class="pokemon-info">
               <span class="pokemon-base-status">
                 {{ player.pokemon.base_status[status] }}
@@ -242,6 +242,11 @@
 
   .personagem .pokemon-info {
     font-weight: bolder;
+    margin-bottom: 5px;
+  }
+
+  .personagem .pokemon-info:last-child {
+    margin-bottom: 0;
   }
 
   .pokemon-infos .pokemon-info .pokemon-plus-status {
