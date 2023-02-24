@@ -260,6 +260,20 @@
           console.log(error)
         }
       },
+      canAlreadyEvolve(evolutions) {
+        let canEvolve = false
+        let totalEvolutions = evolutions.length
+
+        // Verifica em qual posição o pokemon está na cadeia evolutiva.
+        let positionEvolution = evolutions.findIndex(evolution => evolution.name == this.jogador.pokemon.info.specie) + 1
+        
+
+        // Verifica se ainda é possível evoluir.
+        if (positionEvolution < totalEvolutions) {
+          canEvolve = true
+        }
+        return canEvolve
+      },
       // Aumenta o Experience do pokemon do jogador, caso ele vença a batalha
       // experienceRate: taxa de aumento da experienca (%);
       // max: valor máximo do aumento da experiencia (%).
@@ -270,7 +284,8 @@
         let earned = Math.round(expMonster * rateFormated)
 
         let allEvolutions = await this.getAllEvolutions(this.jogador.pokemon)
-        console.log(allEvolutions)
+        let canEvolve = this.canAlreadyEvolve(allEvolutions)
+        console.log(canEvolve)
 
         /*
         Busca na lista de pokemons do jogador o pokemon que tenha o mesmo ID que o pokemon que foi escolhido para a batalha.
