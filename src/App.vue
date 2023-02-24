@@ -201,11 +201,7 @@
       addPokemon(ball) {
         let newPokemon = {
           info: {
-            id: function() {
-              this.DATABASE_FAKE.pokemonsJogador.reduce((actual, next) => {
-                return Math.max(actual, next)
-              })
-            },
+            id: this.DATABASE_FAKE.pokemonsJogador.length,
             specie: this.monstro.pokemon.info.specie,
             experience: this.monstro.pokemon.info.experience,
             chain: this.monstro.pokemon.info.chain,
@@ -580,11 +576,13 @@
 
         // Caso seja o primeiro pokemon e a primeira batalha do jogador.
         if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
+          this.jogador.pokemon.info.id = 0
           pokemon.base_status = this.jogador.pokemon.base_status
           this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
         } else {
           this.jogador.pokemon.plus_status = pokemon.plus_status
         }
+        console.log(this.DATABASE_FAKE.pokemonsJogador)
         this.jogador.pokemon.info.experience = pokemon.info.experience
         this.match.selecionarPokemon = false
       },
@@ -611,6 +609,7 @@
               pokemon.info.specie = responsePokemon.data.species.name
               pokemon.info.experience = responsePokemon.data.base_experience
               let responseSpecie = await axios.get(responsePokemon.data.species.url)
+              pokemon.info.id = 0
               pokemon.info.chain = this.getChainId(responseSpecie.data.evolution_chain.url)
               pokemon.info.evolution = 1
               pokemon.info.ball = 'poke-ball'
