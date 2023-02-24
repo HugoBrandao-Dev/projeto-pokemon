@@ -210,6 +210,14 @@
             ball,
             pictureId: this.getPictureId(this.monstro.pokemon.info.picture)
           },
+          base_status: {
+            hp: this.monstro.pokemon.base_status.hp,
+            attack: this.monstro.pokemon.base_status.attack,
+            special_attack: this.monstro.pokemon.base_status.special_attack,
+            defense: this.monstro.pokemon.base_status.defense,
+            special_defense: this.monstro.pokemon.base_status.special_defense,
+            speed: this.monstro.pokemon.base_status.speed,
+          },
           plus_status: {
             hp: 0,
             attack: 0,
@@ -580,9 +588,9 @@
           pokemon.base_status = this.jogador.pokemon.base_status
           this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
         } else {
+          this.jogador.pokemon.info.id = pokemon.info.id
           this.jogador.pokemon.plus_status = pokemon.plus_status
         }
-        console.log(this.DATABASE_FAKE.pokemonsJogador)
         this.jogador.pokemon.info.experience = pokemon.info.experience
         this.match.selecionarPokemon = false
       },
