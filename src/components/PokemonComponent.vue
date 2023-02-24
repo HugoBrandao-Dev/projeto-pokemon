@@ -11,7 +11,7 @@
                 {{ player.pokemon.base_status[status] }}
               </span>
               <span 
-                v-if="player.pokemon.plus_status[status] > 0"
+                v-if="player.pokemon.plus_status && player.name == 'Player'"
                 title="Aumento devido a experiência." 
                 class="pokemon-plus-status">
                 +{{ player.pokemon.plus_status[status] }}
