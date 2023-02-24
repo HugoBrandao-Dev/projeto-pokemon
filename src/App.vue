@@ -229,14 +229,48 @@
         }
         this.DATABASE_FAKE.pokemonsJogador.push(newPokemon)
       },
+      async getAllEvolutions(pokemon) {
+        try {
+          let responseChain = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ pokemon.info.chain }/`)
+          let evolutions = [
+            {
+              name: responseChain.data.chain.species.name,
+              urlSpecie: responseChain.data.chain.species.url,
+              experience: ''
+            },
+            {
+              name: responseChain.data.chain.evolves_to[0].species.name,
+              urlSpecie: responseChain.data.chain.evolves_to[0].species.url,
+              experience: ''
+            },
+            {
+              name: responseChain.data.chain.evolves_to[0].evolves_to[0].species.name,
+              urlSpecie: responseChain.data.chain.evolves_to[0].evolves_to[0].species.url,
+              experience: ''
+            }
+          ]
+
+          for (let evol of evolutions) {
+            let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ evol.name }`)
+            evol.experience = responsePokemon.data.base_experience
+          }
+
+          return evolutions
+        } catch (error) {
+          console.log(error)
+        }
+      },
       // Aumenta o Experience do pokemon do jogador, caso ele vença a batalha
       // experienceRate: taxa de aumento da experienca (%);
       // max: valor máximo do aumento da experiencia (%).
-      increaseExp(experienceRate = 10, max = experienceRate + 5) {
+      async increaseExp(experienceRate = 10, max = experienceRate + 5) {
         let rate = this.getRandom(experienceRate, max)
         let rateFormated = rate / 100
         let expMonster = this.monstro.pokemon.info.experience
         let earned = Math.round(expMonster * rateFormated)
+
+        let allEvolutions = await this.getAllEvolutions(this.jogador.pokemon)
+        console.log(allEvolutions)
 
         /*
         Busca na lista de pokemons do jogador o pokemon que tenha o mesmo ID que o pokemon que foi escolhido para a batalha.
