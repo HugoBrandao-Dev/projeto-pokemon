@@ -268,9 +268,17 @@
         let positionEvolution = evolutions.findIndex(evolution => evolution.name == this.jogador.pokemon.info.specie) + 1
         
 
-        // Verifica se ainda é possível evoluir.
+        // Verifica se tem próxima evolução.
         if (positionEvolution < totalEvolutions) {
-          canEvolve = true
+
+          /*
+            Verifica se o pokemon tem experience o suficiente para evoluir.
+            Neste caso, o que é necessário para evoluir, é somente ter o mesmo experience que a
+            sua próxima evolução.
+          */
+          if (this.jogador.pokemon.info.experience >= evolutions[positionEvolution].experience) {
+            canEvolve = true
+          }
         }
         return canEvolve
       },
