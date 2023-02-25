@@ -293,7 +293,6 @@
 
         let allEvolutions = await this.getAllEvolutions(this.jogador.pokemon)
         let canEvolve = this.canAlreadyEvolve(allEvolutions)
-        console.log(canEvolve)
 
         /*
         Busca na lista de pokemons do jogador o pokemon que tenha o mesmo ID que o pokemon que foi escolhido para a batalha.
@@ -303,6 +302,10 @@
         })
 
         pokemonFromList[0].info.experience += earned
+        if (canEvolve) {
+          pokemonFromList[0].info.evolution++
+          console.log(pokemonFromList[0])
+        }
         this.setPlusStatus(pokemonFromList[0])
       },
       catchPokemon($event) {
@@ -676,7 +679,7 @@
               let responseSpecie = await axios.get(responsePokemon.data.species.url)
               pokemon.info.id = 0
               pokemon.info.chain = this.getChainId(responseSpecie.data.evolution_chain.url)
-              pokemon.info.evolution = 1
+              pokemon.info.evolution = 0
               pokemon.info.ball = 'poke-ball'
               pokemon.info.pictureId = responsePokemon.data.id
               pokemon.info.types = []
