@@ -232,29 +232,37 @@
       async getAllEvolutions(pokemon) {
         try {
           let responseChain = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ pokemon.info.chain }/`)
-          let evolutions = [
-            {
-              name: responseChain.data.chain.species.name,
-              urlSpecie: responseChain.data.chain.species.url,
-              experience: ''
-            },
-            {
-              name: responseChain.data.chain.evolves_to[0].species.name,
-              urlSpecie: responseChain.data.chain.evolves_to[0].species.url,
-              experience: ''
-            },
-            {
-              name: responseChain.data.chain.evolves_to[0].evolves_to[0].species.name,
-              urlSpecie: responseChain.data.chain.evolves_to[0].evolves_to[0].species.url,
-              experience: ''
+            // Pega a forma base
+            let evolutions = [
+              {
+                specie: responseChain.data.chain.species.name
+              }
+            ]
+            
+            // Pega a(s) primeira(s) evolução(ões)
+            let lengthEvolution_2 = responseChain.data.chain.evolves_to.length
+            if (lengthEvolution_2) {
+              let position_2 = this.getRandom(0, lengthEvolution_2 - 1)
+              let pokemon_2 = {
+                specie: responseChain.data.chain.evolves_to[position_2].species.name
+              }
+              evolutions.push(pokemon_2)
+              
+              // Pega a(s) segunda(s) evolução(ões)
+              let lengthEvolution_3 = responseChain.data.chain.evolves_to[0].evolves_to.length
+              if (lengthEvolution_3) {
+                let position_3 = this.getRandom(0, lengthEvolution_3 - 1)
+                let pokemon_3 = {
+                  specie: responseChain.data.chain.evolves_to[position_2].evolves_to[position_3].species.name
+                }
+                evolutions.push(pokemon_3)
+              }
             }
-          ]
 
-          for (let evol of evolutions) {
-            let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ evol.name }`)
-            evol.experience = responsePokemon.data.base_experience
+          for (let evolution of evolutions) {
+            let responseSpecie = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ evolution.specie }`)
+            evolution.base_experience = responseSpecie.data.base_experience
           }
-
           return evolutions
         } catch (error) {
           console.log(error)
@@ -265,7 +273,7 @@
         let totalEvolutions = evolutions.length
 
         // Verifica em qual posição o pokemon está na cadeia evolutiva.
-        let positionEvolution = evolutions.findIndex(evolution => evolution.name == this.jogador.pokemon.info.specie) + 1
+        let positionEvolution = evolutions.findIndex(evolution => evolution.specie == this.jogador.pokemon.info.specie) + 1
         
 
         // Verifica se tem próxima evolução.
@@ -276,7 +284,7 @@
             Neste caso, o que é necessário para evoluir, é somente ter o mesmo experience que a
             sua próxima evolução.
           */
-          if (this.jogador.pokemon.info.experience >= evolutions[positionEvolution].experience) {
+          if (this.jogador.pokemon.info.experience >= evolutions[positionEvolution].base_experience) {
             canEvolve = true
           }
         }
@@ -286,9 +294,9 @@
         try {
           let evolutions = await this.getAllEvolutions(pokemon)
           let nextEvolve = evolutions.findIndex(evolution => {
-            return evolution.name == pokemon.info.specie
+            return evolution.specie == pokemon.info.specie
           })
-          let nextEvolveSpecie = evolutions[nextEvolve+1].name
+          let nextEvolveSpecie = evolutions[nextEvolve+1].specie
           let responseEvolve = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ nextEvolveSpecie }`)
           pokemon.info.specie = responseEvolve.data.species.name
           pokemon.info.pictureId = responseEvolve.data.id
