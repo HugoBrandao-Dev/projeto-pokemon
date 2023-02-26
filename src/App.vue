@@ -22,7 +22,7 @@
         @clearLog="clearArrays" 
         @generatePokemons="setPokemons"
         @setAbilities="setSpecialAbilities($event)"
-        @increaseExp="increaseExp"
+        @increaseExp="increaseExp(50)"
         :player="jogador" 
         :npc="monstro" 
         :statusMatch="match" 
@@ -282,6 +282,21 @@
         }
         return canEvolve
       },
+      async setEvolve(pokemon) {
+        try {
+          let evolutions = await this.getAllEvolutions(pokemon)
+          let nextEvolve = evolutions.findIndex(evolution => {
+            return evolution.name == pokemon.info.specie
+          })
+          let nextEvolveSpecie = evolutions[nextEvolve+1].name
+          let responseEvolve = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ nextEvolveSpecie }`)
+          pokemon.info.specie = responseEvolve.data.species.name
+          pokemon.info.pictureId = responseEvolve.data.id
+          pokemon.info.evolution++
+        } catch (error) {
+          console.log(error)
+        }
+      },
       // Aumenta o Experience do pokemon do jogador, caso ele vença a batalha
       // experienceRate: taxa de aumento da experienca (%);
       // max: valor máximo do aumento da experiencia (%).
@@ -303,8 +318,7 @@
 
         pokemonFromList[0].info.experience += earned
         if (canEvolve) {
-          pokemonFromList[0].info.evolution++
-          console.log(pokemonFromList[0])
+          this.setEvolve(pokemonFromList[0])
         }
         this.setPlusStatus(pokemonFromList[0])
       },
@@ -638,9 +652,9 @@
       },
       selectedPokemon($event) {
         let pokemon = $event.pokemon
-        let { chain, level } = pokemon.info
+        let { chain, evolution } = pokemon.info
 
-        this.setPokemon(this.jogador, level, ...this.configurations.limitsChains, chain)
+        this.setPokemon(this.jogador, evolution, ...this.configurations.limitsChains, chain)
 
         // Caso seja o primeiro pokemon e a primeira batalha do jogador.
         if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
@@ -679,7 +693,7 @@
               let responseSpecie = await axios.get(responsePokemon.data.species.url)
               pokemon.info.id = 0
               pokemon.info.chain = this.getChainId(responseSpecie.data.evolution_chain.url)
-              pokemon.info.evolution = 0
+              pokemon.info.evolution = 1
               pokemon.info.ball = 'poke-ball'
               pokemon.info.pictureId = responsePokemon.data.id
               pokemon.info.types = []
