@@ -528,7 +528,7 @@
           let percentageDif = 1 - (((baseExp * 100) / newExp) / 100)
           
           for (let status of Object.keys(pokemon.plus_status)) {
-            pokemon.plus_status[status] += Math.round(pokemon.base_status[status] * percentageDif)
+            pokemon.plus_status[status] += Math.round(this.jogador.pokemon.base_status[status] * percentageDif)
           }
         } catch (error) {
           console.log(error)
@@ -574,7 +574,8 @@
             console.log(`OPS!! O pokemon ${ pokemons[0].specie } não tem a ${ pokemon.info.evolution }ª evolução.`)
             
             // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
-            await this.setPokemon(player, pokemon.info.evolution-1, min, max)
+            pokemon.info.evolution--
+            await this.setPokemon(player, pokemon, min, max)
           }
         } catch (error) {
           console.log(error)
@@ -645,7 +646,7 @@
         // Caso seja o primeiro pokemon e a primeira batalha do jogador.
         if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
           this.jogador.pokemon.info.id = 0
-          pokemon.base_status = this.jogador.pokemon.base_status
+          // pokemon.base_status = this.jogador.pokemon.base_status
           this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
         } else {
           let pokemonDB = this.getPokemonById(pokemon.info.id)
