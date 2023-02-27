@@ -502,6 +502,10 @@
             case 'steel':
               icon = 'steel-i-beam'
               break
+            case 'dark':
+              style = 'sf-regular-filled'
+              icon = 'bright-moon'
+              break
             default:
               // Adicionar icones para fairy, steel.
               icon = 'question-mark'
@@ -897,7 +901,7 @@
   }
   
   .ghost {
-    background-color: #262626;
+    background-color: #4d4d4d;
   }
   
   .electric {
@@ -933,7 +937,10 @@
   }
 
   .steel {
-    background-color:  #666666;
+    background-color: #666666;
   }
 
+  .dark {
+    background-color: #262626;
+  }
 </style>
