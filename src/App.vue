@@ -50,7 +50,7 @@
     data() {
       return {
         DATABASE_FAKE: {
-          pokemonsOptionsForBeginners: ['bulbasaur', 'charmander', 'pichu', 'squirtle'],
+          pokemonsOptionsForBeginners: ['bulbasaur', 'charmander', 'pichu', 'squirtle', 'eevee'],
           pokemonsJogador: [
           /*
             {
@@ -543,74 +543,57 @@
       // min é o menor valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       // max é o maior valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       async setPokemon(player, level = 1, min = 1, max = 78, selectedChainId = 0) {
-        let chainId = selectedChainId || this.getRandom(min, max)
-        
-        axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ chainId }/`)
-          .then(res => {
-          
-            // Pega a forma base
-            let pokemons = [res.data.chain.species.name]
-            
-            // Pega a(s) primeira(s) evolução(ões)
-            let lengthEvolution_2 = res.data.chain.evolves_to.length
-            if (lengthEvolution_2) {
-              let position_2 = this.getRandom(0, lengthEvolution_2 - 1)
-              let pokemon_2 = res.data.chain.evolves_to[position_2].species.name
-              pokemons.push(pokemon_2)
-              
-              // Pega a(s) segunda(s) evolução(ões)
-              let lengthEvolution_3 = res.data.chain.evolves_to[0].evolves_to.length
-              if (lengthEvolution_3) {
-                let position_3 = this.getRandom(0, lengthEvolution_3 - 1)
-                let pokemon_3 = res.data.chain.evolves_to[position_2].evolves_to[position_3].species.name
-                pokemons.push(pokemon_3)
-              }
-            }
-            
-            // Verifica se o pokemon tem a forma/evolução buscada.
-            if (pokemons[level-1]) {
-              let pokemonId = pokemons[level-1]
-              axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemonId }`)
-                .then(resPokemon => {
-                  
-                  // Importando os status base para o pokemon.
-                  let pokemonInfo = resPokemon.data
-                  player.pokemon.life = pokemonInfo.stats[0].base_stat
-                  this.setBaseStatus(pokemonInfo.stats, player)
-                  player.pokemon.info.specie = pokemonInfo.species.name
-                  player.pokemon.info.chain = chainId
-                  player.pokemon.info.evolution = level
-                  player.pokemon.info.types = []
-                  for (let item of pokemonInfo.types) {
-                    player.pokemon.info.types.push({
-                      type: item.type.name,
-                      url: null
-                    })
-                  }
-                  this.setTypeImageLink(player.pokemon)
-                  this.setSpecialAbilities(player, pokemonInfo.abilities)
+        try {
+          let chainId = selectedChainId || this.getRandom(min, max)
 
-                  // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
-                  if (player.name == 'Player') {
-                    player.pokemon.info.picture = pokemonInfo.sprites.back_default
-                  } else {
-                    player.pokemon.info.picture = pokemonInfo.sprites.front_default
-                    player.pokemon.info.experience = pokemonInfo.base_experience
-                  }
-                })
-                .catch(error => {
-                  console.log(error)
-                })
-            } else {
-              console.log(`OPS!! O pokemon ${ pokemons[0] } não tem a ${ level }ª evolução.`)
-              
-              // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
-              this.setPokemon(player, level-1, min, max, chainId)
+          let pokemons = await this.getAllEvolutions({
+            info: {
+              chain: chainId
             }
           })
-          .catch(error => {
-            console.log(error)
-          })
+
+          if (pokemons[level-1]) {
+            let specie = pokemons[level-1].specie
+            axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
+              .then(resPokemon => {
+                
+                // Importando os status base para o pokemon.
+                let pokemonInfo = resPokemon.data
+                player.pokemon.life = pokemonInfo.stats[0].base_stat
+                this.setBaseStatus(pokemonInfo.stats, player)
+                player.pokemon.info.specie = pokemonInfo.species.name
+                player.pokemon.info.chain = chainId
+                player.pokemon.info.evolution = level
+                player.pokemon.info.types = []
+                for (let item of pokemonInfo.types) {
+                  player.pokemon.info.types.push({
+                    type: item.type.name,
+                    url: null
+                  })
+                }
+                this.setTypeImageLink(player.pokemon)
+                this.setSpecialAbilities(player, pokemonInfo.abilities)
+
+                // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
+                if (player.name == 'Player') {
+                  player.pokemon.info.picture = pokemonInfo.sprites.back_default
+                } else {
+                  player.pokemon.info.picture = pokemonInfo.sprites.front_default
+                  player.pokemon.info.experience = pokemonInfo.base_experience
+                }
+              })
+              .catch(error => {
+                console.log(error)
+              })
+          } else {
+            console.log(`OPS!! O pokemon ${ pokemons[0].specie } não tem a ${ level }ª evolução.`)
+            
+            // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
+            await this.setPokemon(player, level-1, min, max, chainId)
+          }
+        } catch (error) {
+          console.log(error)
+        }
       },
       resetStatus(player) {
         player.items = {
@@ -662,11 +645,11 @@
         this.match.status = ''
         this.match.mensagem = ''
       },
-      selectedPokemon($event) {
+      async selectedPokemon($event) {
         let pokemon = $event.pokemon
         let { chain, evolution } = pokemon.info
 
-        this.setPokemon(this.jogador, evolution, ...this.configurations.limitsChains, chain)
+        await this.setPokemon(this.jogador, evolution, ...this.configurations.limitsChains, chain)
 
         // Caso seja o primeiro pokemon e a primeira batalha do jogador.
         if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
@@ -742,7 +725,7 @@
         this.monstro.pokemon.info.evolution = levelNPC
 
         // NPC
-        this.setPokemon(this.monstro, levelNPC, ...this.configurations.limitsChains)
+        await this.setPokemon(this.monstro, levelNPC, ...this.configurations.limitsChains)
 
         if (this.items.ballsLinks.length === 0) {
           this.items.ballsLinks = []
