@@ -544,37 +544,32 @@
           let pokemons = await this.getAllEvolutions(pokemon)
 
           if (pokemons[pokemon.info.evolution-1]) {
-            let specie = pokemons[pokemon.info.evolution-1].specie
-            axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
-              .then(resPokemon => {
-                
-                // Importando os status base para o pokemon.
-                let pokemonInfo = resPokemon.data
-                player.pokemon.life = pokemonInfo.stats[0].base_stat
-                this.setBaseStatus(pokemonInfo.stats, player)
-                player.pokemon.info.specie = pokemonInfo.species.name
-                player.pokemon.info.evolution = pokemon.info.evolution
-                player.pokemon.info.types = []
-                for (let item of pokemonInfo.types) {
-                  player.pokemon.info.types.push({
-                    type: item.type.name,
-                    url: null
-                  })
-                }
-                this.setTypeImageLink(player.pokemon)
-                this.setSpecialAbilities(player, pokemonInfo.abilities)
+          let specie = pokemons[pokemon.info.evolution-1].specie
+          let resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
 
-                // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
-                if (player.name == 'Player') {
-                  player.pokemon.info.picture = pokemonInfo.sprites.back_default
-                } else {
-                  player.pokemon.info.picture = pokemonInfo.sprites.front_default
-                  player.pokemon.info.experience = pokemonInfo.base_experience
-                }
-              })
-              .catch(error => {
-                console.log(error)
-              })
+          // Importando os status base para o pokemon.
+          let pokemonInfo = resPokemon.data
+          player.pokemon.life = pokemonInfo.stats[0].base_stat
+          this.setBaseStatus(pokemonInfo.stats, player)
+          player.pokemon.info.specie = pokemonInfo.species.name
+          player.pokemon.info.evolution = pokemon.info.evolution
+          player.pokemon.info.types = []
+          for (let item of pokemonInfo.types) {
+            player.pokemon.info.types.push({
+              type: item.type.name,
+              url: null
+            })
+          }
+          this.setTypeImageLink(player.pokemon)
+          this.setSpecialAbilities(player, pokemonInfo.abilities)
+
+          // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
+          if (player.name == 'Player') {
+            player.pokemon.info.picture = pokemonInfo.sprites.back_default
+          } else {
+            player.pokemon.info.picture = pokemonInfo.sprites.front_default
+            player.pokemon.info.experience = pokemonInfo.base_experience
+          }
           } else {
             console.log(`OPS!! O pokemon ${ pokemons[0].specie } não tem a ${ pokemon.info.evolution }ª evolução.`)
             
