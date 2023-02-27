@@ -264,9 +264,17 @@
           this.setFinalizarPartida('empatou', 'Houve empate!')
         } else if (this.jogador.pokemon.life == 0) {
           this.setFinalizarPartida('perdeu', 'Você perdeu :(')
+          this.statusPartida.vencedor = {
+            treinador: this.monstro.name,
+            pokemon: this.monstro.pokemon.info.specie
+          }
         } else if (this.monstro.pokemon.life == 0) {
           this.$emit('increaseExp')
           this.setFinalizarPartida('ganhou', "Você venceu! \\o/")
+          this.statusPartida.vencedor = {
+            treinador: this.jogador.name,
+            pokemon: this.jogador.pokemon.info.specie
+          }
         }
       },
       desistir() {

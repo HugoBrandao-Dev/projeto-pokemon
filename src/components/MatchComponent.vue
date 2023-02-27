@@ -8,6 +8,10 @@
     data() {
       return {
         statusPartida: {
+          vencedores: {
+            treinador: '',
+            pokemon: ''
+          },
           emAndamento: false,
           selecionarPokemon: false,
           mostrarResultado: false,
