@@ -323,7 +323,6 @@
         let expMonster = this.monstro.pokemon.info.experience
         let earned = Math.round(expMonster * rateFormated)
         let pokemon = this.getPokemonById(this.jogador.pokemon.info.id)
-        console.log(rate,rateFormated,expMonster,earned,pokemon)
 
         let allEvolutions = await this.getAllEvolutions(pokemon)
         let canEvolve = this.canAlreadyEvolve(allEvolutions)
@@ -610,6 +609,14 @@
           life: 100,
           base_status: {
             hp: 100,
+            attack: 0,
+            special_attack: 0,
+            defense: 0,
+            special_defense: 0,
+            speed: 0,
+          },
+          plus_status: {
+            hp: 0,
             attack: 0,
             special_attack: 0,
             defense: 0,
