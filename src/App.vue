@@ -183,19 +183,28 @@
         this.jogador.pokemon.info.special_attacks.splice(0)
       },
       async setSpecialAbilities(player, abilities) {
-        abilities.forEach(abilityInfo => {
-          let ability = abilityInfo.ability
-          axios.get(ability.url)
-            .then(res => {
-              player.pokemon.info.special_attacks.push({
-                name: ability.name.split('-').join(' '),
-                effect: res.data.effect_entries[1].short_effect || '',
+        try {
+          let special_attacks = []
+          for (let abilityInfo of abilities) {
+            let responseEffect = await axios.get(abilityInfo.ability.url)
+            let effect = ''
+            if (responseEffect.data.effect_entries.length) {
+              let effectArray = responseEffect.data.effect_entries.filter(effectItem => {
+                return effectItem.language.name == 'en'
               })
+              effect = effectArray[0].short_effect
+            }
+            
+            special_attacks.push({
+              name: abilityInfo.ability.name,
+              effect
             })
-            .catch(error => {
-              console.log(error)
-            })
-        })
+          }
+
+          player.pokemon.info.special_attacks = special_attacks
+        } catch (error) {
+          console.log(error)
+        }
       },
       // Cadastra um novo pokemon, quando sua captura ocorreu com sucesso.
       addPokemon(ball) {
@@ -538,38 +547,37 @@
       // max é o maior valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       async setPokemon(player, pokemon = {}, min = 1, max = 78) {
         try {
-
           pokemon.info.chain = pokemon.info.chain || this.getRandom(min, max)
 
           let pokemons = await this.getAllEvolutions(pokemon)
 
           if (pokemons[pokemon.info.evolution-1]) {
-          let specie = pokemons[pokemon.info.evolution-1].specie
-          let resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
+            let specie = pokemons[pokemon.info.evolution-1].specie
+            let resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
 
-          // Importando os status base para o pokemon.
-          let pokemonInfo = resPokemon.data
-          player.pokemon.life = pokemonInfo.stats[0].base_stat
-          this.setBaseStatus(pokemonInfo.stats, player)
-          player.pokemon.info.specie = pokemonInfo.species.name
-          player.pokemon.info.evolution = pokemon.info.evolution
-          player.pokemon.info.types = []
-          for (let item of pokemonInfo.types) {
-            player.pokemon.info.types.push({
-              type: item.type.name,
-              url: null
-            })
-          }
-          this.setTypeImageLink(player.pokemon)
-          this.setSpecialAbilities(player, pokemonInfo.abilities)
+            // Importando os status base para o pokemon.
+            let pokemonInfo = resPokemon.data
+            player.pokemon.life = pokemonInfo.stats[0].base_stat
+            this.setBaseStatus(pokemonInfo.stats, player)
+            player.pokemon.info.specie = pokemonInfo.species.name
+            player.pokemon.info.evolution = pokemon.info.evolution
+            player.pokemon.info.types = []
+            for (let item of pokemonInfo.types) {
+              player.pokemon.info.types.push({
+                type: item.type.name,
+                url: null
+              })
+            }
+            this.setTypeImageLink(player.pokemon)
+            await this.setSpecialAbilities(player, pokemonInfo.abilities)
 
-          // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
-          if (player.name == 'Player') {
-            player.pokemon.info.picture = pokemonInfo.sprites.back_default
-          } else {
-            player.pokemon.info.picture = pokemonInfo.sprites.front_default
-            player.pokemon.info.experience = pokemonInfo.base_experience
-          }
+            // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
+            if (player.name == 'Player') {
+              player.pokemon.info.picture = pokemonInfo.sprites.back_default
+            } else {
+              player.pokemon.info.picture = pokemonInfo.sprites.front_default
+              player.pokemon.info.experience = pokemonInfo.base_experience
+            }
           } else {
             console.log(`OPS!! O pokemon ${ pokemons[0].specie } não tem a ${ pokemon.info.evolution }ª evolução.`)
             
