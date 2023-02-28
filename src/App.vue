@@ -323,6 +323,7 @@
         let expMonster = this.monstro.pokemon.info.experience
         let earned = Math.round(expMonster * rateFormated)
         let pokemon = this.getPokemonById(this.jogador.pokemon.info.id)
+        console.log(rate,rateFormated,expMonster,earned,pokemon)
 
         let allEvolutions = await this.getAllEvolutions(pokemon)
         let canEvolve = this.canAlreadyEvolve(allEvolutions)
@@ -573,6 +574,7 @@
 
             // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
             if (player.name == 'Player') {
+              player.pokemon.info.id = pokemon.info.id
               player.pokemon.info.picture = pokemonInfo.sprites.back_default
             } else {
               player.pokemon.info.picture = pokemonInfo.sprites.front_default
