@@ -12,7 +12,8 @@
           :key="special.name"
           @click="atacarEspecial"
           type="button" 
-          class="btn btn-especial">
+          class="btn btn-especial"
+          :title="special.effect">
             {{ special.name | formatSpecialAttackName }}
           <img src="https://img.icons8.com/dusk/30/000000/sword.png" />
         </button>
