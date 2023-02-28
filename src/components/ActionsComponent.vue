@@ -13,7 +13,7 @@
           @click="atacarEspecial"
           type="button" 
           class="btn btn-especial">
-            {{ special.name }}
+            {{ special.name | formatSpecialAttackName }}
           <img src="https://img.icons8.com/dusk/30/000000/sword.png" />
         </button>
       </div>
@@ -57,6 +57,11 @@
       statusMatch: Object,
       logActions: Array,
       startable: Boolean
+    },
+    filters: {
+      formatSpecialAttackName(name) {
+        return name.split('-').join(' ')
+      }
     },
     methods: {
       setAlert($event) {
