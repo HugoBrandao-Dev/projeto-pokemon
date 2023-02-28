@@ -576,6 +576,7 @@
               player.pokemon.info.picture = pokemonInfo.sprites.back_default
             } else {
               player.pokemon.info.picture = pokemonInfo.sprites.front_default
+              player.pokemon.info.chain = pokemon.info.chain
               player.pokemon.info.experience = pokemonInfo.base_experience
             }
           } else {
@@ -649,16 +650,14 @@
       async selectedPokemon($event) {
         let pokemon = $event.pokemon
 
-        await this.setPokemon(this.jogador, pokemon, ...this.configurations.limitsChains)
-
         // Caso seja o primeiro pokemon e a primeira batalha do jogador.
         if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
           this.jogador.pokemon.info.id = 0
-          // pokemon.base_status = this.jogador.pokemon.base_status
+          await this.setPokemon(this.jogador, pokemon, ...this.configurations.limitsChains)
           this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
         } else {
           let pokemonDB = this.getPokemonById(pokemon.info.id)
-          this.jogador.pokemon.info = pokemonDB.info
+          await this.setPokemon(this.jogador, pokemonDB, ...this.configurations.limitsChains)
           this.jogador.pokemon.plus_status = pokemonDB.plus_status
         }
         this.jogador.pokemon.info.experience = pokemon.info.experience
