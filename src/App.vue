@@ -214,7 +214,7 @@
             specie: this.monstro.pokemon.info.specie,
             experience: this.monstro.pokemon.info.experience,
             chain: this.monstro.pokemon.info.chain,
-            types: this.monstro.pokemon.info.types,
+            types: [],
             evolution: this.monstro.pokemon.info.evolution,
             ball,
             pictureId: this.getPictureId(this.monstro.pokemon.info.picture)
