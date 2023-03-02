@@ -730,7 +730,13 @@
 
           this.setMessage('info', 'Escolha seu primeiro pokemon:', pokemonsWithInfos)
         } else {
-          this.setMessage('info', 'Selecione seu pokemon:', this.DATABASE_FAKE.pokemonsJogador)
+          let pokemons = [...this.DATABASE_FAKE.pokemonsJogador]
+          for (let pokemon of pokemons) {
+            let response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.info.specie }`)
+            this.setTypes(pokemon, response.data.types)
+            this.setTypeImageLink(pokemon)
+          }
+          this.setMessage('info', 'Selecione seu pokemon:', pokemons)
         }
 
         // Configurações das escolhas dos pokemons.
