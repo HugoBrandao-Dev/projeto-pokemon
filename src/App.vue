@@ -50,7 +50,7 @@
     data() {
       return {
         DATABASE_FAKE: {
-          pokemonsOptionsForBeginners: ['bulbasaur', 'charmander', 'pichu', 'squirtle', 'eevee'],
+          pokemonsOptionsForBeginners: ['dratini'],
           pokemonsJogador: [
           /*
             {
@@ -438,6 +438,15 @@
           return 1
         }
       },
+      setTypes(pokemon, types) {
+        pokemon.info.types = []
+        for (let item of types) {
+          pokemon.info.types.push({
+            type: item.type.name,
+            url: null
+          })
+        }
+      },
       setTypeImageLink(pokemon) {
         pokemon.info.types.forEach(item => {
           let style = 'ios-filled' // valor padrão
@@ -560,13 +569,7 @@
             this.setBaseStatus(pokemonInfo.stats, player)
             player.pokemon.info.specie = pokemonInfo.species.name
             player.pokemon.info.evolution = pokemon.info.evolution
-            player.pokemon.info.types = []
-            for (let item of pokemonInfo.types) {
-              player.pokemon.info.types.push({
-                type: item.type.name,
-                url: null
-              })
-            }
+            this.setTypes(player.pokemon, pokemonInfo.types)
             this.setTypeImageLink(player.pokemon)
             await this.setSpecialAbilities(player, pokemonInfo.abilities)
 
