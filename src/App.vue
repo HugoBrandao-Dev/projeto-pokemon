@@ -557,7 +557,6 @@
 
             // Importando os status base para o pokemon.
             let pokemonInfo = resPokemon.data
-            player.pokemon.life = pokemonInfo.stats[0].base_stat
             this.setBaseStatus(pokemonInfo.stats, player)
             player.pokemon.info.specie = pokemonInfo.species.name
             player.pokemon.info.evolution = pokemon.info.evolution
@@ -575,10 +574,12 @@
             if (player.name == 'Player') {
               player.pokemon.info.id = pokemon.info.id
               player.pokemon.info.picture = pokemonInfo.sprites.back_default
+              player.pokemon.life = pokemonInfo.stats[0].base_stat + pokemon.plus_status.hp
             } else {
               player.pokemon.info.picture = pokemonInfo.sprites.front_default
               player.pokemon.info.chain = pokemon.info.chain
               player.pokemon.info.experience = pokemonInfo.base_experience
+              player.pokemon.life = pokemonInfo.stats[0].base_stat
             }
           } else {
             console.log(`OPS!! O pokemon ${ pokemons[0].specie } não tem a ${ pokemon.info.evolution }ª evolução.`)
