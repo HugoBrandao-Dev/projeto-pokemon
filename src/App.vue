@@ -50,7 +50,7 @@
     data() {
       return {
         DATABASE_FAKE: {
-          pokemonsOptionsForBeginners: ['dratini'],
+          pokemonsOptionsForBeginners: ['eevee'],
           pokemonsJogador: [
           /*
             {
@@ -554,42 +554,53 @@
       },
       // min é o menor valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       // max é o maior valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
-      async setPokemon(player, pokemon = {}, min = 1, max = 78) {
+      async setPokemon(player, pokemon = {}, min = 1, max = 78, selectionType = 'random') {
         try {
-          pokemon.info.chain = pokemon.info.chain || this.getRandom(min, max)
+          console.log(min, max)
+          let resPokemon = null
+          if (selectionType == 'random') {
+            pokemon.info.chain = pokemon.info.chain || this.getRandom(1,78)
 
-          let pokemons = await this.getAllEvolutions(pokemon)
+            let pokemons = await this.getAllEvolutions(pokemon)
 
-          if (pokemons[pokemon.info.evolution-1]) {
-            let specie = pokemons[pokemon.info.evolution-1].specie
-            let resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
-
-            // Importando os status base para o pokemon.
-            let pokemonInfo = resPokemon.data
-            this.setBaseStatus(pokemonInfo.stats, player)
-            player.pokemon.info.specie = pokemonInfo.species.name
-            player.pokemon.info.evolution = pokemon.info.evolution
-            this.setTypes(player.pokemon, pokemonInfo.types)
-            this.setTypeImageLink(player.pokemon)
-            await this.setSpecialAbilities(player, pokemonInfo.abilities)
-
-            // Configura a posição (foto) do pokemon, a depender de quem é o dono do pokemon (Player ou NPC)
-            if (player.name == 'Player') {
-              player.pokemon.info.id = pokemon.info.id
-              player.pokemon.info.picture = pokemonInfo.sprites.back_default
-              player.pokemon.life = pokemonInfo.stats[0].base_stat + pokemon.plus_status.hp
-            } else {
-              player.pokemon.info.picture = pokemonInfo.sprites.front_default
+            if (pokemons[pokemon.info.evolution-1]) {
+              let specie = pokemons[pokemon.info.evolution-1].specie
+              resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
+              
+              player.pokemon.info.specie = resPokemon.data.species.name
+              player.pokemon.info.evolution = pokemon.info.evolution
+              player.pokemon.info.picture = resPokemon.data.sprites.front_default
               player.pokemon.info.chain = pokemon.info.chain
-              player.pokemon.info.experience = pokemonInfo.base_experience
-              player.pokemon.life = pokemonInfo.stats[0].base_stat
+              player.pokemon.info.experience = resPokemon.data.base_experience
+              player.pokemon.life = resPokemon.data.stats[0].base_stat
+
+              this.setBaseStatus(resPokemon.data.stats, player)
+              this.setTypes(player.pokemon, resPokemon.data.types)
+              this.setTypeImageLink(player.pokemon)
+              await this.setSpecialAbilities(player, resPokemon.data.abilities)
+            } else {
+              console.log(`OPS!! O pokemon ${ pokemons[0].specie } não tem a ${ pokemon.info.evolution }ª evolução.`)
+              
+              // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
+              pokemon.info.evolution--
+              await this.getPokemon(player, pokemon, 1, 78)
             }
           } else {
-            console.log(`OPS!! O pokemon ${ pokemons[0].specie } não tem a ${ pokemon.info.evolution }ª evolução.`)
-            
-            // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
-            pokemon.info.evolution--
-            await this.setPokemon(player, pokemon, min, max)
+            resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.info.specie }`)
+
+            player.pokemon.info.id = pokemon.info.id
+            player.pokemon.info.picture = resPokemon.data.sprites.back_default
+            player.pokemon.life = resPokemon.data.stats[0].base_stat + pokemon.plus_status.hp
+
+            for (let item of Object.keys(pokemon.info)) {
+              console.log(item)
+              player.pokemon.info[item] = pokemon.info[item]
+            }
+
+            this.setBaseStatus(resPokemon.data.stats, player)
+            this.setTypes(player.pokemon, resPokemon.data.types)
+            this.setTypeImageLink(player.pokemon)
+            await this.setSpecialAbilities(player, resPokemon.data.abilities)
           }
         } catch (error) {
           console.log(error)
@@ -666,11 +677,11 @@
         // Caso seja o primeiro pokemon e a primeira batalha do jogador.
         if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
           this.jogador.pokemon.info.id = 0
-          await this.setPokemon(this.jogador, pokemon, ...this.configurations.limitsChains)
+          await this.setPokemon(this.jogador, pokemon, ...this.configurations.limitsChains, 'selected')
           this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
         } else {
           let pokemonDB = this.getPokemonById(pokemon.info.id)
-          await this.setPokemon(this.jogador, pokemonDB, ...this.configurations.limitsChains)
+          await this.setPokemon(this.jogador, pokemonDB, ...this.configurations.limitsChains, 'selected')
           this.jogador.pokemon.plus_status = pokemonDB.plus_status
         }
         this.jogador.pokemon.info.experience = pokemon.info.experience
