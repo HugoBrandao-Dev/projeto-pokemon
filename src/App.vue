@@ -240,38 +240,39 @@
       },
       async getAllEvolutions(pokemon) {
         try {
-          let responseChain = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ pokemon.info.chain }/`)
+          let responseChain = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ chain }/`)
             // Pega a forma base
             let evolutions = [
               {
-                specie: responseChain.data.chain.species.name
+                species: [responseChain.data.chain.species.name]
               }
             ]
             
             // Pega a(s) primeira(s) evolução(ões)
             let lengthEvolution_2 = responseChain.data.chain.evolves_to.length
             if (lengthEvolution_2) {
-              let position_2 = this.getRandom(0, lengthEvolution_2 - 1)
-              let pokemon_2 = {
-                specie: responseChain.data.chain.evolves_to[position_2].species.name
+              let pokemons_2 = { species: [] }
+              for (let specie of responseChain.data.chain.evolves_to) {
+                pokemons_2.species.push(specie.species.name)
               }
-              evolutions.push(pokemon_2)
+              evolutions.push(pokemons_2)
               
               // Pega a(s) segunda(s) evolução(ões)
               let lengthEvolution_3 = responseChain.data.chain.evolves_to[0].evolves_to.length
               if (lengthEvolution_3) {
-                let position_3 = this.getRandom(0, lengthEvolution_3 - 1)
-                let pokemon_3 = {
-                  specie: responseChain.data.chain.evolves_to[position_2].evolves_to[position_3].species.name
+                let pokemons_3 = { species: [] }
+                for (let specie of responseChain.data.chain.evolves_to[0].evolves_to) {
+                  pokemons_3.species.push(specie.species.name)
                 }
-                evolutions.push(pokemon_3)
+                evolutions.push(pokemons_3)
               }
             }
 
           for (let evolution of evolutions) {
-            let responseSpecie = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ evolution.specie }`)
-            evolution.base_experience = responseSpecie.data.base_experience
+            let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ evolution.species[0] }`)
+            evolution.base_experience = responsePokemon.data.base_experience
           }
+
           return evolutions
         } catch (error) {
           console.log(error)
