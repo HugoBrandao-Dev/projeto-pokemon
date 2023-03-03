@@ -240,7 +240,7 @@
       },
       async getAllEvolutions(pokemon) {
         try {
-          let responseChain = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ chain }/`)
+          let responseChain = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ pokemon.info.chain }/`)
             // Pega a forma base
             let evolutions = [
               {
@@ -564,8 +564,12 @@
 
             let pokemons = await this.getAllEvolutions(pokemon)
 
-            if (pokemons[pokemon.info.evolution-1]) {
-              let specie = pokemons[pokemon.info.evolution-1].specie
+            let indexEvolution = pokemon.info.evolution - 1
+
+            if (pokemons[indexEvolution]) {
+              let maxIndex = pokemons[indexEvolution].species.length - 1
+              let indexSpecie = this.getRandom(0, maxIndex)
+              let specie = pokemons[indexEvolution].species[indexSpecie]
               resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
               
               player.pokemon.info.specie = resPokemon.data.species.name
@@ -594,7 +598,6 @@
             player.pokemon.life = resPokemon.data.stats[0].base_stat + pokemon.plus_status.hp
 
             for (let item of Object.keys(pokemon.info)) {
-              console.log(item)
               player.pokemon.info[item] = pokemon.info[item]
             }
 
