@@ -308,10 +308,16 @@
       async setEvolve(pokemon) {
         try {
           let evolutions = await this.getAllEvolutions(pokemon)
-          let nextEvolve = evolutions.findIndex(evolution => {
-            return evolution.specie == pokemon.info.specie
-          })
-          let nextEvolveSpecie = evolutions[nextEvolve+1].specie
+
+          // evolution representa a evolução, mas também a próxima, já que o array de começa de 0.
+          let nextEvolve = this.jogador.pokemon.info.evolution
+
+          let maxIndex = evolutions[nextEvolve].species.length - 1
+
+          // Pega o index de um pokemon da próxima evolução, caso seja um array.
+          let indexNextSpecie = this.getRandom(0, maxIndex)
+          let nextEvolveSpecie = evolutions[nextEvolve].species[indexNextSpecie]
+
           let responseEvolve = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ nextEvolveSpecie }`)
           pokemon.info.specie = responseEvolve.data.species.name
           pokemon.info.pictureId = responseEvolve.data.id
