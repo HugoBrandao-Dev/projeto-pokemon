@@ -280,24 +280,29 @@
       },
       canAlreadyEvolve(evolutions) {
         let canEvolve = false
-        let totalEvolutions = evolutions.length
 
-        // Verifica em qual posição o pokemon está na cadeia evolutiva.
-        let positionEvolution = evolutions.findIndex(evolution => evolution.specie == this.jogador.pokemon.info.specie) + 1
-        
+        // evolution representa a evolução, mas também a próxima, já que o array de começa de 0.
+        let indexNextEvolution = this.jogador.pokemon.info.evolution
 
-        // Verifica se tem próxima evolução.
-        if (positionEvolution < totalEvolutions) {
+        // Verifica se tem próxima evolução
+        if (evolutions[indexNextEvolution]) {
+          console.log('Tem próxima evolução.')
+          let playerExperience = this.jogador.pokemon.info.experience
+          let experienceNextEvolution = evolutions[indexNextEvolution].base_experience
 
-          /*
-            Verifica se o pokemon tem experience o suficiente para evoluir.
-            Neste caso, o que é necessário para evoluir, é somente ter o mesmo experience que a
-            sua próxima evolução.
-          */
-          if (this.jogador.pokemon.info.experience >= evolutions[positionEvolution].base_experience) {
+          // Verifica se tem experiência necessária para evoluir.
+          if (playerExperience >= experienceNextEvolution) {
+            console.log('Tem experiência suficiente.')
             canEvolve = true
+          } else {
+            console.log('Não tem experiência suficiente.')
+            canEvolve = false
           }
+        } else {
+          console.log('Não tem próxima evolução.')
+          canEvolve = false
         }
+
         return canEvolve
       },
       async setEvolve(pokemon) {
