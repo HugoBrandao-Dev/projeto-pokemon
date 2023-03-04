@@ -51,29 +51,7 @@
       return {
         DATABASE_FAKE: {
           pokemonsOptionsForBeginners: ['eevee'],
-          pokemonsJogador: [
-          /*
-            {
-              info: {
-                id: 0,
-                specie: 'bulbasaur',
-                experience: 123,
-                chain: 1,
-                evolution: 1,
-                ball: 'poke-ball',
-                pictureId: 1
-              },
-              plus_status: {
-                hp: 0,
-                attack: 0,
-                special_attack: 0,
-                defense: 0,
-                special_defense: 0,
-                speed: 0,
-              }
-            }
-            */
-          ]
+          pokemonsJogador: []
         },
         jogador: {},
         monstro: {},
@@ -286,20 +264,16 @@
 
         // Verifica se tem próxima evolução
         if (evolutions[indexNextEvolution]) {
-          console.log('Tem próxima evolução.')
           let playerExperience = this.jogador.pokemon.info.experience
           let experienceNextEvolution = evolutions[indexNextEvolution].base_experience
 
           // Verifica se tem experiência necessária para evoluir.
           if (playerExperience >= experienceNextEvolution) {
-            console.log('Tem experiência suficiente.')
             canEvolve = true
           } else {
-            console.log('Não tem experiência suficiente.')
             canEvolve = false
           }
         } else {
-          console.log('Não tem próxima evolução.')
           canEvolve = false
         }
 
