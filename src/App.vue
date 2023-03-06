@@ -50,7 +50,7 @@
     data() {
       return {
         DATABASE_FAKE: {
-          pokemonsOptionsForBeginners: ['eevee'],
+          pokemonsOptionsForBeginners: ['scyther', 'mankey'],
           pokemonsJogador: []
         },
         jogador: {},
@@ -540,12 +540,11 @@
       },
       // min é o menor valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
       // max é o maior valor da chain a ser procurada (todo pokemon e suas evoluções tem sua chain)
-      async setPokemon(player, pokemon = {}, min = 1, max = 78, selectionType = 'random') {
+      async setPokemon(player, pokemon = {}, selectionType = 'random') {
         try {
-          console.log(min, max)
           let resPokemon = null
           if (selectionType == 'random') {
-            pokemon.info.chain = pokemon.info.chain || this.getRandom(1,78)
+            pokemon.info.chain = pokemon.info.chain || this.getRandom(...this.configurations.limitsChains)
 
             let pokemons = await this.getAllEvolutions(pokemon)
 
@@ -573,7 +572,7 @@
               
               // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
               pokemon.info.evolution--
-              await this.setPokemon(player, pokemon, 1, 78)
+              await this.setPokemon(player, pokemon)
             }
           } else {
             resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.info.specie }`)
@@ -666,11 +665,11 @@
         // Caso seja o primeiro pokemon e a primeira batalha do jogador.
         if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
           this.jogador.pokemon.info.id = 0
-          await this.setPokemon(this.jogador, pokemon, ...this.configurations.limitsChains, 'selected')
+          await this.setPokemon(this.jogador, pokemon, 'selected')
           this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
         } else {
           let pokemonDB = this.getPokemonById(pokemon.info.id)
-          await this.setPokemon(this.jogador, pokemonDB, ...this.configurations.limitsChains, 'selected')
+          await this.setPokemon(this.jogador, pokemonDB, 'selected')
           this.jogador.pokemon.plus_status = pokemonDB.plus_status
         }
         this.jogador.pokemon.info.experience = pokemon.info.experience
@@ -748,7 +747,7 @@
         }
 
         // NPC
-        await this.setPokemon(this.monstro, pokemon, ...this.configurations.limitsChains)
+        await this.setPokemon(this.monstro, pokemon)
 
         if (this.items.ballsLinks.length === 0) {
           this.items.ballsLinks = []
