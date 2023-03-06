@@ -569,11 +569,11 @@
               this.setTypeImageLink(player.pokemon)
               await this.setSpecialAbilities(player, resPokemon.data.abilities)
             } else {
-              console.log(`OPS!! O pokemon ${ pokemons[0].specie } não tem a ${ pokemon.info.evolution }ª evolução.`)
+              console.log(`OPS!! O pokemon ${ pokemons[0].species[0] } não tem a ${ pokemon.info.evolution }ª evolução.`)
               
               // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
               pokemon.info.evolution--
-              await this.getPokemon(player, pokemon, 1, 78)
+              await this.setPokemon(player, pokemon, 1, 78)
             }
           } else {
             resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.info.specie }`)
