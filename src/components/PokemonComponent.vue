@@ -31,7 +31,7 @@
             {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.info.experience }}
           </small>
         </div>
-        <img :src="player.pokemon.info.picture" :title="player.pokemon.info.specie" class="pokemon-img" />
+        <img :src="player.pokemon.info.picture | hasPicture" :title="player.pokemon.info.specie" class="pokemon-img" />
       </div>
     </div>
     <div class="caixa-vida">
@@ -157,6 +157,13 @@
     filters: {
       formatStatus(status) {
         return status.split('_').join(' ')
+      },
+      hasPicture(picture) {
+        if (picture) {
+          return picture
+        } else {
+          return 'https://img.icons8.com/color/96/000000/cookie-monster.png'
+        }
       }
     },
     methods: {

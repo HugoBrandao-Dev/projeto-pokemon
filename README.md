@@ -37,3 +37,9 @@ Tem por finalidade testar minhas habilidades com as tecnologias de desenvolvimen
 
 ### Outra(s)
 * Axios: Cliente HTTP, para consumo de API, neste caso da API do pokémon, a __"PokéAPI"__.
+
+## Observações
+Alguns pokemons não tem foto de costas de alguma de suas evoluções (back_default), sendo 
+renderizado a figura de um monstro no lugar. Por exemplo:
+* Annihilape - segunda evolução de Monkey;
+* Kleavor - uma das possíveis evoluções do Scyther;
