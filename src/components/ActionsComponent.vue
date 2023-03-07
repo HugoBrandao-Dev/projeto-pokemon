@@ -68,6 +68,12 @@
       setAlert($event) {
         this.myWindow = $event.myWindow
       },
+      setStatusPartida(emAndamento = false, mostrarResultado = false, status = '', mensagem = '') {
+        this.statusPartida.emAndamento = emAndamento
+        this.statusPartida.mostrarResultado = mostrarResultado
+        this.statusPartida.status = status
+        this.statusPartida.mensagem = mensagem
+      },
       /*
       O cálculo do sucesso de acerto do golpe leva em consideração as velocidades dos pokemons.
       */
@@ -253,16 +259,10 @@
         this.$emit("clearLog")
         this.$emit("generatePokemons")
         this.logAcoes = this.logActions
-        this.statusPartida.emAndamento = true
-        this.statusPartida.mensagem = ''
-        this.statusPartida.mostrarResultado = false
-        this.statusPartida.status = ''
+        this.setStatusPartida(true, false, '', '')
       },
       setFinalizarPartida(status = 'desistiu', mensagem = 'Você desistiu') {
-        this.statusPartida.emAndamento = false
-        this.statusPartida.mensagem = mensagem
-        this.statusPartida.mostrarResultado = true
-        this.statusPartida.status = status
+        this.setStatusPartida(false, true, status, mensagem)
         this.logAcoes = []
       },
       verificarVencedor() {
