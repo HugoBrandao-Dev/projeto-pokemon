@@ -46,3 +46,7 @@ renderizado a figura de um monstro no lugar. Por exemplo:
 
 Os botões de __ataques especiais__ não tem funcionalidade ainda, já que os efeitos que eles tem estão
 de forma descritiva, sendo necessário representar seus efeitos no status (base e plus), seja para o pokemon do jogador ou para o pokemon do NPC, isso para cada um do ataques especiais de cada um dos pokemons.
+
+## Bugs
+
+* Se clicar em cancelar, na tela de seleção de pokemon, depois de já ter clicado em iniciar partida, está selecionando e renderizando o pokemon do NPC;
