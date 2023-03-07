@@ -74,6 +74,12 @@
         this.statusPartida.status = status
         this.statusPartida.mensagem = mensagem
       },
+      setMyWindow(type, title, content, execFunction) {
+        this.myWindow.type = type
+        this.myWindow.title = title
+        this.myWindow.content = content
+        this.myWindow.response.execFunction = execFunction
+      },
       /*
       O cálculo do sucesso de acerto do golpe leva em consideração as velocidades dos pokemons.
       */
@@ -284,10 +290,7 @@
         }
       },
       desistir() {
-        this.myWindow.type = 'error'
-        this.myWindow.title = 'Deseja realmente sair?'
-        this.myWindow.content = []
-        this.myWindow.response.execFunction = this.setFinalizarPartida
+        this.setMyWindow('error', 'Deseja realmente sair?', [], this.setFinalizarPartida)
       },
       iniciar() {
         this.setIniciarPartida()
