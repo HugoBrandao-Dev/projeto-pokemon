@@ -16,7 +16,11 @@
           selecionarPokemon: false,
           mostrarResultado: false,
           status: '',
-          mensagem: ''
+          mensagem: '',
+          capture: {
+            captured: false,
+            attempts: 1
+          }
         },
       }
     },

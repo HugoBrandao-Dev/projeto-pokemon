@@ -50,7 +50,7 @@
     data() {
       return {
         DATABASE_FAKE: {
-          pokemonsOptionsForBeginners: ['scyther', 'mankey'],
+          pokemonsOptionsForBeginners: ['bulbasaur', 'charmander', 'squirtle', 'pichu'],
           pokemonsJogador: []
         },
         jogador: {},
@@ -357,9 +357,11 @@
         }
 
         if (successfully) {
+          this.match.capture.captured = true
           this.setMessage('info', 'Sucesso!', [`${ specieUpper } foi capturado(a) com sucesso!`])
           this.addPokemon($event.ball)
         } else {
+          this.match.capture.attempts++
           this.setMessage('alert', 'Fugiu!', [`O(a) ${ specieUpper } escapou da ${ $event.ball }.`])
         }
       },
@@ -749,6 +751,8 @@
 
         // NPC
         await this.setPokemon(this.monstro, pokemon)
+        this.match.capture.captured = false
+        this.match.capture.attempts = 1
 
         if (this.items.ballsLinks.length === 0) {
           this.items.ballsLinks = []

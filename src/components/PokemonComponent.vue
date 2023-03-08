@@ -143,7 +143,9 @@
       },
       canCatchPokemon() {
         if (!this.match.emAndamento && this.match.status == 'ganhou') {
-          return true
+            if (!this.match.capture.captured && this.match.capture.attempts <= 3) {
+              return true
+            }
         }
         return false
       },
