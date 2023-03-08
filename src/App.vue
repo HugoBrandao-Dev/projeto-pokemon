@@ -358,11 +358,11 @@
 
         if (successfully) {
           this.match.capture.captured = true
-          this.setMessage('info', 'Sucesso!', [`${ specieUpper } foi capturado(a) com sucesso!`])
+          this.setMessage('info', 'Capturado!', [`${ specieUpper } foi capturado(a) com sucesso!`])
           this.addPokemon($event.ball)
         } else {
           this.match.capture.attempts++
-          this.setMessage('alert', 'Fugiu!', [`O(a) ${ specieUpper } escapou da ${ $event.ball }.`])
+          this.setMessage('alert', 'Escapou!', [`O(a) ${ specieUpper } escapou da ${ $event.ball }.`])
         }
       },
       setMessage(type, title, content) {
