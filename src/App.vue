@@ -673,6 +673,7 @@
           this.jogador.pokemon.plus_status = pokemonDB.plus_status
         }
         this.jogador.pokemon.info.experience = pokemon.info.experience
+        this.match.emAndamento = true
         this.match.selecionarPokemon = false
       },
       // Separa somente o ID do link de uma chain de um pokemon
