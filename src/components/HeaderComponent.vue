@@ -1,5 +1,6 @@
 <template>
   <header id="cabecalho" class="centralizar espacar">
+      <LoginComponent />
       <h1>Projeto Pokemon</h1>
       <div class="login">
         <small v-show="user.hasUser" class="user-name">{{ user.info.login }}</small>
@@ -11,6 +12,8 @@
 </template>
 
 <script>
+  import LoginComponent from './LoginComponent'
+
   export default {
     data() {
       return {
@@ -21,6 +24,9 @@
           }
         }
       }
+    },
+    components: {
+      LoginComponent
     },
     computed: {
       iconUser() {
@@ -37,6 +43,7 @@
   #cabecalho {
     justify-content: space-between;
     align-items: center;
+    position: relative;
   }
 
   .login {
