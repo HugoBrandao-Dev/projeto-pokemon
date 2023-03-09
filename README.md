@@ -37,6 +37,8 @@ Tem por finalidade testar minhas habilidades com as tecnologias de desenvolvimen
 
 ### Outra(s)
 * Axios: Cliente HTTP, para consumo de API, neste caso da API do pokémon, a __"PokéAPI"__.
+* Icons8: Software de design gráfico, para a uso de icones e imagens. Utilizei o plano free.
+<a target="_blank" href="https://icons8.com/icon/16cSlppPLXYA/name">Name icon by Icons8</a>
 
 ## Observações
 Alguns pokemons não tem foto de costas de alguma de suas evoluções (back_default), sendo 
