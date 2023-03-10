@@ -1,7 +1,12 @@
 <template>
   <div id="access-screen">
     <form method="POST" v-if="form.type == 'login'" class="form-login">
-      <h1 class="espacar">Acessar</h1>
+      <div class="form-header">
+        <h1 class="espacar">Acessar</h1>
+        <button type="button" class="btn btn-close-window" @click="closeWindow()">
+          <img src="https://img.icons8.com/dotty/32/null/close-window.png"/>
+        </button>
+      </div>
       <fieldset>
         <label>
           <img src="https://img.icons8.com/pastel-glyph/32/666666/user-male-circle.png">
@@ -19,7 +24,12 @@
       </fieldset>
     </form>
     <form method="POST" v-else-if="form.type == 'register'" class="form-register">
-      <h1 class="espacar">Cadastrar</h1>
+      <div class="form-header">
+        <h1 class="espacar">Cadastrar</h1>
+        <button type="button" class="btn btn-close-window" @click="closeWindow()">
+          <img src="https://img.icons8.com/dotty/32/null/close-window.png"/>
+        </button>
+      </div>
       <fieldset>
         <label>Nome:</label>
         <input type="text" name="iptName" placeholder="Nome completo">
@@ -53,6 +63,11 @@
           type: 'login'
         }
       }
+    },
+    methods: {
+      closeWindow() {
+        this.$emit('closeWindow')
+      }
     }
   }
 </script>
@@ -66,7 +81,16 @@
     position: absolute;
   }
 
-  #access-screen h1 {
+  #access-screen .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #66ff66;
+  }
+
+  #access-screen .form-header .btn-close-window {
+    border: none;
+    padding: 0;
     background-color: #66ff66;
   }
 
@@ -96,7 +120,7 @@
 
   /* Formulário de login */
 
-  #access-screen .form-login .btn {
+  .form-login .access-action .btn {
     margin-right: 0;
     margin-bottom: 10px;
     display: flex;
@@ -106,7 +130,7 @@
     width: 100%;
   }
 
-  #access-screen .form-login .btn:last-child {
+  .form-login .access-action .btn:last-child {
     background-color: #ffffff;
     color: #3399ff;
     border-style: solid;
