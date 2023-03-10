@@ -1,6 +1,6 @@
 <template>
   <div id="access-screen">
-    <form method="POST" v-if="form.type == 'login'" class="form-login">
+    <form method="POST" @submit="login" v-if="form.type == 'login'" class="form-login">
       <div class="form-header">
         <h1 class="espacar">Acessar</h1>
         <button type="button" class="btn btn-close-window" @click="closeWindow()">
@@ -10,11 +10,11 @@
       <fieldset>
         <label>
           <img src="https://img.icons8.com/pastel-glyph/32/666666/user-male-circle.png">
-          <input type="email" name="iptLogin" placeholder="seu_email@exemplo.com">
+          <input type="email" name="iptLogin" v-model="form.login.iptLogin" placeholder="seu_email@exemplo.com">
         </label>
         <label>
           <img src="https://img.icons8.com/material-sharp/32/666666/password1.png"/>
-          <input type="password" name="iptPassword">
+          <input type="password" name="iptPassword" v-model="form.login.iptPassword">
         </label>
 
         <div class="access-action">
@@ -60,13 +60,24 @@
     data() {
       return {
         form: {
-          type: 'login'
+          type: 'login',
+          login: {
+            iptLogin: null,
+            iptPassword: null
+          }
         }
       }
     },
     methods: {
       closeWindow() {
         this.$emit('closeWindow')
+      },
+      login($event) {
+        console.log(`
+          login: ${ this.form.login.iptLogin }
+          password: ${ this.form.login.iptPassword }
+        `)
+        $event.preventDefault()
       }
     }
   }
