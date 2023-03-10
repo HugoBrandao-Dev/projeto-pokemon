@@ -1,6 +1,6 @@
 <template>
   <div id="access-screen">
-    <form method="POST">
+    <form method="POST" v-if="form.type == 'login'" class="form-login">
       <h1 class="espacar">Acessar</h1>
       <fieldset>
         <label>
@@ -18,6 +18,30 @@
         </div>
       </fieldset>
     </form>
+    <form method="POST" v-else-if="form.type == 'register'" class="form-register">
+      <h1 class="espacar">Cadastrar</h1>
+      <fieldset>
+        <label>Nome:</label>
+        <input type="text" name="iptName" placeholder="Nome completo">
+
+        <label>Email:</label>
+        <input type="email" name="iptEmail" placeholder="seu_email@exemplo.com">
+
+        <label>Data de nascimento:</label>
+        <input type="date" name="iptBornDate">
+
+        <label>Senha:</label>
+        <input type="password" name="iptPassword">
+
+        <label>Sua senha novamente:</label>
+        <input type="password" name="iptConfirmationPassword">
+
+        <div class="access-action">
+          <button class="btn">Cadastrar</button>
+          <button class="btn">Cancelar</button>
+        </div>
+      </fieldset>
+    </form>
   </div>
 </template>
 <script>
@@ -25,7 +49,9 @@
   export default {
     data() {
       return {
-
+        form: {
+          type: 'register'
+        }
       }
     }
   }
@@ -68,7 +94,7 @@
     align-items: center;
   }
 
-  #access-screen .access-action .btn {
+  #access-screen .form-login .btn {
     margin-right: 0;
     margin-bottom: 10px;
     display: flex;
@@ -76,5 +102,21 @@
     background-color: #3399ff;
     border-color: #3399ff;
     width: 100%;
+  }
+
+  #access-screen .form-register .access-action {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .form-register .access-action .btn:first-child {
+    background-color: #3399ff;
+    border-color: #3399ff;
+  }
+
+  .form-register .access-action .btn:last-child {
+    background-color: #ff3333;
+    border-color: #ff3333;
   }
 </style>
