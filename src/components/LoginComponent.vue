@@ -14,7 +14,7 @@
 
         <div class="access-action">
           <button class="btn">Login</button>
-          <button class="btn">Cadastrar</button>
+          <a class="btn" @click="form.type = 'register'">Cadastrar</a>
         </div>
       </fieldset>
     </form>
@@ -38,7 +38,7 @@
 
         <div class="access-action">
           <button class="btn">Cadastrar</button>
-          <button class="btn">Cancelar</button>
+          <button class="btn" @click="form.type = 'login'">Cancelar</button>
         </div>
       </fieldset>
     </form>
