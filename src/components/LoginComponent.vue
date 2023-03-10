@@ -23,7 +23,7 @@
         </div>
       </fieldset>
     </form>
-    <form method="POST" v-else-if="form.type == 'register'" class="form-register">
+    <form method="POST" @submit="register" v-else-if="form.type == 'register'" class="form-register">
       <div class="form-header">
         <h1 class="espacar">Cadastrar</h1>
         <button type="button" class="btn btn-close-window" @click="closeWindow()">
@@ -32,19 +32,19 @@
       </div>
       <fieldset>
         <label>Nome:</label>
-        <input type="text" name="iptName" placeholder="Nome completo">
+        <input type="text" v-model="form.register.iptName" name="iptName" placeholder="Nome completo">
 
         <label>Email:</label>
-        <input type="email" name="iptEmail" placeholder="seu_email@exemplo.com">
+        <input type="email" v-model="form.register.iptEmail" name="iptEmail" placeholder="seu_email@exemplo.com">
 
         <label>Data de nascimento:</label>
-        <input type="date" name="iptBornDate">
+        <input type="date" v-model="form.register.iptBornDate" name="iptBornDate">
 
         <label>Senha:</label>
-        <input type="password" name="iptPassword">
+        <input type="password" v-model="form.register.iptPassword" name="iptPassword">
 
         <label>Sua senha novamente:</label>
-        <input type="password" name="iptConfirmationPassword">
+        <input type="password" v-model="form.register.iptConfirmationPassword" name="iptConfirmationPassword">
 
         <div class="access-action">
           <button class="btn">Cadastrar</button>
@@ -64,6 +64,13 @@
           login: {
             iptLogin: null,
             iptPassword: null
+          },
+          register: {
+            iptName: null,
+            iptEmail: null,
+            iptBornDate: null,
+            iptPassword: null,
+            iptConfirmationPassword: null
           }
         }
       }
@@ -76,6 +83,16 @@
         console.log(`
           login: ${ this.form.login.iptLogin }
           password: ${ this.form.login.iptPassword }
+        `)
+        $event.preventDefault()
+      },
+      register($event) {
+        console.log(`
+          Name: ${ this.form.register.iptName }
+          Email: ${ this.form.register.iptEmail }
+          BornDate: ${ this.form.register.iptBornDate }
+          Password: ${ this.form.register.iptPassword }
+          ConfirmationPassword: ${ this.form.register.iptConfirmationPassword }
         `)
         $event.preventDefault()
       }
