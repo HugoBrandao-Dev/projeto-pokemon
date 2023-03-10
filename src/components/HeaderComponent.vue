@@ -1,10 +1,10 @@
 <template>
   <header id="cabecalho" class="centralizar espacar">
-      <LoginComponent />
+      <LoginComponent v-show="showLoginScreen" />
       <h1>Projeto Pokemon</h1>
       <div class="login">
         <small v-show="user.hasUser" class="user-name">{{ user.info.login }}</small>
-        <button class="btn btn-login">
+        <button class="btn btn-login" @click="showLoginScreen = !showLoginScreen">
           <img :src="iconUser"/>
         </button>
       </div>
@@ -22,7 +22,8 @@
           info: {
             login: ''
           }
-        }
+        },
+        showLoginScreen: false
       }
     },
     components: {
