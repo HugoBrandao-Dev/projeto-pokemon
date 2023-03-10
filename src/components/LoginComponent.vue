@@ -14,7 +14,7 @@
 
         <div class="access-action">
           <button class="btn">Login</button>
-          <a href="#">Cadastrar</a>
+          <button class="btn">Cadastrar</button>
         </div>
       </fieldset>
     </form>
@@ -50,7 +50,7 @@
     data() {
       return {
         form: {
-          type: 'register'
+          type: 'login'
         }
       }
     }
@@ -94,6 +94,8 @@
     align-items: center;
   }
 
+  /* Formulário de login */
+
   #access-screen .form-login .btn {
     margin-right: 0;
     margin-bottom: 10px;
@@ -103,6 +105,16 @@
     border-color: #3399ff;
     width: 100%;
   }
+
+  #access-screen .form-login .btn:last-child {
+    background-color: #ffffff;
+    color: #3399ff;
+    border-style: solid;
+    border-top-style: dotted;
+    border-right-style: dotted;
+  }
+
+  /* Formulário de cadastro */
 
   #access-screen .form-register .access-action {
     display: flex;
