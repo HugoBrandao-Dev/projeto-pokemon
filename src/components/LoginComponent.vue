@@ -76,8 +76,22 @@
       }
     },
     methods: {
+      resetFields() {
+        // Reset da tela de login
+        this.form.login.iptLogin = null
+        this.form.login.iptPassword = null
+
+        // Reset da tela de cadastro
+        this.form.register.iptName = null
+        this.form.register.iptEmail = null
+        this.form.register.iptBornDate = null
+        this.form.register.iptPassword = null
+        this.form.register.iptConfirmationPassword = null
+      },
       closeWindow() {
         this.$emit('closeWindow')
+        this.resetFields()
+        this.form.type = 'login'
       },
       login($event) {
         console.log(`
