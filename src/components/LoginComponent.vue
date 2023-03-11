@@ -149,9 +149,13 @@
     width: calc(100% - (32px + 5px));
     padding: 5px 10px;
     border: none;
-    border-bottom: solid 3px #666666;
+    border-bottom: solid 2px #666666;
     margin-bottom: 20px;
     outline: none;
+  }
+
+  #access-screen input:focus {
+    border-bottom-width: 3px;
   }
 
   #access-screen .access-action {
