@@ -123,15 +123,11 @@
 
         let isFieldsRight = true
 
-        if (!validator.isEmail(this.form.login.iptLogin.value)) {
-          this.form.login.iptLogin.errorMessage = 'Login inválido.'
-        }
+        this.form.login.iptLogin.errorMessage = !validator.isEmail(this.form.login.iptLogin.value) ? 'Login inválido' : ''
 
-        if (!validator.isAlphanumeric(this.form.login.iptPassword.value, ['pt-BR'], {
+        this.form.login.iptPassword.errorMessage = !validator.isAlphanumeric(this.form.login.iptPassword.value, ['pt-BR'], {
           ignore: '.,@#%&*()!@'
-        })) {
-          this.form.login.iptPassword.errorMessage = 'Password inválido.'
-        }
+        }) ? 'Password inválida.' : ''
 
         for (let field of Object.keys(this.form.login)) {
           if (this.form.login[field].errorMessage.length != 0) {
@@ -141,7 +137,6 @@
 
         if (isFieldsRight) {
           alert('Logado com sucesso!')
-          this.resetFormFields()
         } else {
           alert('Erro no login :(')
         }
