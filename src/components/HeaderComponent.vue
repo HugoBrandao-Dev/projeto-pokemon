@@ -1,6 +1,9 @@
 <template>
   <header id="cabecalho" class="centralizar espacar">
-      <LoginComponent v-show="showLoginScreen" @closeWindow="showLoginScreen = false"/>
+      <LoginComponent 
+        v-show="showLoginScreen" 
+        @closeWindow="showLoginScreen = false"
+        @logged="logged" />
       <h1>Projeto Pokemon</h1>
       <div class="login">
         <small v-show="user.hasUser" class="user-name">{{ user.info.login }}</small>
@@ -35,6 +38,13 @@
           return 'https://img.icons8.com/pastel-glyph/32/00cc99/user-male-circle.png'
         }
         return 'https://img.icons8.com/pastel-glyph/32/ff3333/user-male-circle.png'
+      }
+    },
+    methods: {
+      logged() {
+        this.user.hasUser = true
+        this.showLoginScreen = false
+        alert('Logado com sucesso!')
       }
     }
   }

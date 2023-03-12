@@ -143,7 +143,7 @@
         }
 
         if (areFormFieldsCorrect) {
-          alert('Logado com sucesso!')
+          this.$emit('logged')
           this.resetFormFields()
         } else {
           alert('Erro no login :(')
