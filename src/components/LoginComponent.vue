@@ -55,6 +55,7 @@
   </div>
 </template>
 <script>
+  import validator from 'validator'
   
   export default {
     data() {
@@ -99,15 +100,15 @@
     methods: {
       resetFields() {
         // Reset da tela de login
-        this.form.login.iptLogin.value = null
-        this.form.login.iptPassword.value = null
+        this.form.login.iptLogin.value = ''
+        this.form.login.iptPassword.value = ''
 
         // Reset da tela de cadastro
-        this.form.register.iptName.value = null
-        this.form.register.iptEmail.value = null
-        this.form.register.iptBornDate.value = null
-        this.form.register.iptPassword.value = null
-        this.form.register.iptConfirmationPassword.value = null
+        this.form.register.iptName.value = ''
+        this.form.register.iptEmail.value = ''
+        this.form.register.iptBornDate.value = ''
+        this.form.register.iptPassword.value = ''
+        this.form.register.iptConfirmationPassword.value = ''
       },
       closeWindow() {
         this.$emit('closeWindow')
@@ -115,11 +116,32 @@
         this.form.type = 'login'
       },
       login($event) {
-        console.log(`
-          login: ${ this.form.login.iptLogin.value }
-          password: ${ this.form.login.iptPassword.value }
-        `)
         $event.preventDefault()
+
+        let isFieldsRight = true
+
+        if (!validator.isEmail(this.form.login.iptLogin.value)) {
+          this.form.login.iptLogin.errorMessage = 'Login inválido.'
+        }
+
+        if (!validator.isAlphanumeric(this.form.login.iptPassword.value, ['pt-BR'], {
+          ignore: '.,@#%&*()!@'
+        })) {
+          this.form.login.iptPassword.errorMessage = 'Password inválido.'
+        }
+
+        for (let field of Object.keys(this.form.login)) {
+          if (this.form.login[field].errorMessage.length != 0) {
+            isFieldsRight = false
+          }
+        }
+
+        if (isFieldsRight) {
+          alert('Logado com sucesso!')
+        } else {
+          alert('Erro no login :(')
+        }
+
       },
       register($event) {
         console.log(`
