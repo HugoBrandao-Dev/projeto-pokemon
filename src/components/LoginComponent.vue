@@ -142,6 +142,7 @@
 
         if (areFormFieldsCorrect) {
           alert('Logado com sucesso!')
+          this.resetFormFields()
         } else {
           alert('Erro no login :(')
         }
@@ -174,6 +175,7 @@
 
         if (areFormFieldsCorrect) {
           alert('Usuário cadastrado com sucesso.')
+          this.resetFormFields()
         } else {
           alert('Erro no cadastro do usuário.')
         }
