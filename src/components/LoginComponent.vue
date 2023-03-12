@@ -100,7 +100,9 @@
               value: null,
               errorMessage: ''
             }
-          }
+          },
+          acceptableCharactersPassword: '.@#%&*!@_',
+          acceptableCharactersName: ' -\''
         }
       }
     },
@@ -131,7 +133,7 @@
         this.form.login.iptLogin.errorMessage = !validator.isEmail(this.form.login.iptLogin.value) ? 'Login inválido' : ''
 
         this.form.login.iptPassword.errorMessage = !validator.isAlphanumeric(this.form.login.iptPassword.value, ['pt-BR'], {
-          ignore: '.,@#%&*()!@'
+          ignore: this.form.acceptableCharactersPassword
         }) ? 'Password inválida.' : ''
 
         for (let field of Object.keys(this.form.login)) {
@@ -154,7 +156,7 @@
         let areFormFieldsCorrect = true
 
         this.form.register.iptName.errorMessage = !validator.isAlpha(this.form.register.iptName.value, ['pt-BR'], {
-          ignore: ' \''
+          ignore: this.form.acceptableCharactersName
         }) ? 'Nome inválido.' : ''
 
         this.form.register.iptEmail.errorMessage = !validator.isEmail(this.form.register.iptEmail.value) ? 'Email inválido' : ''
@@ -162,7 +164,7 @@
         this.form.register.iptBornDate.errorMessage = !validator.isDate(this.form.register.iptBornDate.value) ? 'Data de nascimento inválida' : ''
 
         this.form.register.iptPassword.errorMessage = !validator.isAlphanumeric(this.form.register.iptPassword.value, ['pt-BR'], {
-          ignore: '.,@#%&*()!@'
+          ignore: this.form.acceptableCharactersPassword
         }) ? 'Senha inválida' : ''
 
         this.form.register.iptConfirmationPassword.errorMessage = !validator.equals(this.form.register.iptPassword.value, this.form.register.iptConfirmationPassword.value) ? 'Senha de confirmação não confere.' : ''
