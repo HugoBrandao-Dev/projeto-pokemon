@@ -10,11 +10,11 @@
       <fieldset>
         <label>
           <img src="https://img.icons8.com/pastel-glyph/32/666666/user-male-circle.png">
-          <input type="email" name="iptLogin" v-model="form.login.iptLogin" placeholder="seu_email@exemplo.com">
+          <input type="email" name="iptLogin" v-model="form.login.iptLogin.value" placeholder="seu_email@exemplo.com">
         </label>
         <label>
           <img src="https://img.icons8.com/material-sharp/32/666666/password1.png"/>
-          <input type="password" name="iptPassword" v-model="form.login.iptPassword">
+          <input type="password" name="iptPassword" v-model="form.login.iptPassword.value">
         </label>
 
         <div class="access-action">
@@ -32,19 +32,19 @@
       </div>
       <fieldset>
         <label>Nome:</label>
-        <input type="text" v-model="form.register.iptName" name="iptName" placeholder="Nome completo">
+        <input type="text" v-model="form.register.iptName.value" name="iptName" placeholder="Nome completo">
 
         <label>Email:</label>
-        <input type="email" v-model="form.register.iptEmail" name="iptEmail" placeholder="seu_email@exemplo.com">
+        <input type="email" v-model="form.register.iptEmail.value" name="iptEmail" placeholder="seu_email@exemplo.com">
 
         <label>Data de nascimento:</label>
-        <input type="date" v-model="form.register.iptBornDate" name="iptBornDate">
+        <input type="date" v-model="form.register.iptBornDate.value" name="iptBornDate">
 
         <label>Senha:</label>
-        <input type="password" v-model="form.register.iptPassword" name="iptPassword">
+        <input type="password" v-model="form.register.iptPassword.value" name="iptPassword">
 
         <label>Sua senha novamente:</label>
-        <input type="password" v-model="form.register.iptConfirmationPassword" name="iptConfirmationPassword">
+        <input type="password" v-model="form.register.iptConfirmationPassword.value" name="iptConfirmationPassword">
 
         <div class="access-action">
           <button class="btn">Cadastrar</button>
@@ -62,15 +62,36 @@
         form: {
           type: 'login',
           login: {
-            iptLogin: null,
-            iptPassword: null
+            iptLogin: {
+              value: null,
+              errorMessage: ''
+            },
+            iptPassword: {
+              value: null,
+              errorMessage: ''
+            }
           },
           register: {
-            iptName: null,
-            iptEmail: null,
-            iptBornDate: null,
-            iptPassword: null,
-            iptConfirmationPassword: null
+            iptName: {
+              value: null,
+              errorMessage: ''
+            },
+            iptEmail: {
+              value: null,
+              errorMessage: ''
+            },
+            iptBornDate: {
+              value: null,
+              errorMessage: ''
+            },
+            iptPassword: {
+              value: null,
+              errorMessage: ''
+            },
+            iptConfirmationPassword: {
+              value: null,
+              errorMessage: ''
+            }
           }
         }
       }
@@ -78,15 +99,15 @@
     methods: {
       resetFields() {
         // Reset da tela de login
-        this.form.login.iptLogin = null
-        this.form.login.iptPassword = null
+        this.form.login.iptLogin.value = null
+        this.form.login.iptPassword.value = null
 
         // Reset da tela de cadastro
-        this.form.register.iptName = null
-        this.form.register.iptEmail = null
-        this.form.register.iptBornDate = null
-        this.form.register.iptPassword = null
-        this.form.register.iptConfirmationPassword = null
+        this.form.register.iptName.value = null
+        this.form.register.iptEmail.value = null
+        this.form.register.iptBornDate.value = null
+        this.form.register.iptPassword.value = null
+        this.form.register.iptConfirmationPassword.value = null
       },
       closeWindow() {
         this.$emit('closeWindow')
@@ -95,18 +116,18 @@
       },
       login($event) {
         console.log(`
-          login: ${ this.form.login.iptLogin }
-          password: ${ this.form.login.iptPassword }
+          login: ${ this.form.login.iptLogin.value }
+          password: ${ this.form.login.iptPassword.value }
         `)
         $event.preventDefault()
       },
       register($event) {
         console.log(`
-          Name: ${ this.form.register.iptName }
-          Email: ${ this.form.register.iptEmail }
-          BornDate: ${ this.form.register.iptBornDate }
-          Password: ${ this.form.register.iptPassword }
-          ConfirmationPassword: ${ this.form.register.iptConfirmationPassword }
+          Name: ${ this.form.register.iptName.value }
+          Email: ${ this.form.register.iptEmail.value }
+          BornDate: ${ this.form.register.iptBornDate.value }
+          Password: ${ this.form.register.iptPassword.value }
+          ConfirmationPassword: ${ this.form.register.iptConfirmationPassword.value }
         `)
         $event.preventDefault()
       }
