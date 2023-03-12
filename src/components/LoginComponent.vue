@@ -148,14 +148,35 @@
 
       },
       register($event) {
-        console.log(`
-          Name: ${ this.form.register.iptName.value }
-          Email: ${ this.form.register.iptEmail.value }
-          BornDate: ${ this.form.register.iptBornDate.value }
-          Password: ${ this.form.register.iptPassword.value }
-          ConfirmationPassword: ${ this.form.register.iptConfirmationPassword.value }
-        `)
         $event.preventDefault()
+
+        let isFieldsRight = true
+
+        this.form.register.iptName.errorMessage = !validator.isAlpha(this.form.register.iptName.value, ['pt-BR'], {
+          ignore: ' \''
+        }) ? 'Nome inválido.' : ''
+
+        this.form.register.iptEmail.errorMessage = !validator.isEmail(this.form.register.iptEmail.value) ? 'Email inválido' : ''
+
+        this.form.register.iptBornDate.errorMessage = !validator.isDate(this.form.register.iptBornDate.value) ? 'Data de nascimento inválida' : ''
+
+        this.form.register.iptPassword.errorMessage = !validator.isAlphanumeric(this.form.register.iptPassword.value, ['pt-BR'], {
+          ignore: '.,@#%&*()!@'
+        }) ? 'Senha inválida' : ''
+
+        this.form.register.iptConfirmationPassword.errorMessage = !validator.equals(this.form.register.iptPassword.value, this.form.register.iptConfirmationPassword.value) ? 'Senha de confirmação não confere.' : ''
+
+        for (let field of Object.keys(this.form.register)) {
+          if (this.form.register[field].errorMessage.length != 0) {
+            isFieldsRight = false
+          }
+        }
+
+        if (isFieldsRight) {
+          alert('Usuário cadastrado com sucesso.')
+        } else {
+          alert('Erro no cadastro do usuário.')
+        }
       }
     }
   }
