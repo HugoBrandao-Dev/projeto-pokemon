@@ -197,7 +197,6 @@
     padding: 5px 10px;
     border: none;
     border-bottom: solid 2px #666666;
-    margin-bottom: 20px;
     outline: none;
   }
 
@@ -212,6 +211,12 @@
   }
 
   /* Formulário de login */
+
+  .form-login fieldset label {
+    margin-bottom: 20px;
+
+    display: flex;
+  }
 
   .form-login .access-action .btn {
     margin-right: 0;
