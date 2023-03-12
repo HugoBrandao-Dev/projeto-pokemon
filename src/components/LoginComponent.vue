@@ -11,10 +11,12 @@
         <label>
           <img src="https://img.icons8.com/pastel-glyph/32/666666/user-male-circle.png">
           <input type="email" name="iptLogin" v-model="form.login.iptLogin.value" placeholder="seu_email@exemplo.com">
+          <small class="error-message">{{ form.login.iptLogin.errorMessage }}</small>
         </label>
         <label>
           <img src="https://img.icons8.com/material-sharp/32/666666/password1.png"/>
           <input type="password" name="iptPassword" v-model="form.login.iptPassword.value">
+          <small class="error-message">{{ form.login.iptPassword.errorMessage }}</small>
         </label>
 
         <div class="access-action">
