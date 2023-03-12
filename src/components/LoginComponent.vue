@@ -35,18 +35,23 @@
       <fieldset>
         <label>Nome:</label>
         <input type="text" v-model="form.register.iptName.value" name="iptName" placeholder="Nome completo">
+        <small class="error-message">{{ form.register.iptName.errorMessage }}</small>
 
         <label>Email:</label>
         <input type="email" v-model="form.register.iptEmail.value" name="iptEmail" placeholder="seu_email@exemplo.com">
+        <small class="error-message">{{ form.register.iptEmail.errorMessage }}</small>
 
         <label>Data de nascimento:</label>
         <input type="date" v-model="form.register.iptBornDate.value" name="iptBornDate">
+        <small class="error-message">{{ form.register.iptBornDate.errorMessage }}</small>
 
         <label>Senha:</label>
         <input type="password" v-model="form.register.iptPassword.value" name="iptPassword">
+        <small class="error-message">{{ form.register.iptPassword.errorMessage }}</small>
 
         <label>Sua senha novamente:</label>
         <input type="password" v-model="form.register.iptConfirmationPassword.value" name="iptConfirmationPassword">
+        <small class="error-message">{{ form.register.iptConfirmationPassword.errorMessage }}</small>
 
         <div class="access-action">
           <button class="btn">Cadastrar</button>
@@ -205,6 +210,13 @@
     align-items: center;
   }
 
+  .form-login fieldset .error-message, .form-register fieldset .error-message {
+    align-self: flex-start;
+    font-size: 9px;
+    color: #ee6666;
+    font-weight: bolder;
+  }
+
   /* Formulário de login */
 
   .form-login fieldset label {
@@ -212,13 +224,6 @@
 
     display: flex;
     flex-wrap: wrap;
-  }
-
-  .form-login fieldset .error-message {
-    align-self: flex-start;
-    font-size: 9px;
-    color: #ee6666;
-    font-weight: bolder;
   }
 
   .form-login .access-action .btn {
@@ -240,6 +245,10 @@
   }
 
   /* Formulário de cadastro */
+
+  .form-register fieldset .error-message {
+    margin-bottom: 20px;
+  }
 
   #access-screen .form-register .access-action {
     display: flex;
