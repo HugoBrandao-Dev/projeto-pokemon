@@ -216,6 +216,14 @@
     margin-bottom: 20px;
 
     display: flex;
+    flex-wrap: wrap;
+  }
+
+  .form-login fieldset .error-message {
+    align-self: flex-start;
+    font-size: 9px;
+    color: #ee6666;
+    font-weight: bolder;
   }
 
   .form-login .access-action .btn {
