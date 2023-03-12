@@ -126,7 +126,7 @@
       login($event) {
         $event.preventDefault()
 
-        let isFieldsRight = true
+        let areFormFieldsCorrect = true
 
         this.form.login.iptLogin.errorMessage = !validator.isEmail(this.form.login.iptLogin.value) ? 'Login inválido' : ''
 
@@ -136,11 +136,11 @@
 
         for (let field of Object.keys(this.form.login)) {
           if (this.form.login[field].errorMessage.length != 0) {
-            isFieldsRight = false
+            areFormFieldsCorrect = false
           }
         }
 
-        if (isFieldsRight) {
+        if (areFormFieldsCorrect) {
           alert('Logado com sucesso!')
         } else {
           alert('Erro no login :(')
@@ -150,7 +150,7 @@
       register($event) {
         $event.preventDefault()
 
-        let isFieldsRight = true
+        let areFormFieldsCorrect = true
 
         this.form.register.iptName.errorMessage = !validator.isAlpha(this.form.register.iptName.value, ['pt-BR'], {
           ignore: ' \''
@@ -168,11 +168,11 @@
 
         for (let field of Object.keys(this.form.register)) {
           if (this.form.register[field].errorMessage.length != 0) {
-            isFieldsRight = false
+            areFormFieldsCorrect = false
           }
         }
 
-        if (isFieldsRight) {
+        if (areFormFieldsCorrect) {
           alert('Usuário cadastrado com sucesso.')
         } else {
           alert('Erro no cadastro do usuário.')
