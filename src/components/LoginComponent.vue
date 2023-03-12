@@ -98,21 +98,22 @@
       }
     },
     methods: {
-      resetFields() {
+      resetFormFields() {
         // Reset da tela de login
-        this.form.login.iptLogin.value = ''
-        this.form.login.iptPassword.value = ''
+        for (let field of Object.keys(this.form.login)) {
+          this.form.login[field].value = ''
+          this.form.login[field].errorMessage = ''
+        }
 
         // Reset da tela de cadastro
-        this.form.register.iptName.value = ''
-        this.form.register.iptEmail.value = ''
-        this.form.register.iptBornDate.value = ''
-        this.form.register.iptPassword.value = ''
-        this.form.register.iptConfirmationPassword.value = ''
+        for (let field of Object.keys(this.form.register)) {
+          this.form.register[field].value = ''
+          this.form.register[field].errorMessage = ''
+        }
       },
       closeWindow() {
         this.$emit('closeWindow')
-        this.resetFields()
+        this.resetFormFields()
         this.form.type = 'login'
       },
       login($event) {
@@ -138,6 +139,7 @@
 
         if (isFieldsRight) {
           alert('Logado com sucesso!')
+          this.resetFormFields()
         } else {
           alert('Erro no login :(')
         }
