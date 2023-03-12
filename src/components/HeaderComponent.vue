@@ -4,10 +4,11 @@
         v-show="showLoginScreen" 
         @closeWindow="showLoginScreen = false"
         @logged="logged" />
+      <AlertComponent @alert="setAlert($event)"/>
       <h1>Projeto Pokemon</h1>
       <div class="login">
         <small v-show="user.hasUser" class="user-name">{{ user.info.login }}</small>
-        <button class="btn btn-login" @click="showLoginScreen = !showLoginScreen">
+        <button class="btn btn-login" @click="actionUserButton">
           <img :src="iconUser"/>
         </button>
       </div>
@@ -16,10 +17,12 @@
 
 <script>
   import LoginComponent from './LoginComponent'
+  import AlertComponent from './AlertComponent'
 
   export default {
     data() {
       return {
+        myWindows: {},
         user: {
           hasUser: false,
           info: {
@@ -30,7 +33,8 @@
       }
     },
     components: {
-      LoginComponent
+      LoginComponent,
+      AlertComponent
     },
     computed: {
       iconUser() {
@@ -41,10 +45,26 @@
       }
     },
     methods: {
+      setAlert($event) {
+        this.myWindow = $event.myWindow
+      },
       logged() {
         this.user.hasUser = true
         this.showLoginScreen = false
         alert('Logado com sucesso!')
+      },
+      loggedOut() {
+        this.user.hasUser = false
+      },
+      actionUserButton() {
+        if (this.user.hasUser) {
+          this.myWindow.type = 'error'
+          this.myWindow.title = 'Sair'
+          this.myWindow.content.push('Deseja realmente sair?')
+          this.myWindow.response.execFunction = this.loggedOut
+        } else {
+          this.showLoginScreen = true
+        }
       }
     }
   }
