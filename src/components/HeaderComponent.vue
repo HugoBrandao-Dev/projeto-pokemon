@@ -32,6 +32,9 @@
         showLoginScreen: false
       }
     },
+    created() {
+      this.$emit('user', { user: this.user })
+    },
     components: {
       LoginComponent,
       AlertComponent

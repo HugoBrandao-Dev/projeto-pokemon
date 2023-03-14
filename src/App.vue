@@ -5,7 +5,8 @@
       @selectedPokemon="selectedPokemon($event)"
       @matchCanceled="cancelMatch()" />
     <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
-      <HeaderComponent />
+      <HeaderComponent
+      @user="setUser($event)" />
       <section id="jogadores">
         <PokemonComponent 
           @player="setPokemonPlayer($event)"
@@ -23,6 +24,7 @@
         @generatePokemons="setPokemons"
         @setAbilities="setSpecialAbilities($event)"
         @increaseExp="increaseExp(50)"
+        :user="user"
         :player="jogador" 
         :npc="monstro" 
         :statusMatch="match" 
@@ -53,6 +55,7 @@
           pokemonsOptionsForBeginners: ['bulbasaur', 'charmander', 'squirtle', 'pichu'],
           pokemonsJogador: []
         },
+        user: {},
         jogador: {},
         monstro: {},
         configurations: {
@@ -149,6 +152,9 @@
       },
       setAlert($event) {
         this.myWindow = $event.myWindow
+      },
+      setUser($event) {
+        this.user = $event.user
       },
       statusMatch($event) {
         this.match = $event.status

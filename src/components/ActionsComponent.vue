@@ -24,8 +24,11 @@
       </button>
     </div>
     <div v-else>
-      <button id="btn-iniciar" type="button" class="btn" :disabled="!startable" @click="iniciar">
+      <button v-if="user.hasUser" type="button" class="btn btn-iniciar" :disabled="!startable" @click="iniciar">
         Iniciar nova partida
+      </button>
+      <button v-else type="button" class="btn btn-iniciar-wait" :disabled="!startable">
+        Faça login...
       </button>
     </div>
   </section>
@@ -53,11 +56,12 @@
       AlertComponent
     },
     props: {
+      user: Object,
       player: Object,
       npc: Object,
       statusMatch: Object,
       logActions: Array,
-      startable: Boolean
+      startable: Boolean,
     },
     filters: {
       formatSpecialAttackName(name) {
@@ -329,10 +333,16 @@
     border-color: #404040;
   }
 
-  #btn-iniciar {
+  .btn-iniciar {
     background-color: #33cc33;
     color: #fff;
     border-color: #33cc33;
+  }
+
+  .btn-iniciar-wait {
+    border-style: solid;
+    background-color: #47476b;
+    color: #33cc33;
   }
 
   #btn-iniciar:disabled {
