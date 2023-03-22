@@ -56,7 +56,7 @@
         this.showLoginScreen = false
         alert('Logado com sucesso!')
       },
-      loggedOut() {
+      logout() {
         this.user.hasUser = false
       },
       actionUserButton() {
@@ -64,7 +64,7 @@
           this.myWindow.type = 'error'
           this.myWindow.title = 'Sair'
           this.myWindow.content.push('Deseja realmente sair?')
-          this.myWindow.response.execFunction = this.loggedOut
+          this.myWindow.response.execFunction = this.logout
         } else {
           this.showLoginScreen = true
         }
