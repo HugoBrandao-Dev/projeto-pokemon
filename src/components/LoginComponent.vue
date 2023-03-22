@@ -63,6 +63,7 @@
 </template>
 <script>
   import validator from 'validator'
+  import axios from 'axios'
   
   export default {
     data() {
@@ -143,8 +144,20 @@
         }
 
         if (areFormFieldsCorrect) {
-          this.$emit('logged')
-          this.resetFormFields()
+          axios.post('http://localhost:4000/login', {
+            email: this.form.login.iptLogin.value,
+            user_password: this.form.login.iptPassword.value
+          }).then(response => {
+              if (response.data.errorField) {
+                this.form.login[response.data.errorField].errorMessage = response.data.msg
+              } else {
+                this.$emit('logged')
+                this.resetFormFields()
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
         } else {
           alert('Erro no login :(')
         }
