@@ -16,8 +16,12 @@
 </template>
 
 <script>
+  // Componentes
   import LoginComponent from './LoginComponent'
   import AlertComponent from './AlertComponent'
+
+  // Bibliotecas
+  import axios from 'axios'
 
   export default {
     data() {
@@ -57,7 +61,13 @@
         alert('Logado com sucesso!')
       },
       logout() {
-        this.user.hasUser = false
+        axios.get('http://localhost:4000/logout')
+          .then(() => {
+            this.user.hasUser = false
+          })
+          .catch(error => {
+            console.log(error)
+          })
       },
       actionUserButton() {
         if (this.user.hasUser) {
