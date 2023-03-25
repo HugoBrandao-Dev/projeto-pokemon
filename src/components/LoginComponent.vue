@@ -189,8 +189,22 @@
         }
 
         if (areFormFieldsCorrect) {
-          alert('Usuário cadastrado com sucesso.')
-          this.resetFormFields()
+          axios.post('http://localhost:4000/register', {
+            full_name: this.form.register.iptName.value,
+            born_date: this.form.register.iptBornDate.value,
+            email: this.form.register.iptEmail.value,
+            user_password: this.form.register.iptPassword.value
+          }).then(response => {
+              if (response.data.errorField) {
+                this.form.register[response.data.errorField].errorMessage = response.data.msg
+              } else {
+                alert('Usuário cadastrado com sucesso.')
+                this.resetFormFields()
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
         } else {
           alert('Erro no cadastro do usuário.')
         }
