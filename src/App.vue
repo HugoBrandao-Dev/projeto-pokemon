@@ -92,6 +92,12 @@
       }
     },
     methods: {
+      getAuthorization() {
+        const headers = {
+          Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
+        }
+        return { headers }
+      },
       getPokemonsIDsInterval(generation) {
         let min = 0
         let max = 0
