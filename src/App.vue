@@ -47,6 +47,10 @@
   // Bibliotecas
   import axios from 'axios'
 
+  const axios_database = axios.create({
+    baseURL: 'http://localhost:4000'
+  })
+
   export default {
     name: 'App',
     data() {
@@ -704,53 +708,68 @@
       },
       async setPokemons() {
         this.match.selecionarPokemon = true
-        if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
-          let pokemonsWithInfos = []
-          for (let name of this.DATABASE_FAKE.pokemonsOptionsForBeginners) {
-            let pokemon = { info: {}, plus_status: {} }
-            try {
-              let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ name }`)
-              pokemon.info.specie = responsePokemon.data.species.name
-              pokemon.info.experience = responsePokemon.data.base_experience
-              let responseSpecie = await axios.get(responsePokemon.data.species.url)
-              pokemon.info.id = 0
-              pokemon.info.chain = this.getChainId(responseSpecie.data.evolution_chain.url)
-              pokemon.info.evolution = 1
-              pokemon.info.special_attacks = []
-              pokemon.info.ball = 'poke-ball'
-              pokemon.info.pictureId = responsePokemon.data.id
-              pokemon.info.types = []
 
-              pokemon.plus_status.hp = 0
-              pokemon.plus_status.attack = 0
-              pokemon.plus_status.special_attack = 0
-              pokemon.plus_status.defense = 0
-              pokemon.plus_status.special_defense = 0
-              pokemon.plus_status.speed = 0
+        try {
+          let responsePokemons = await axios_database.get('/user/pokemons', this.getAuthorization())
+          let pokemonsJogador = responsePokemons.data
 
-              for (let item of responsePokemon.data.types) {
-                pokemon.info.types.push({
-                  type: item.type.name,
-                  url: null
-                })
+          // Se o jogador já tiver pokemon, aparecerá na lista.
+          if (pokemonsJogador.length) {
+            for (let pokemon of pokemonsJogador) {
+              try {
+                let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.specie }`)
+                this.setTypes(pokemon, responsePokemon.data.types)
+                this.setTypeImageLink(pokemon)
+              } catch (error) {
+                console.error(error)
               }
-              this.setTypeImageLink(pokemon)
-            } catch (error) {
-              console.log(error)
+            }
+            this.setMessage('info', 'Selecione seu pokemon:', pokemonsJogador)
+
+          // Caso contrário, será mostrada uma lista de pokemons que poderá escolher como inicial.
+          } else {
+            let pokemonsWithInfos = []
+            for (let name of this.DATABASE_FAKE.pokemonsOptionsForBeginners) {
+              let pokemon = { info: {}, plus_status: {} }
+              try {
+                let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ name }`)
+                pokemon.info.specie = responsePokemon.data.species.name
+                pokemon.info.experience = responsePokemon.data.base_experience
+                let responseSpecie = await axios.get(responsePokemon.data.species.url)
+                pokemon.info.id = 0
+                pokemon.info.chain = this.getChainId(responseSpecie.data.evolution_chain.url)
+                pokemon.info.evolution = 1
+                pokemon.info.special_attacks = []
+                pokemon.info.ball = 'poke-ball'
+                pokemon.info.pictureId = responsePokemon.data.id
+                pokemon.info.types = []
+
+                pokemon.plus_status.hp = 0
+                pokemon.plus_status.attack = 0
+                pokemon.plus_status.special_attack = 0
+                pokemon.plus_status.defense = 0
+                pokemon.plus_status.special_defense = 0
+                pokemon.plus_status.speed = 0
+
+                for (let item of responsePokemon.data.types) {
+                  pokemon.info.types.push({
+                    type: item.type.name,
+                    url: null
+                  })
+                }
+                this.setTypeImageLink(pokemon)
+              } catch (error) {
+                console.error(error)
+              }
+
+              pokemonsWithInfos.push(pokemon)
             }
 
-            pokemonsWithInfos.push(pokemon)
+            this.setMessage('info', 'Escolha seu primeiro pokemon:', pokemonsWithInfos)
           }
 
-          this.setMessage('info', 'Escolha seu primeiro pokemon:', pokemonsWithInfos)
-        } else {
-          let pokemons = [...this.DATABASE_FAKE.pokemonsJogador]
-          for (let pokemon of pokemons) {
-            let response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.info.specie }`)
-            this.setTypes(pokemon, response.data.types)
-            this.setTypeImageLink(pokemon)
-          }
-          this.setMessage('info', 'Selecione seu pokemon:', pokemons)
+        } catch (error) {
+          console.error(error)
         }
 
         // Configurações das escolhas dos pokemons.
