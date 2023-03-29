@@ -209,9 +209,9 @@
             id: this.DATABASE_FAKE.pokemonsJogador.length,
             specie: this.monstro.pokemon.info.specie,
             experience: this.monstro.pokemon.info.experience,
-            chain: this.monstro.pokemon.info.chain,
+            chain: this.monstro.pokemon.info.chain_id,
             types: [],
-            evolution: this.monstro.pokemon.info.evolution,
+            evolution: this.monstro.pokemon.info.evolution_id,
             ball,
             pictureId: this.getPictureId(this.monstro.pokemon.info.picture)
           },
@@ -236,7 +236,7 @@
       },
       async getAllEvolutions(pokemon) {
         try {
-          let responseChain = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ pokemon.info.chain }/`)
+          let responseChain = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ pokemon.info.chain_id }/`)
             // Pega a forma base
             let evolutions = [
               {
@@ -278,7 +278,7 @@
         let canEvolve = false
 
         // evolution representa a evolução, mas também a próxima, já que o array de começa de 0.
-        let indexNextEvolution = this.jogador.pokemon.info.evolution
+        let indexNextEvolution = this.jogador.pokemon.info.evolution_id
 
         // Verifica se tem próxima evolução
         if (evolutions[indexNextEvolution]) {
@@ -302,7 +302,7 @@
           let evolutions = await this.getAllEvolutions(pokemon)
 
           // evolution representa a evolução, mas também a próxima, já que o array de começa de 0.
-          let nextEvolve = this.jogador.pokemon.info.evolution
+          let nextEvolve = this.jogador.pokemon.info.evolution_id
 
           let maxIndex = evolutions[nextEvolve].species.length - 1
 
@@ -313,7 +313,7 @@
           let responseEvolve = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ nextEvolveSpecie }`)
           pokemon.info.specie = responseEvolve.data.species.name
           pokemon.info.pictureId = responseEvolve.data.id
-          pokemon.info.evolution++
+          pokemon.info.evolution_id++
         } catch (error) {
           console.log(error)
         }
@@ -357,7 +357,7 @@
 
         let successfully = false
 
-        switch (this.monstro.pokemon.info.evolution) {
+        switch (this.monstro.pokemon.info.evolution_id) {
           case 1:
             if (rate > 50) {
               successfully = true
@@ -564,11 +564,11 @@
         try {
           let resPokemon = null
           if (selectionType == 'random') {
-            pokemon.info.chain = pokemon.info.chain || this.getRandom(...this.configurations.limitsChains)
+            pokemon.info.chain_id = pokemon.info.chain_id || this.getRandom(...this.configurations.limitsChains)
 
             let pokemons = await this.getAllEvolutions(pokemon)
 
-            let indexEvolution = pokemon.info.evolution - 1
+            let indexEvolution = pokemon.info.evolution_id - 1
 
             if (pokemons[indexEvolution]) {
               let maxIndex = pokemons[indexEvolution].species.length - 1
@@ -577,9 +577,9 @@
               resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
               
               player.pokemon.info.specie = resPokemon.data.species.name
-              player.pokemon.info.evolution = pokemon.info.evolution
+              player.pokemon.info.evolution_id = pokemon.info.evolution_id
               player.pokemon.info.picture = resPokemon.data.sprites.front_default
-              player.pokemon.info.chain = pokemon.info.chain
+              player.pokemon.info.chain_id = pokemon.info.chain_id
               player.pokemon.info.experience = resPokemon.data.base_experience
               player.pokemon.life = resPokemon.data.stats[0].base_stat
 
@@ -588,10 +588,10 @@
               this.setTypeImageLink(player.pokemon)
               await this.setSpecialAbilities(player, resPokemon.data.abilities)
             } else {
-              console.log(`OPS!! O pokemon ${ pokemons[0].species[0] } não tem a ${ pokemon.info.evolution }ª evolução.`)
+              console.log(`OPS!! O pokemon ${ pokemons[0].species[0] } não tem a ${ pokemon.info.evolution_id }ª evolução.`)
               
               // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
-              pokemon.info.evolution--
+              pokemon.info.evolution_id--
               await this.setPokemon(player, pokemon)
             }
           } else {
@@ -701,8 +701,8 @@
               await this.setPokemon(this.jogador, pokemon, 'selected')
               await axios_database.post('/capture', {
                 specie: `${ pokemon.info.specie }`,
-                chain_id: `${ pokemon.info.chain }`,
-                evolution_id: `${ pokemon.info.evolution }`,
+                chain_id: `${ pokemon.info.chain_id }`,
+                evolution_id: `${ pokemon.info.evolution_id }`,
                 experience_plus: `0`
               })
             } catch (error) {
@@ -763,8 +763,8 @@
                 pokemon.info.experience = responsePokemon.data.base_experience
                 let responseSpecie = await axios.get(responsePokemon.data.species.url)
                 pokemon.info.id = 0
-                pokemon.info.chain = this.getChainId(responseSpecie.data.evolution_chain.url)
-                pokemon.info.evolution = 1
+                pokemon.info.chain_id = this.getChainId(responseSpecie.data.evolution_chain.url)
+                pokemon.info.evolution_id = 1
                 pokemon.info.special_attacks = []
                 pokemon.info.ball = 'poke-ball'
                 pokemon.info.pictureId = responsePokemon.data.id
