@@ -682,19 +682,39 @@
       async selectedPokemon($event) {
         let pokemon = $event.pokemon
 
-        // Caso seja o primeiro pokemon e a primeira batalha do jogador.
-        if (this.DATABASE_FAKE.pokemonsJogador.length == 0) {
-          this.jogador.pokemon.info.id = 0
-          await this.setPokemon(this.jogador, pokemon, 'selected')
-          this.DATABASE_FAKE.pokemonsJogador.push(pokemon)
-        } else {
-          let pokemonDB = this.getPokemonById(pokemon.info.id)
-          await this.setPokemon(this.jogador, pokemonDB, 'selected')
-          this.jogador.pokemon.plus_status = pokemonDB.plus_status
+        try {
+          let responsePokemons = await axios_database.get('/user/pokemons')
+          let pokemonsJogador = responsePokemons.data
+
+          // Caso seja o primeiro pokemon e a primeira batalha do jogador.
+          if (pokemonsJogador.length) {
+            try {
+              let responsePokemon = await axios_database.get(`/user/pokemon/${ pokemon.info.id }`)
+              let pokemonDB = responsePokemon.data
+              await this.setPokemon(this.jogador, pokemonDB, 'selected')
+            } catch (error) {
+              console.error(error)
+            }
+          } else {
+            try {
+              this.jogador.pokemon.info.id = 0
+              await this.setPokemon(this.jogador, pokemon, 'selected')
+              await axios_database.post('/capture', {
+                specie: `${ pokemon.info.specie }`,
+                chain_id: `${ pokemon.info.chain }`,
+                evolution_id: `${ pokemon.info.evolution }`,
+                experience_plus: `0`
+              })
+            } catch (error) {
+              console.error(error)
+            }
+          }
+          this.jogador.pokemon.info.experience = pokemon.info.experience
+          this.match.emAndamento = true
+          this.match.selecionarPokemon = false
+        } catch (error) {
+          console.error(error)
         }
-        this.jogador.pokemon.info.experience = pokemon.info.experience
-        this.match.emAndamento = true
-        this.match.selecionarPokemon = false
       },
       // Separa somente o ID do link de uma chain de um pokemon
       getChainId(link) {
