@@ -47,8 +47,16 @@
   // Bibliotecas
   import axios from 'axios'
 
+  /*
+  Instância do axios, para atender, diretamente, as requisições feitas para o localhost do back-end.
+  */
   const axios_database = axios.create({
-    baseURL: 'http://localhost:4000'
+    baseURL: 'http://localhost:4000',
+    headers: {
+      common: {
+        Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
+      }
+    }
   })
 
   export default {
@@ -96,12 +104,6 @@
       }
     },
     methods: {
-      getAuthorization() {
-        const headers = {
-          Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
-        }
-        return { headers }
-      },
       getPokemonsIDsInterval(generation) {
         let min = 0
         let max = 0
@@ -710,7 +712,7 @@
         this.match.selecionarPokemon = true
 
         try {
-          let responsePokemons = await axios_database.get('/user/pokemons', this.getAuthorization())
+          let responsePokemons = await axios_database.get('/user/pokemons')
           let pokemonsJogador = responsePokemons.data
 
           // Se o jogador já tiver pokemon, aparecerá na lista.
