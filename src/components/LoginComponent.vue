@@ -151,6 +151,7 @@
               if (response.data.errorField) {
                 this.form.login[response.data.errorField].errorMessage = response.data.msg
               } else {
+                localStorage.setItem('PokemonUserToken', response.data.token)
                 this.$emit('logged')
                 this.resetFormFields()
               }
