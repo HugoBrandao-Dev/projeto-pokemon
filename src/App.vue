@@ -710,9 +710,10 @@
       },
       async setPokemons() {
         this.match.selecionarPokemon = true
+        let responsePokemons = null
 
         try {
-          let responsePokemons = await axios_database.get('/user/pokemons')
+          responsePokemons = await axios_database.get('/user/pokemons')
           let pokemonsJogador = responsePokemons.data
 
           // Se o jogador já tiver pokemon, aparecerá na lista.
@@ -731,10 +732,13 @@
           // Caso contrário, será mostrada uma lista de pokemons que poderá escolher como inicial.
           } else {
             let pokemonsWithInfos = []
-            for (let name of this.DATABASE_FAKE.pokemonsOptionsForBeginners) {
+            responsePokemons = await axios_database.get('/pokemonsForBeginners')
+            let pokemonsForBeginner = responsePokemons.data
+
+            for (let pokemonDB of pokemonsForBeginner) {
               let pokemon = { info: {}, plus_status: {} }
               try {
-                let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ name }`)
+                let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemonDB.specie }`)
                 pokemon.info.specie = responsePokemon.data.species.name
                 pokemon.info.experience = responsePokemon.data.base_experience
                 let responseSpecie = await axios.get(responsePokemon.data.species.url)
