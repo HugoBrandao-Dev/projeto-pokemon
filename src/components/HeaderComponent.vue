@@ -37,6 +37,11 @@
       }
     },
     created() {
+      // Verifica se já existe um token (usuário logado).
+      if (localStorage.getItem('PokemonUserToken')) {
+        this.user.hasUser = true
+      }
+
       this.$emit('user', { user: this.user })
     },
     components: {
