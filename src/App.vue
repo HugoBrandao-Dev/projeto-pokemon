@@ -588,11 +588,13 @@
               this.setTypeImageLink(player.pokemon)
               await this.setSpecialAbilities(player, resPokemon.data.abilities)
             } else {
-              console.log(`OPS!! O pokemon ${ pokemons[0].species[0] } não tem a ${ pokemon.info.evolution_id }ª evolução.`)
-              
-              // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
-              pokemon.info.evolution_id--
-              await this.setPokemon(player, pokemon)
+              if (pokemon.info.evolution_id && pokemon.info.evolution_id > 0) {
+                console.log(`OPS!! O pokemon ${ pokemons[0].species[0] } não tem a ${ pokemon.info.evolution_id }ª evolução.`)
+                
+                // Caso não haja a forma/evolução sorteada, se busca a forma/evolução anterior.
+                pokemon.info.evolution_id--
+                await this.setPokemon(player, pokemon)
+              }
             }
           } else {
             resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.info.specie }`)
