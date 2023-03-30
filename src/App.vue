@@ -745,6 +745,7 @@
               let pokemon = { info }
               try {
                 let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ info.specie }`)
+                pokemon.info.pictureId = responsePokemon.data.id
                 this.setTypes(pokemon, responsePokemon.data.types)
                 this.setTypeImageLink(pokemon)
                 pokemons.push(pokemon)
