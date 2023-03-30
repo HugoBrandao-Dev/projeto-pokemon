@@ -738,16 +738,19 @@
 
           // Se o jogador já tiver pokemon, aparecerá na lista.
           if (pokemonsJogador.length) {
-            for (let pokemon of pokemonsJogador) {
+            let pokemons = []
+            for (let info of pokemonsJogador) {
+              let pokemon = { info }
               try {
-                let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.specie }`)
+                let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ info.specie }`)
                 this.setTypes(pokemon, responsePokemon.data.types)
                 this.setTypeImageLink(pokemon)
+                pokemons.push(pokemon)
               } catch (error) {
                 console.error(error)
               }
             }
-            this.setMessage('info', 'Selecione seu pokemon:', pokemonsJogador)
+            this.setMessage('info', 'Selecione seu pokemon:', pokemons)
 
           // Caso contrário, será mostrada uma lista de pokemons que poderá escolher como inicial.
           } else {
@@ -794,30 +797,33 @@
             this.setMessage('info', 'Escolha seu primeiro pokemon:', pokemonsWithInfos)
           }
 
+          try {
+            // Configurações das escolha do pokemon do NPC.
+            let pokemon = {
+              info: {
+                evolution: this.getLevel(1,2),
+                chain: null
+              }
+            }
+
+            // NPC
+            await this.setPokemon(this.monstro, pokemon)
+            this.match.capture.captured = false
+            this.match.capture.attempts = 1
+
+            if (this.items.ballsLinks.length === 0) {
+              this.items.ballsLinks = []
+              this.getBallsIcons()
+            }
+            if (this.items.fruitsLinks.length === 0) {
+              this.items.fruitsLinks = []
+              this.getFruitsIcons()
+            }
+          } catch (error) {
+            console.error(error)
+          }
         } catch (error) {
           console.error(error)
-        }
-
-        // Configurações das escolhas dos pokemons.
-        let pokemon = {
-          info: {
-            evolution: this.getLevel(1,2),
-            chain: null
-          }
-        }
-
-        // NPC
-        await this.setPokemon(this.monstro, pokemon)
-        this.match.capture.captured = false
-        this.match.capture.attempts = 1
-
-        if (this.items.ballsLinks.length === 0) {
-          this.items.ballsLinks = []
-          this.getBallsIcons()
-        }
-        if (this.items.fruitsLinks.length === 0) {
-          this.items.fruitsLinks = []
-          this.getFruitsIcons()
         }
       }
     }
