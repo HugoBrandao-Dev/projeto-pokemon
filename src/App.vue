@@ -601,7 +601,12 @@
 
             player.pokemon.info.id = pokemon.info.id
             player.pokemon.info.picture = resPokemon.data.sprites.back_default
-            player.pokemon.life = resPokemon.data.stats[0].base_stat + pokemon.plus_status.hp
+
+            if (pokemon.info.experience_plus) {
+              player.pokemon.life = resPokemon.data.stats[0].base_stat + pokemon.plus_status.hp
+            } else {
+              player.pokemon.life = resPokemon.data.stats[0].base_stat
+            }
 
             for (let item of Object.keys(pokemon.info)) {
               player.pokemon.info[item] = pokemon.info[item]
@@ -682,7 +687,7 @@
         return pokemon[0]
       },
       async selectedPokemon($event) {
-        let pokemon = $event.pokemon
+        let selected = $event.pokemon
 
         try {
           let responsePokemons = await axios_database.get('/user/pokemons')
@@ -691,27 +696,30 @@
           // Caso seja o primeiro pokemon e a primeira batalha do jogador.
           if (pokemonsJogador.length) {
             try {
-              let responsePokemon = await axios_database.get(`/user/pokemon/${ pokemon.info.id }`)
-              let pokemonDB = responsePokemon.data
-              await this.setPokemon(this.jogador, pokemonDB, 'selected')
+              let pokemon = {
+                info: selected.info,
+                plus_status: {},
+                base_status: {}
+              }
+              await this.setPokemon(this.jogador, pokemon, 'selected')
             } catch (error) {
               console.error(error)
             }
           } else {
             try {
               this.jogador.pokemon.info.id = 0
-              await this.setPokemon(this.jogador, pokemon, 'selected')
+              await this.setPokemon(this.jogador, selected, 'selected')
               await axios_database.post('/capture', {
-                specie: `${ pokemon.info.specie }`,
-                chain_id: `${ pokemon.info.chain_id }`,
-                evolution_id: `${ pokemon.info.evolution_id }`,
+                specie: `${ selected.info.specie }`,
+                chain_id: `${ selected.info.chain_id }`,
+                evolution_id: `${ selected.info.evolution_id }`,
                 experience_plus: `0`
               })
             } catch (error) {
               console.error(error)
             }
           }
-          this.jogador.pokemon.info.experience = pokemon.info.experience
+          this.jogador.pokemon.info.experience = selected.info.experience
           this.match.emAndamento = true
           this.match.selecionarPokemon = false
         } catch (error) {
@@ -745,6 +753,7 @@
               let pokemon = { info }
               try {
                 let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ info.specie }`)
+                pokemon.info.experience = pokemon.info.experience_plus + responsePokemon.data.base_experience
                 pokemon.info.pictureId = responsePokemon.data.id
                 this.setTypes(pokemon, responsePokemon.data.types)
                 this.setTypeImageLink(pokemon)
@@ -804,8 +813,8 @@
             // Configurações das escolha do pokemon do NPC.
             let pokemon = {
               info: {
-                evolution: this.getLevel(1,2),
-                chain: null
+                evolution_id: this.getLevel(1,2),
+                chain_id: null
               }
             }
 
