@@ -65,6 +65,10 @@
   import validator from 'validator'
   import axios from 'axios'
   
+  const axios_database = axios.create({
+    baseURL: 'http://localhost:4000'
+  })
+
   export default {
     data() {
       return {
@@ -108,6 +112,15 @@
       }
     },
     methods: {
+      getAuth() {
+        return {
+          headers: {
+            common: {
+              Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
+            }
+          }
+        }
+      },
       resetFormFields() {
         // Reset da tela de login
         for (let field of Object.keys(this.form.login)) {
@@ -144,7 +157,7 @@
         }
 
         if (areFormFieldsCorrect) {
-          axios.post('http://localhost:4000/login', {
+          axios_database.post('/login', {
             email: this.form.login.iptLogin.value,
             user_password: this.form.login.iptPassword.value
           }).then(response => {
@@ -162,7 +175,6 @@
         } else {
           alert('Erro no login :(')
         }
-
       },
       register($event) {
         $event.preventDefault()
@@ -190,7 +202,7 @@
         }
 
         if (areFormFieldsCorrect) {
-          axios.post('http://localhost:4000/register', {
+          axios_database.post('/register', {
             full_name: this.form.register.iptName.value,
             born_date: this.form.register.iptBornDate.value,
             email: this.form.register.iptEmail.value,
