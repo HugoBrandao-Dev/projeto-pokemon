@@ -189,6 +189,8 @@
             localStorage.setItem('PokemonUserToken', resLogin.data.token)
 
             try {
+
+              // Setta as quantidades (padrão) de pokebolas do usuário no banco de dados.
               await axios_database.post('/user/balls', {
                 'poke-ball': '6',
                 'great-ball': '2',
@@ -196,6 +198,7 @@
                 'master-ball': '0'
               }, this.getAuth())
 
+              // Setta as quantidades (padrão) de frutas do usuário no banco de dados.
               await axios_database.post('/user/fruits', {
                 'jaboca-berry': '10',
                 'razz-berry': '5',
