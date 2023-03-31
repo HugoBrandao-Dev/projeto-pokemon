@@ -330,16 +330,26 @@
         let rateFormated = rate / 100
         let expMonster = this.monstro.pokemon.info.experience
         let earned = Math.round(expMonster * rateFormated)
-        let pokemon = this.getPokemonById(this.jogador.pokemon.info.id)
+        
+        let resPokemonInfo = await axios_database.get(`/user/pokemon/${ this.jogador.pokemon.info.id }`, this.getAuth())
 
-        let allEvolutions = await this.getAllEvolutions(pokemon)
-        let canEvolve = this.canAlreadyEvolve(allEvolutions)
+        let { experience_plus, evolution_id } = resPokemonInfo.data
+        let newExp = parseInt(experience_plus) + earned
 
-        pokemon.info.experience += earned
-        if (canEvolve) {
-          this.setEvolve(pokemon)
-        }
-        this.setPlusStatus(pokemon)
+        await axios_database.post('/upgradePokemon', {
+          id: `${ this.jogador.pokemon.info.id }`, 
+          evolution_id: `${ evolution_id }`,
+          experience_plus: `${ newExp }`,
+        }, this.getAuth())
+
+        // let allEvolutions = await this.getAllEvolutions(pokemon)
+        // let canEvolve = this.canAlreadyEvolve(allEvolutions)
+
+        // pokemon.info.experience += earned
+        // if (canEvolve) {
+        //   this.setEvolve(pokemon)
+        // }
+        // this.setPlusStatus(pokemon)
       },
       catchPokemon($event) {
         let rate = this.getRandom(1, 100)
