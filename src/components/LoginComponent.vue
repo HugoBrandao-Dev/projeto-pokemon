@@ -176,6 +176,39 @@
           alert('Erro no login :(')
         }
       },
+      async registred() {
+        try {
+          let resLogin = await axios_database.post('/login', {
+            email: this.form.register.iptEmail.value,
+            user_password: this.form.register.iptPassword.value
+          })
+
+          if (resLogin.data.token) {
+            this.$emit('logged')
+
+            localStorage.setItem('PokemonUserToken', resLogin.data.token)
+
+            try {
+              await axios_database.post('/user/balls', {
+                'poke-ball': '6',
+                'great-ball': '2',
+                'ultra-ball': '0',
+                'master-ball': '0'
+              }, this.getAuth())
+
+              await axios_database.post('/user/fruits', {
+                'jaboca-berry': '10',
+                'razz-berry': '5',
+                'bluk-berry': '1'
+              }, this.getAuth())
+            } catch (error) {
+              console.error(error)
+            }
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      },
       register($event) {
         $event.preventDefault()
 
@@ -211,7 +244,8 @@
               if (response.data.errorField) {
                 this.form.register[response.data.errorField].errorMessage = response.data.msg
               } else {
-                alert('Usuário cadastrado com sucesso.')
+                this.registred()
+                // alert('Usuário cadastrado com sucesso.')
                 this.resetFormFields()
               }
             })
