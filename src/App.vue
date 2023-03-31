@@ -723,6 +723,17 @@
               console.error(error)
             }
           }
+          try {
+
+            // Setta as quantidades das pokebolas que o usuário tem.
+            let resBalls = await axios_database.get('/user/balls', this.getAuth())
+            resBalls.data.map(ball => {
+              this.jogador.items.balls[ball.item] = ball.amount
+            })
+
+          } catch (error) {
+            console.error(error)
+          }
           this.jogador.pokemon.info.experience = selected.info.experience
           this.match.emAndamento = true
           this.match.selecionarPokemon = false
