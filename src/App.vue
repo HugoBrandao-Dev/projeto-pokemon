@@ -51,12 +51,7 @@
   Instância do axios, para atender, diretamente, as requisições feitas para o localhost do back-end.
   */
   const axios_database = axios.create({
-    baseURL: 'http://localhost:4000',
-    headers: {
-      common: {
-        Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
-      }
-    }
+    baseURL: 'http://localhost:4000'
   })
 
   export default {
@@ -104,6 +99,15 @@
       }
     },
     methods: {
+      getAuth() {
+        return {
+          headers: {
+            common: {
+              Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
+            }
+          }
+        }
+      },
       getPokemonsIDsInterval(generation) {
         let min = 0
         let max = 0
@@ -690,7 +694,7 @@
         let selected = $event.pokemon
 
         try {
-          let responsePokemons = await axios_database.get('/user/pokemons')
+          let responsePokemons = await axios_database.get('/user/pokemons', this.getAuth())
           let pokemonsJogador = responsePokemons.data
 
           // Caso seja o primeiro pokemon e a primeira batalha do jogador.
@@ -714,7 +718,7 @@
                 chain_id: `${ selected.info.chain_id }`,
                 evolution_id: `${ selected.info.evolution_id }`,
                 experience_plus: `0`
-              })
+              }, this.getAuth())
             } catch (error) {
               console.error(error)
             }
@@ -743,7 +747,7 @@
         let responsePokemons = null
 
         try {
-          responsePokemons = await axios_database.get('/user/pokemons')
+          responsePokemons = await axios_database.get('/user/pokemons', this.getAuth())
           let pokemonsJogador = responsePokemons.data
 
           // Se o jogador já tiver pokemon, aparecerá na lista.
@@ -767,7 +771,7 @@
           // Caso contrário, será mostrada uma lista de pokemons que poderá escolher como inicial.
           } else {
             let pokemonsWithInfos = []
-            responsePokemons = await axios_database.get('/pokemonsForBeginners')
+            responsePokemons = await axios_database.get('/pokemonsForBeginners', this.getAuth())
             let pokemonsForBeginner = responsePokemons.data
 
             for (let pokemonDB of pokemonsForBeginner) {
