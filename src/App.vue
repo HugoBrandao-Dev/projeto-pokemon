@@ -731,6 +731,12 @@
               this.jogador.items.balls[ball.item] = ball.amount
             })
 
+            // Setta as quantidades das frutas que o usuário tem.
+            let resFruits = await axios_database.get('/user/fruits', this.getAuth())
+            resFruits.data.map(fruit => {
+              this.jogador.items.fruits[fruit.item] = fruit.amount
+            })
+
           } catch (error) {
             console.error(error)
           }
