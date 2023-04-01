@@ -238,9 +238,9 @@
         }
         this.DATABASE_FAKE.pokemonsJogador.push(newPokemon)
       },
-      async getAllEvolutions(pokemon) {
+      async getAllEvolutions(chain_id) {
         try {
-          let responseChain = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ pokemon.info.chain_id }/`)
+          let responseChain = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${ chain_id }/`)
             // Pega a forma base
             let evolutions = [
               {
@@ -326,23 +326,28 @@
       // experienceRate: taxa de aumento da experienca (%);
       // max: valor máximo do aumento da experiencia (%).
       async increaseExp(experienceRate = 10, max = experienceRate + 5) {
-        let rate = this.getRandom(experienceRate, max)
-        let rateFormated = rate / 100
-        let expMonster = this.monstro.pokemon.info.experience
-        let earned = Math.round(expMonster * rateFormated)
-        
-        let resPokemonInfo = await axios_database.get(`/user/pokemon/${ this.jogador.pokemon.info.id }`, this.getAuth())
+        try {
+          let rate = this.getRandom(experienceRate, max)
+          let rateFormated = rate / 100
+          let expMonster = this.monstro.pokemon.info.experience
+          let earned = Math.round(expMonster * rateFormated)
+          
+          let resPokemonInfo = await axios_database.get(`/user/pokemon/${ this.jogador.pokemon.info.id }`, this.getAuth())
 
-        let { experience_plus, evolution_id } = resPokemonInfo.data
-        let newExp = parseInt(experience_plus) + earned
+          let { experience_plus, evolution_id, chain_id } = resPokemonInfo.data
+          let newExp = parseInt(experience_plus) + earned
 
-        await axios_database.post('/upgradePokemon', {
-          id: `${ this.jogador.pokemon.info.id }`, 
-          evolution_id: `${ evolution_id }`,
-          experience_plus: `${ newExp }`,
-        }, this.getAuth())
+          await axios_database.post('/upgradePokemon', {
+            id: `${ this.jogador.pokemon.info.id }`, 
+            evolution_id: `${ evolution_id }`,
+            experience_plus: `${ newExp }`,
+          }, this.getAuth())
 
-        // let allEvolutions = await this.getAllEvolutions(pokemon)
+          let allEvolutions = await this.getAllEvolutions(chain_id)
+          console.log(allEvolutions)
+        } catch (error) {
+          console.error(error)
+        }
         // let canEvolve = this.canAlreadyEvolve(allEvolutions)
 
         // pokemon.info.experience += earned
@@ -595,7 +600,7 @@
           if (selectionType == 'random') {
             pokemon.info.chain_id = pokemon.info.chain_id || this.getRandom(...this.configurations.limitsChains)
 
-            let pokemons = await this.getAllEvolutions(pokemon)
+            let pokemons = await this.getAllEvolutions(pokemon.info.chain_id)
 
             let indexEvolution = pokemon.info.evolution_id - 1
 
