@@ -104,6 +104,7 @@
               speed: 0,
             },
             info: {
+              id: null,
               specie: '',
               types: [],
               experience: 0,

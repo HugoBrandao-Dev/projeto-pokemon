@@ -740,14 +740,15 @@
           // Executará quando o jogador ainda não tem um pokemon.
           } else {
             try {
-              this.jogador.pokemon.info.id = 0
               await this.setPokemon(this.jogador, selected, 'selected')
-              await axios_database.post('/capture', {
+              let resPokemon = await axios_database.post('/capture', {
                 specie: `${ selected.info.specie }`,
                 chain_id: `${ selected.info.chain_id }`,
                 evolution_id: `${ selected.info.evolution_id }`,
                 experience_plus: `0`
               }, this.getAuth())
+              this.jogador.pokemon.info.id = resPokemon.data
+              console.log(this.jogador.pokemon.info)
             } catch (error) {
               console.error(error)
             }
