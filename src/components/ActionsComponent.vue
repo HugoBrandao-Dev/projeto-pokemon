@@ -36,6 +36,11 @@
 
 <script>
   import AlertComponent from './AlertComponent'
+  import axios from 'axios'
+
+  const axios_database = axios.create({
+    baseURL: 'http://localhost:4000'
+  })
 
   export default {
     data() {
@@ -69,6 +74,15 @@
       }
     },
     methods: {
+      getAuth() {
+        return {
+          headers: {
+            common: {
+              Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
+            }
+          }
+        }
+      },
       setAlert($event) {
         this.myWindow = $event.myWindow
       },
