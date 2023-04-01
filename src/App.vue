@@ -350,7 +350,23 @@
         //   this.setEvolve(pokemon)
         // }
       },
+      async saveBallsAmounts() {
+        try {
+          let resBalls = await axios_database.post('/user/balls/update', {
+            'poke-ball': `${ this.jogador.items.balls['poke-ball'] }`,
+            'great-ball': `${ this.jogador.items.balls['great-ball'] }`,
+            'ultra-ball': `${ this.jogador.items.balls['ultra-ball'] }`,
+            'master-ball': `${ this.jogador.items.balls['master-ball'] }`
+          }, this.getAuth())
+          if (resBalls.data.errorField) {
+            console.error(resBalls.data.msg)
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      },
       catchPokemon($event) {
+        this.saveBallsAmounts()
         let rate = this.getRandom(1, 100)
         let specieUpper = this.monstro.pokemon.info.specie.toUpperCase()
 
