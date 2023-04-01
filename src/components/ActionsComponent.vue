@@ -285,7 +285,22 @@
         this.logAcoes = this.logActions
         this.setStatusPartida(true, false, '', '')
       },
+      async saveFruitsAmounts() {
+        try {
+          let resFruits = await axios_database.post('/user/fruits/update', {
+            'jaboca-berry': `${ this.jogador.items.fruits['jaboca-berry'] }`,
+            'razz-berry': `${ this.jogador.items.fruits['razz-berry'] }`,
+            'bluk-berry': `${ this.jogador.items.fruits['bluk-berry'] }`
+          }, this.getAuth())
+          if (resFruits.data.errorField) {
+            console.error(resFruits.data.msg)
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      },
       setFinalizarPartida(status = 'desistiu', mensagem = 'Você desistiu') {
+        this.saveFruitsAmounts()
         this.setStatusPartida(false, true, status, mensagem)
         this.logAcoes = []
       },
