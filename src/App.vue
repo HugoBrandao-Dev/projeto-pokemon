@@ -349,7 +349,6 @@
         // if (canEvolve) {
         //   this.setEvolve(pokemon)
         // }
-        // this.setPlusStatus(pokemon)
       },
       catchPokemon($event) {
         let rate = this.getRandom(1, 100)
@@ -707,7 +706,7 @@
           let responsePokemons = await axios_database.get('/user/pokemons', this.getAuth())
           let pokemonsJogador = responsePokemons.data
 
-          // Caso seja o primeiro pokemon e a primeira batalha do jogador.
+          // Executará quando o jogador já tiver um pokemon.
           if (pokemonsJogador.length) {
             try {
               let pokemon = {
@@ -716,9 +715,13 @@
                 base_status: {}
               }
               await this.setPokemon(this.jogador, pokemon, 'selected')
+              await this.setPlusStatus(this.jogador.pokemon)
+              this.jogador.pokemon.life = this.jogador.pokemon.base_status.hp + this.jogador.pokemon.plus_status.hp
             } catch (error) {
               console.error(error)
             }
+
+          // Executará quando o jogador ainda não tem um pokemon.
           } else {
             try {
               this.jogador.pokemon.info.id = 0

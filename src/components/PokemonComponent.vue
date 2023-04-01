@@ -133,7 +133,7 @@
     },
     computed: {
       getVidaJogador() {
-        let life = this.player.pokemon.life 
+        let life = this.player.pokemon.life
         let base_hp = this.player.pokemon.base_status.hp + this.player.pokemon.plus_status.hp
         let percentageLife = Math.round(life * 100 / base_hp)
         return {
