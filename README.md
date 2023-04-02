@@ -58,3 +58,4 @@ Uma vez que não foi utilizado frameworks/bibliotecas para estilo, e sim CSS pur
 
 * Quando um alert é exibido, os botões da "tela de fundo" continuam ativos.
 * Ao fazer a seleção para a batalha, quando ocorre muito rápido, não carrega o experience_plus, impactando no cálculo dos plus_status.
+* Quando há alternância entre pokemons capturados, o plus_status não está sendo zerado/mudado.
