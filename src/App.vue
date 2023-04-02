@@ -311,23 +311,43 @@
           console.error(error)
         }
       },
-      async setEvolve(pokemon) {
+      async setEvolve() {
         try {
-          let evolutions = await this.getAllEvolutions(pokemon)
+          let resPokemon = await axios_database.get(`/user/pokemon/${ this.jogador.pokemon.info.id }`, this.getAuth())
 
-          // evolution representa a evolução, mas também a próxima, já que o array de começa de 0.
-          let nextEvolve = this.jogador.pokemon.info.evolution_id
+          if (resPokemon.data.errorField) {
+            console.log(resPokemon.data.msg)
+          } else {
+            try {
+              let { id, chain_id, evolution_id, experience_plus } = resPokemon.data
 
-          let maxIndex = evolutions[nextEvolve].species.length - 1
+              let evolutions = await this.getAllEvolutions(chain_id)
 
-          // Pega o index de um pokemon da próxima evolução, caso seja um array.
-          let indexNextSpecie = this.getRandom(0, maxIndex)
-          let nextEvolveSpecie = evolutions[nextEvolve].species[indexNextSpecie]
+              // evolution representa a evolução, mas também a próxima, já que o array de começa de 0.
+              let nextEvolve = evolution_id
 
-          let responseEvolve = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ nextEvolveSpecie }`)
-          pokemon.info.specie = responseEvolve.data.species.name
-          pokemon.info.pictureId = responseEvolve.data.id
-          pokemon.info.evolution_id++
+              let maxIndex = evolutions[nextEvolve].species.length - 1
+
+              // Pega o index de um pokemon da próxima evolução, caso seja um array.
+              let indexNextSpecie = this.getRandom(0, maxIndex)
+              let nextEvolveSpecie = evolutions[nextEvolve].species[indexNextSpecie]
+
+              let resNextEvolve = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ nextEvolveSpecie }`)
+
+              let resEvolve = await axios_database.post('/upgradePokemon', {
+                id: `${ id }`,
+                specie: resNextEvolve.data.species.name,
+                evolution_id: `${ ++evolution_id }`,
+                experience_plus: `${ experience_plus }`
+              }, this.getAuth())
+
+              if (resEvolve.data.errorField) {
+                console.log(resEvolve.data.msg)
+              }
+            } catch (error) {
+              console.error(error)
+            }
+          }
         } catch (error) {
           console.log(error)
         }
@@ -344,11 +364,12 @@
           
           let resPokemonInfo = await axios_database.get(`/user/pokemon/${ this.jogador.pokemon.info.id }`, this.getAuth())
 
-          let { experience_plus, evolution_id, chain_id } = resPokemonInfo.data
+          let { specie, experience_plus, evolution_id, chain_id } = resPokemonInfo.data
           let newExp = parseInt(experience_plus) + earned
 
           await axios_database.post('/upgradePokemon', {
-            id: `${ this.jogador.pokemon.info.id }`, 
+            id: `${ this.jogador.pokemon.info.id }`,
+            specie,
             evolution_id: `${ evolution_id }`,
             experience_plus: `${ newExp }`,
           }, this.getAuth())
@@ -356,7 +377,9 @@
           let allEvolutions = await this.getAllEvolutions(chain_id)
           let canEvolve = await this.canAlreadyEvolve(allEvolutions)
 
-          console.log(canEvolve)
+          if (canEvolve) {
+            this.setEvolve()
+          }
         } catch (error) {
           console.error(error)
         }
