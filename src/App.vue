@@ -207,36 +207,22 @@
         }
       },
       // Cadastra um novo pokemon, quando sua captura ocorreu com sucesso.
-      addPokemon(ball) {
-        let newPokemon = {
-          info: {
-            id: this.DATABASE_FAKE.pokemonsJogador.length,
-            specie: this.monstro.pokemon.info.specie,
-            experience: this.monstro.pokemon.info.experience,
-            chain: this.monstro.pokemon.info.chain_id,
-            types: [],
-            evolution: this.monstro.pokemon.info.evolution_id,
-            ball,
-            pictureId: this.getPictureId(this.monstro.pokemon.info.picture)
-          },
-          base_status: {
-            hp: this.monstro.pokemon.base_status.hp,
-            attack: this.monstro.pokemon.base_status.attack,
-            special_attack: this.monstro.pokemon.base_status.special_attack,
-            defense: this.monstro.pokemon.base_status.defense,
-            special_defense: this.monstro.pokemon.base_status.special_defense,
-            speed: this.monstro.pokemon.base_status.speed,
-          },
-          plus_status: {
-            hp: 0,
-            attack: 0,
-            special_attack: 0,
-            defense: 0,
-            special_defense: 0,
-            speed: 0,
+      async addPokemon(ball_type) {
+        try {
+          let resCatched = await axios_database.post('/capture', {
+            specie: `${ this.monstro.pokemon.info.specie }`,
+            chain_id: `${ this.monstro.pokemon.info.chain_id }`,
+            evolution_id: `${ this.monstro.pokemon.info.evolution_id }`,
+            experience_plus: `0`,
+            ball_id: `${ ball_type }`
+          }, this.getAuth())
+
+          if (resCatched.data.errorField) {
+            console.log(resCatched.data.msg)
           }
+        } catch (error) {
+          console.log(error)
         }
-        this.DATABASE_FAKE.pokemonsJogador.push(newPokemon)
       },
       async getAllEvolutions(chain_id) {
         try {
@@ -405,21 +391,26 @@
         }
       },
       catchPokemon($event) {
+        let type_item = null
         this.saveBallsAmounts()
         let rate = this.getRandom(1, 100)
         let specieUpper = this.monstro.pokemon.info.specie.toUpperCase()
 
         switch ($event.ball) {
           case 'poke-ball':
+            type_item = 1
             rate *= 1
             break
           case 'great-ball':
+            type_item = 2
             rate *= 1.5
             break
           case 'ultra-ball':
+            type_item = 3
             rate *= 2
             break
           default:
+            type_item = 4
             rate *= 100
         }
 
@@ -445,7 +436,7 @@
         if (successfully) {
           this.match.capture.captured = true
           this.setMessage('info', 'Capturado!', [`${ specieUpper } foi capturado(a) com sucesso!`])
-          this.addPokemon($event.ball)
+          this.addPokemon(type_item)
         } else {
           this.match.capture.attempts++
           this.setMessage('alert', 'Escapou!', [`O(a) ${ specieUpper } escapou da ${ $event.ball }.`])
