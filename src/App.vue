@@ -633,7 +633,7 @@
           } else {
             resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.info.specie }`)
 
-            player.pokemon.info.id = pokemon.info.id
+            // player.pokemon.info.id = pokemon.info.id
             player.pokemon.info.picture = resPokemon.data.sprites.back_default
 
             if (pokemon.info.experience_plus) {
@@ -646,9 +646,9 @@
               player.pokemon.info[item] = pokemon.info[item]
             }
 
-            this.setBaseStatus(resPokemon.data.stats, player)
-            this.setTypes(player.pokemon, resPokemon.data.types)
-            this.setTypeImageLink(player.pokemon)
+            await this.setBaseStatus(resPokemon.data.stats, player)
+            await this.setTypes(player.pokemon, resPokemon.data.types)
+            await this.setTypeImageLink(player.pokemon)
             await this.setSpecialAbilities(player, resPokemon.data.abilities)
           }
         } catch (error) {
@@ -745,15 +745,14 @@
           // Executará quando o jogador ainda não tem um pokemon.
           } else {
             try {
-              await this.setPokemon(this.jogador, selected, 'selected')
               let resPokemon = await axios_database.post('/capture', {
                 specie: `${ selected.info.specie }`,
                 chain_id: `${ selected.info.chain_id }`,
                 evolution_id: `${ selected.info.evolution_id }`,
                 experience_plus: `0`
               }, this.getAuth())
-              this.jogador.pokemon.info.id = resPokemon.data
-              console.log(this.jogador.pokemon.info)
+              selected.info.id = resPokemon.data
+              await this.setPokemon(this.jogador, selected, 'selected')
             } catch (error) {
               console.error(error)
             }
@@ -833,7 +832,6 @@
                 pokemon.info.specie = responsePokemon.data.species.name
                 pokemon.info.experience = responsePokemon.data.base_experience
                 let responseSpecie = await axios.get(responsePokemon.data.species.url)
-                pokemon.info.id = 0
                 pokemon.info.chain_id = this.getChainId(responseSpecie.data.evolution_chain.url)
                 pokemon.info.evolution_id = 1
                 pokemon.info.special_attacks = []
