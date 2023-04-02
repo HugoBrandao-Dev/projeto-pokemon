@@ -57,3 +57,4 @@ Uma vez que não foi utilizado frameworks/bibliotecas para estilo, e sim CSS pur
 * Se clicar em cancelar, na tela de seleção de pokemon, depois de já ter clicado em iniciar partida, está selecionando e renderizando o pokemon do NPC;
 
 * Quando um alert é exibido, os botões da "tela de fundo" continuam ativos.
+* Ao fazer a seleção para a batalha, quando ocorre muito rápido, não carrega o experience_plus, impactando no cálculo dos plus_status.
