@@ -278,28 +278,38 @@
           console.log(error)
         }
       },
-      canAlreadyEvolve(evolutions) {
-        let canEvolve = false
+      async canAlreadyEvolve(evolutions) {
+        try {
+          let canEvolve = false
 
-        // evolution representa a evolução, mas também a próxima, já que o array de começa de 0.
-        let indexNextEvolution = this.jogador.pokemon.info.evolution_id
+          // evolution representa a evolução, mas também a próxima, já que o array de começa de 0.
+          let indexNextEvolution = this.jogador.pokemon.info.evolution_id
 
-        // Verifica se tem próxima evolução
-        if (evolutions[indexNextEvolution]) {
-          let playerExperience = this.jogador.pokemon.info.experience
-          let experienceNextEvolution = evolutions[indexNextEvolution].base_experience
+          let resPokemon = await axios_database.get(`/user/pokemon/${ this.jogador.pokemon.info.id }`, this.getAuth())
 
-          // Verifica se tem experiência necessária para evoluir.
-          if (playerExperience >= experienceNextEvolution) {
-            canEvolve = true
+          // Verifica se tem próxima evolução
+          if (evolutions[indexNextEvolution]) {
+            // Tem o descemento para pegar o pokemon na sua evolução atual
+            let base_experience = evolutions[indexNextEvolution - 1].base_experience
+            let experience_plus = resPokemon.data.experience_plus
+            let playerExperience = base_experience + experience_plus
+
+            let experienceNextEvolution = evolutions[indexNextEvolution].base_experience
+
+            // Verifica se tem experiência necessária para evoluir.
+            if (playerExperience >= experienceNextEvolution) {
+              canEvolve = true
+            } else {
+              canEvolve = false
+            }
           } else {
             canEvolve = false
           }
-        } else {
-          canEvolve = false
-        }
 
-        return canEvolve
+          return canEvolve
+        } catch (error) {
+          console.error(error)
+        }
       },
       async setEvolve(pokemon) {
         try {
@@ -344,11 +354,12 @@
           }, this.getAuth())
 
           let allEvolutions = await this.getAllEvolutions(chain_id)
-          console.log(allEvolutions)
+          let canEvolve = await this.canAlreadyEvolve(allEvolutions)
+
+          console.log(canEvolve)
         } catch (error) {
           console.error(error)
         }
-        // let canEvolve = this.canAlreadyEvolve(allEvolutions)
 
         // pokemon.info.experience += earned
         // if (canEvolve) {
