@@ -602,9 +602,9 @@
           let specie = pokemon.info.specie
           let response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
           let baseExp = response.data.base_experience
-          let newExp = pokemon.info.experience
+          let totalExperience = pokemon.info.experience_plus + response.data.base_experience
 
-          let percentageDif = 1 - (((baseExp * 100) / newExp) / 100)
+          let percentageDif = 1 - (((baseExp * 100) / totalExperience) / 100)
           
           for (let status of Object.keys(pokemon.plus_status)) {
             pokemon.plus_status[status] += Math.round(this.jogador.pokemon.base_status[status] * percentageDif)
@@ -662,6 +662,8 @@
               player.pokemon.info[item] = pokemon.info[item]
             }
 
+            // O plus_status só será calculado para o pokemons do jogador.
+            this.setPlusStatus(player.pokemon)
           }
           this.setBaseStatus(resPokemon.data.stats, player)
           this.setTypes(player.pokemon, resPokemon.data.types)
@@ -745,7 +747,6 @@
                 base_status: {}
               }
               await this.setPokemon(this.jogador, pokemon, 'selected')
-              await this.setPlusStatus(this.jogador.pokemon)
               this.jogador.pokemon.life = this.jogador.pokemon.base_status.hp + this.jogador.pokemon.plus_status.hp
             } catch (error) {
               console.error(error)
