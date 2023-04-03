@@ -637,11 +637,6 @@
               player.pokemon.info.chain_id = pokemon.info.chain_id
               player.pokemon.info.experience = resPokemon.data.base_experience
               player.pokemon.life = resPokemon.data.stats[0].base_stat
-
-              this.setBaseStatus(resPokemon.data.stats, player)
-              this.setTypes(player.pokemon, resPokemon.data.types)
-              this.setTypeImageLink(player.pokemon)
-              await this.setSpecialAbilities(player, resPokemon.data.abilities)
             } else {
               if (pokemon.info.evolution_id && pokemon.info.evolution_id > 0) {
                 console.log(`OPS!! O pokemon ${ pokemons[0].species[0] } não tem a ${ pokemon.info.evolution_id }ª evolução.`)
@@ -667,11 +662,11 @@
               player.pokemon.info[item] = pokemon.info[item]
             }
 
-            await this.setBaseStatus(resPokemon.data.stats, player)
-            await this.setTypes(player.pokemon, resPokemon.data.types)
-            await this.setTypeImageLink(player.pokemon)
-            await this.setSpecialAbilities(player, resPokemon.data.abilities)
           }
+          this.setBaseStatus(resPokemon.data.stats, player)
+          this.setTypes(player.pokemon, resPokemon.data.types)
+          this.setTypeImageLink(player.pokemon)
+          this.setSpecialAbilities(player, resPokemon.data.abilities)
         } catch (error) {
           console.log(error)
         }
