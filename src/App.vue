@@ -58,10 +58,6 @@
     name: 'App',
     data() {
       return {
-        DATABASE_FAKE: {
-          pokemonsOptionsForBeginners: ['bulbasaur', 'charmander', 'squirtle', 'pichu'],
-          pokemonsJogador: []
-        },
         user: {},
         jogador: {},
         monstro: {},
@@ -737,13 +733,6 @@
         this.match.mostrarResultado = false
         this.match.status = ''
         this.match.mensagem = ''
-      },
-      // Busca um pokemon dentro do banco de dados FAKE, baseado no seu ID.
-      getPokemonById(id) {
-        let pokemon = this.DATABASE_FAKE.pokemonsJogador.filter(pokemon => {
-          return pokemon.info.id == id
-        })
-        return pokemon[0]
       },
       async selectedPokemon($event) {
         let selected = $event.pokemon
