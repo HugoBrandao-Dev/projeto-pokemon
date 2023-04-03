@@ -656,7 +656,6 @@
           } else {
             resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.info.specie }`)
 
-            // player.pokemon.info.id = pokemon.info.id
             player.pokemon.info.picture = resPokemon.data.sprites.back_default
 
             if (pokemon.info.experience_plus) {
@@ -791,7 +790,7 @@
           } catch (error) {
             console.error(error)
           }
-          this.jogador.pokemon.info.experience = selected.info.experience
+          // this.jogador.pokemon.info.experience = selected.info.experience
           this.match.emAndamento = true
           this.match.selecionarPokemon = false
         } catch (error) {
