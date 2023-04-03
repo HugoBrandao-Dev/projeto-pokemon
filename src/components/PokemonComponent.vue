@@ -171,7 +171,10 @@
     },
     methods: {
       calcExperience(pokemon) {
-        return pokemon.info.base_experience + pokemon.info.experience_plus
+        if (pokemon.info.experience_plus) {
+          return pokemon.info.base_experience + pokemon.info.experience_plus
+        }
+        return pokemon.info.base_experience
       },
       getCorBarra(vida) {
         if (vida > 60) {

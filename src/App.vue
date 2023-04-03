@@ -635,7 +635,7 @@
               player.pokemon.info.evolution_id = pokemon.info.evolution_id
               player.pokemon.info.picture = resPokemon.data.sprites.front_default
               player.pokemon.info.chain_id = pokemon.info.chain_id
-              player.pokemon.info.experience = resPokemon.data.base_experience
+              player.pokemon.info.base_experience = resPokemon.data.base_experience
               player.pokemon.life = resPokemon.data.stats[0].base_stat
             } else {
               if (pokemon.info.evolution_id && pokemon.info.evolution_id > 0) {
