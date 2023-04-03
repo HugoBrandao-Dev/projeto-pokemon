@@ -27,7 +27,7 @@
                     <img :src="type.url" :title="type.type">
                   </li>
                 </ul>
-                <figcaption class="pokemon-desc">{{ item.info.specie }} | Exp. {{ item.info.experience }}</figcaption>
+                <figcaption class="pokemon-desc">{{ item.info.specie }} | Exp. {{ calcExperience(item) }}</figcaption>
             </figure>
           </label>
         </div>
@@ -68,6 +68,9 @@
       }
     },
     methods: {
+      calcExperience(pokemon) {
+        return pokemon.info.base_experience + pokemon.info.experience_plus
+      },
       resetMyWindow() {
         // Reseta a janela, para que ela desapareca.
         this.myWindow.type = ''

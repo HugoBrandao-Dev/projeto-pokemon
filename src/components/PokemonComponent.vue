@@ -28,7 +28,7 @@
             </li>
           </ul>
           <small>
-            {{ player.pokemon.info.specie }} - Exp.{{ player.pokemon.info.experience }}
+            {{ player.pokemon.info.specie }} - Exp.{{ calcExperience(player.pokemon) }}
           </small>
         </div>
         <img :src="player.pokemon.info.picture | hasPicture" :title="player.pokemon.info.specie" class="pokemon-img" />
@@ -170,6 +170,9 @@
       }
     },
     methods: {
+      calcExperience(pokemon) {
+        return pokemon.info.base_experience + pokemon.info.experience_plus
+      },
       getCorBarra(vida) {
         if (vida > 60) {
           return '#33cc33'

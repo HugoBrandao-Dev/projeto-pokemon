@@ -822,7 +822,7 @@
               let pokemon = { info }
               try {
                 let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ info.specie }`)
-                pokemon.info.experience = pokemon.info.experience_plus + responsePokemon.data.base_experience
+                pokemon.info.base_experience = responsePokemon.data.base_experience
                 pokemon.info.pictureId = responsePokemon.data.id
                 this.setTypes(pokemon, responsePokemon.data.types)
                 this.setTypeImageLink(pokemon)
@@ -844,7 +844,8 @@
               try {
                 let responsePokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemonDB.specie }`)
                 pokemon.info.specie = responsePokemon.data.species.name
-                pokemon.info.experience = responsePokemon.data.base_experience
+                pokemon.info.base_experience = responsePokemon.data.base_experience
+                pokemon.info.experience_plus = 0
                 let responseSpecie = await axios.get(responsePokemon.data.species.url)
                 pokemon.info.chain_id = this.getChainId(responseSpecie.data.evolution_chain.url)
                 pokemon.info.evolution_id = 1
