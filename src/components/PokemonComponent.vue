@@ -107,14 +107,14 @@
               id: null,
               specie: '',
               types: [],
-              experience: 0,
-              chain: 0,
+              base_experience: 0,
+              chain_id: 0,
               /*
               1: Pokemon base;
               2: segunda evolução;
               3: terceira evolução.
               */
-              evolution: 0,
+              evolution_id: 1,
               picture: 'https://img.icons8.com/dotty/96/ffffff/user.png',
               special_attacks: []
             },
