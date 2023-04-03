@@ -341,7 +341,7 @@
         try {
           let rate = this.getRandom(experienceRate, max)
           let rateFormated = rate / 100
-          let expMonster = this.monstro.pokemon.info.experience
+          let expMonster = this.monstro.pokemon.info.base_experience
           let earned = Math.round(expMonster * rateFormated)
           
           let resPokemonInfo = await axios_database.get(`/user/pokemon/${ this.jogador.pokemon.info.id }`, this.getAuth())
@@ -602,12 +602,19 @@
           let specie = pokemon.info.specie
           let response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ specie }`)
           let baseExp = response.data.base_experience
-          let totalExperience = pokemon.info.experience_plus + response.data.base_experience
 
-          let percentageDif = 1 - (((baseExp * 100) / totalExperience) / 100)
-          
-          for (let status of Object.keys(pokemon.plus_status)) {
-            pokemon.plus_status[status] += Math.round(this.jogador.pokemon.base_status[status] * percentageDif)
+          if (pokemon.info.experience_plus) {
+            let totalExperience = pokemon.info.experience_plus + response.data.base_experience
+
+            let percentageDif = 1 - (((baseExp * 100) / totalExperience) / 100)
+            
+            for (let status of Object.keys(pokemon.plus_status)) {
+              pokemon.plus_status[status] += Math.round(this.jogador.pokemon.base_status[status] * percentageDif)
+            }
+          } else {
+            for (let status of Object.keys(pokemon.base_status)) {
+              pokemon.plus_status[status] = 0
+            }
           }
         } catch (error) {
           console.log(error)
@@ -663,12 +670,13 @@
             }
 
             // O plus_status só será calculado para o pokemons do jogador.
-            this.setPlusStatus(player.pokemon)
+            await this.setPlusStatus(player.pokemon)
           }
-          this.setBaseStatus(resPokemon.data.stats, player)
-          this.setTypes(player.pokemon, resPokemon.data.types)
-          this.setTypeImageLink(player.pokemon)
-          this.setSpecialAbilities(player, resPokemon.data.abilities)
+          await this.setBaseStatus(resPokemon.data.stats, player)
+          await this.setTypes(player.pokemon, resPokemon.data.types)
+          await this.setTypeImageLink(player.pokemon)
+          await this.setSpecialAbilities(player, resPokemon.data.abilities)
+          player.pokemon.life = player.pokemon.base_status.hp + player.pokemon.plus_status.hp
         } catch (error) {
           console.log(error)
         }
@@ -747,7 +755,6 @@
                 base_status: {}
               }
               await this.setPokemon(this.jogador, pokemon, 'selected')
-              this.jogador.pokemon.life = this.jogador.pokemon.base_status.hp + this.jogador.pokemon.plus_status.hp
             } catch (error) {
               console.error(error)
             }
@@ -849,13 +856,6 @@
                 pokemon.info.ball = 'poke-ball'
                 pokemon.info.pictureId = responsePokemon.data.id
                 pokemon.info.types = []
-
-                pokemon.plus_status.hp = 0
-                pokemon.plus_status.attack = 0
-                pokemon.plus_status.special_attack = 0
-                pokemon.plus_status.defense = 0
-                pokemon.plus_status.special_defense = 0
-                pokemon.plus_status.speed = 0
 
                 for (let item of responsePokemon.data.types) {
                   pokemon.info.types.push({
