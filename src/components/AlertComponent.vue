@@ -83,10 +83,9 @@
         this.resetMyWindow()
       },
       selectPokemon() {
-        this.resetMyWindow()
-
         if (this.pokemon.info.specie) {
           this.$emit('selectedPokemon', { pokemon: this.pokemon })
+          this.resetMyWindow()
         }
       },
       setResponse(response) {
