@@ -365,11 +365,6 @@
         } catch (error) {
           console.error(error)
         }
-
-        // pokemon.info.experience += earned
-        // if (canEvolve) {
-        //   this.setEvolve(pokemon)
-        // }
       },
       async saveBallsAmounts() {
         try {
