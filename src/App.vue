@@ -609,7 +609,7 @@
             let percentageDif = 1 - (((baseExp * 100) / totalExperience) / 100)
             
             for (let status of Object.keys(pokemon.plus_status)) {
-              pokemon.plus_status[status] += Math.round(this.jogador.pokemon.base_status[status] * percentageDif)
+              pokemon.plus_status[status] = Math.round(pokemon.base_status[status] * percentageDif)
             }
           } else {
             for (let status of Object.keys(pokemon.base_status)) {
@@ -642,7 +642,6 @@
               player.pokemon.info.evolution_id = pokemon.info.evolution_id
               player.pokemon.info.picture = resPokemon.data.sprites.front_default
               player.pokemon.info.chain_id = pokemon.info.chain_id
-              player.pokemon.info.base_experience = resPokemon.data.base_experience
               player.pokemon.life = resPokemon.data.stats[0].base_stat
             } else {
               if (pokemon.info.evolution_id && pokemon.info.evolution_id > 0) {
@@ -655,23 +654,25 @@
             }
           } else {
             resPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ pokemon.info.specie }`)
+            let resPokemonDB = await axios_database.get(`/user/pokemon/${ pokemon.info.id }`, this.getAuth())
+
 
             player.pokemon.info.picture = resPokemon.data.sprites.back_default
 
-            if (pokemon.info.experience_plus) {
+            if (resPokemonDB.data.experience_plus) {
               player.pokemon.life = resPokemon.data.stats[0].base_stat + pokemon.plus_status.hp
             } else {
               player.pokemon.life = resPokemon.data.stats[0].base_stat
             }
 
-            for (let item of Object.keys(pokemon.info)) {
-              player.pokemon.info[item] = pokemon.info[item]
+            for (let item of Object.keys(resPokemonDB.data)) {
+              player.pokemon.info[item] = resPokemonDB.data[item]
             }
-
-            // O plus_status só será calculado para o pokemons do jogador.
-            await this.setPlusStatus(player.pokemon)
           }
+
+          player.pokemon.info.base_experience = resPokemon.data.base_experience
           await this.setBaseStatus(resPokemon.data.stats, player)
+          await this.setPlusStatus(player.pokemon)
           await this.setTypes(player.pokemon, resPokemon.data.types)
           await this.setTypeImageLink(player.pokemon)
           await this.setSpecialAbilities(player, resPokemon.data.abilities)
@@ -791,6 +792,7 @@
             console.error(error)
           }
           // this.jogador.pokemon.info.experience = selected.info.experience
+          selected.info = {}
           this.match.emAndamento = true
           this.match.selecionarPokemon = false
         } catch (error) {
