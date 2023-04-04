@@ -314,13 +314,19 @@
               let indexNextSpecie = this.getRandom(0, maxIndex)
               let nextEvolveSpecie = evolutions[nextEvolve].species[indexNextSpecie]
 
+              // Pega a base_experience da próxima evolução, para o cálculo da experience_plus.
+              let expNextEvolution = evolutions[nextEvolve].base_experience
+
+              // A nova experience_plus, terá como base o base_experience da práxima evolução.
+              let newPlusExperience = (experience_plus + this.jogador.pokemon.info.base_experience) - expNextEvolution
+
               let resNextEvolve = await axios.get(`https://pokeapi.co/api/v2/pokemon/${ nextEvolveSpecie }`)
 
               let resEvolve = await axios_database.post('/upgradePokemon', {
                 id: `${ id }`,
                 specie: resNextEvolve.data.species.name,
                 evolution_id: `${ ++evolution_id }`,
-                experience_plus: `${ experience_plus }`
+                experience_plus: `${ newPlusExperience }`
               }, this.getAuth())
 
               if (resEvolve.data.errorField) {
