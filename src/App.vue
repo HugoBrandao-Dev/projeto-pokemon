@@ -209,8 +209,10 @@
             specie: `${ this.monstro.pokemon.info.specie }`,
             chain_id: `${ this.monstro.pokemon.info.chain_id }`,
             evolution_id: `${ this.monstro.pokemon.info.evolution_id }`,
-            experience_plus: `0`,
-            ball_id: `${ ball_type }`
+            experience_plus: '0',
+            ball_id: `${ ball_type }`,
+            battles: '0',
+            battles_won: '0'
           }, this.getAuth())
 
           if (resCatched.data.errorField) {
@@ -767,7 +769,9 @@
                 specie: `${ selected.info.specie }`,
                 chain_id: `${ selected.info.chain_id }`,
                 evolution_id: `${ selected.info.evolution_id }`,
-                experience_plus: `0`
+                experience_plus: '0',
+                battles: '0',
+                battles_won: '0'
               }, this.getAuth())
               selected.info.id = resPokemon.data
               await this.setPokemon(this.jogador, selected, 'selected')
