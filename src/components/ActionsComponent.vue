@@ -343,8 +343,8 @@
             pokemon: this.monstro.pokemon.info.specie
           }
         } else if (this.monstro.pokemon.life == 0) {
-          this.$emit('increaseExp')
           this.setFinalizarPartida('ganhou', "Você venceu! \\o/", this.jogador.name, this.jogador.pokemon.info.specie)
+          this.$emit('increaseExp')
           this.statusPartida.vencedores = {
             treinador: this.jogador.name,
             pokemon: this.jogador.pokemon.info.specie
