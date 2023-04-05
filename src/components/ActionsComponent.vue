@@ -301,9 +301,36 @@
           console.error(error)
         }
       },
+      async saveBattleStatus() {
+        try {
+          let resPokemon = await axios_database.get(`/user/pokemon/${ this.jogador.pokemon.info.id }`, this.getAuth())
+          if (resPokemon.data.errorField) {
+            console.log(resPokemon.data.msg)
+          }
+
+          let { id, specie, evolution_id, experience_plus, battles, battles_won } = resPokemon.data
+
+          let resPokemonUpdated = await axios_database.post('/upgradePokemon', {
+            id: `${ id }`,
+            specie: `${ specie }`,
+            evolution_id: `${ evolution_id }`,
+            experience_plus: `${ experience_plus }`,
+            battles: `${ ++battles }`,
+            battles_won: `${ this.statusPartida.status == 'ganhou' ? ++battles_won : battles_won }`,
+          }, this.getAuth())
+
+          if (resPokemonUpdated.data.errorField) {
+            console.log(resPokemon.data.msg)
+          }
+
+        } catch (error) {
+          console.error(error)
+        }
+      },
       setFinalizarPartida(status = 'desistiu', mensagem = 'Você desistiu', treinVencedor, pokeVencedor) {
         this.saveFruitsAmounts()
         this.setStatusPartida(false, true, status, mensagem, treinVencedor, pokeVencedor)
+        this.saveBattleStatus()
         this.logAcoes = []
       },
       verificarVencedor() {
