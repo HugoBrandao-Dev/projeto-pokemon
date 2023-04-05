@@ -726,7 +726,7 @@
             2: segunda evolução;
             3: terceira evolução.
             */
-            evolution: 0,
+            evolution: 1,
             picture: 'https://img.icons8.com/dotty/96/ffffff/user.png',
             special_attacks: []
           },
@@ -741,6 +741,8 @@
         this.match.mostrarResultado = false
         this.match.status = ''
         this.match.mensagem = ''
+        this.match.vencedores.treinador = ''
+        this.match.vencedores.pokemon = ''
       },
       async selectedPokemon($event) {
         let selected = $event.pokemon
