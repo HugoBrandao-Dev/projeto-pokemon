@@ -86,11 +86,13 @@
       setAlert($event) {
         this.myWindow = $event.myWindow
       },
-      setStatusPartida(emAndamento = false, mostrarResultado = false, status = '', mensagem = '') {
+      setStatusPartida(emAndamento = false, mostrarResultado = false, status = '', mensagem = '', treinVencedor, pokeVencedor) {
         this.statusPartida.emAndamento = emAndamento
         this.statusPartida.mostrarResultado = mostrarResultado
         this.statusPartida.status = status
         this.statusPartida.mensagem = mensagem
+        this.statusPartida.vencedores.treinador = treinVencedor
+        this.statusPartida.vencedores.pokemon = pokeVencedor
       },
       setMyWindow(type, title, content, execFunction) {
         this.myWindow.type = type
@@ -283,7 +285,7 @@
         this.$emit("clearLog")
         this.$emit("generatePokemons")
         this.logAcoes = this.logActions
-        this.setStatusPartida(true, false, '', '')
+        this.setStatusPartida(true, false, '', '', '', '')
       },
       async saveFruitsAmounts() {
         try {
@@ -299,23 +301,23 @@
           console.error(error)
         }
       },
-      setFinalizarPartida(status = 'desistiu', mensagem = 'Você desistiu') {
+      setFinalizarPartida(status = 'desistiu', mensagem = 'Você desistiu', treinVencedor, pokeVencedor) {
         this.saveFruitsAmounts()
-        this.setStatusPartida(false, true, status, mensagem)
+        this.setStatusPartida(false, true, status, mensagem, treinVencedor, pokeVencedor)
         this.logAcoes = []
       },
       verificarVencedor() {
         if (this.jogador.pokemon.life == 0 && this.monstro.pokemon.life == 0) {
-          this.setFinalizarPartida('empatou', 'Houve empate!')
+          this.setFinalizarPartida('empatou', 'Houve empate!', 'n/a', 'n/a')
         } else if (this.jogador.pokemon.life == 0) {
-          this.setFinalizarPartida('perdeu', 'Você perdeu :(')
+          this.setFinalizarPartida('perdeu', 'Você perdeu :(', this.monstro.name, this.monstro.pokemon.info.specie)
           this.statusPartida.vencedores = {
             treinador: this.monstro.name,
             pokemon: this.monstro.pokemon.info.specie
           }
         } else if (this.monstro.pokemon.life == 0) {
           this.$emit('increaseExp')
-          this.setFinalizarPartida('ganhou', "Você venceu! \\o/")
+          this.setFinalizarPartida('ganhou', "Você venceu! \\o/", this.jogador.name, this.jogador.pokemon.info.specie)
           this.statusPartida.vencedores = {
             treinador: this.jogador.name,
             pokemon: this.jogador.pokemon.info.specie
