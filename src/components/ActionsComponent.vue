@@ -344,15 +344,35 @@
 
         return dropFruits
       },
-      verificarVencedor() {
+      async saveDropFruits(fruitsInfo) {
+        let drops = []
+
+        for (let info of fruitsInfo) {
+          drops.push({
+            dropped: Math.random() <= info.rate,
+            amount: this.getValorRandom(1, info.amount)
+          })
+        }
+
+        let jaboca_berry = this.jogador.items.fruits['jaboca-berry']
+        let razz_berry = this.jogador.items.fruits['razz-berry']
+        let bluk_berry = this.jogador.items.fruits['bluk-berry']
+
+        await axios_database.post('/user/fruits/update', {
+          'jaboca-berry': `${ drops[0].dropped ? jaboca_berry + drops[0].amount : jaboca_berry }`,
+          'razz-berry': `${ drops[1].dropped ? razz_berry + drops[1].amount : razz_berry }`,
+          'bluk-berry': `${ drops[2].dropped ? bluk_berry + drops[2].amount : bluk_berry }`
+        }, this.getAuth())
+      },
+      async verificarVencedor() {
         if (this.jogador.pokemon.life == 0 && this.monstro.pokemon.life == 0) {
           this.setFinalizarPartida('empatou', 'Houve empate!', 'n/a', 'n/a')
         } else if (this.jogador.pokemon.life == 0) {
           this.setFinalizarPartida('perdeu', 'Você perdeu :(', this.monstro.name, this.monstro.pokemon.info.specie)
         } else if (this.monstro.pokemon.life == 0) {
           this.setFinalizarPartida('ganhou', "Você venceu! \\o/", this.jogador.name, this.jogador.pokemon.info.specie)
-          let dropFruits = this.getFruitsDrop()
-          console.log(dropFruits)
+          let infoFruitDrops = await this.getFruitsDrop()
+          this.saveDropFruits(infoFruitDrops)
           this.$emit('increaseExp')
         }
       },
