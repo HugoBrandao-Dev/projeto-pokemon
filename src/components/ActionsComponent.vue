@@ -333,6 +333,17 @@
         this.saveBattleStatus()
         this.logAcoes = []
       },
+      async getFruitsDrop() {
+        let dropFruits = []
+        // [5 - 7] são valores hardcoded do valor dos IDs das frutas no BD.
+        for (let cont = 5; cont <= 7; cont++) {
+          let resFruit = await axios_database.get(`/fruits/dropRate/${ cont }`, this.getAuth())
+          let { rate, amount } = resFruit.data
+          dropFruits.push({ rate, amount })
+        }
+
+        return dropFruits
+      },
       verificarVencedor() {
         if (this.jogador.pokemon.life == 0 && this.monstro.pokemon.life == 0) {
           this.setFinalizarPartida('empatou', 'Houve empate!', 'n/a', 'n/a')
@@ -340,6 +351,8 @@
           this.setFinalizarPartida('perdeu', 'Você perdeu :(', this.monstro.name, this.monstro.pokemon.info.specie)
         } else if (this.monstro.pokemon.life == 0) {
           this.setFinalizarPartida('ganhou', "Você venceu! \\o/", this.jogador.name, this.jogador.pokemon.info.specie)
+          let dropFruits = this.getFruitsDrop()
+          console.log(dropFruits)
           this.$emit('increaseExp')
         }
       },
