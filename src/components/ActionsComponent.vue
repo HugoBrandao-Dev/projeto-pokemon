@@ -354,6 +354,14 @@
           })
         }
 
+        let content = [
+          drops[0].dropped ? `${ drops[0].amount } x Jaboca Berry` : '',
+          drops[1].dropped ? `${ drops[1].amount } x Razz Berry` : '',
+          drops[2].dropped ? `${ drops[2].amount } x Bluk Berry` : ''
+        ]
+
+        this.setMyWindow('info', 'Drops', content, null)
+
         let jaboca_berry = this.jogador.items.fruits['jaboca-berry']
         let razz_berry = this.jogador.items.fruits['razz-berry']
         let bluk_berry = this.jogador.items.fruits['bluk-berry']
