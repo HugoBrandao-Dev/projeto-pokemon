@@ -73,7 +73,8 @@
         log: [],
         items: {
           ballsLinks: [],
-          fruitsLinks: []
+          fruitsLinks: [],
+          coinsLinks: []
         }
       }
     },
@@ -485,6 +486,22 @@
           }
         }
         
+      },
+      async getCoinsIcons() {
+        let coins = ['relic-copper', 'relic-silver', 'relic-gold']
+
+        for (let coin of coins) {
+          try {
+            let response = await axios.get(`https://pokeapi.co/api/v2/item/${ coin }`)
+            this.items.coinsLinks.push({
+              name: `${ coin.split('-')[1] }-coin`,
+              iconLink: response.data.sprites.default
+            })
+          }
+          catch (error) {
+            console.log(error)
+          }
+        }
       },
       getRandom(min, max) {
         return Math.round(Math.random() * (max - min) + min)
@@ -903,6 +920,10 @@
             if (this.items.fruitsLinks.length === 0) {
               this.items.fruitsLinks = []
               this.getFruitsIcons()
+            }
+            if (this.items.coinsLinks.length === 0) {
+              this.items.coinsLinks = []
+              this.getCoinsIcons()
             }
           } catch (error) {
             console.error(error)
