@@ -6,7 +6,9 @@
       @matchCanceled="cancelMatch()" />
     <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
       <HeaderComponent
-      @user="setUser($event)" />
+      @user="setUser($event)"
+      :itemsIcons="items"
+      :itemsAmount="jogador.items" />
       <section id="jogadores">
         <PokemonComponent 
           @player="setPokemonPlayer($event)"

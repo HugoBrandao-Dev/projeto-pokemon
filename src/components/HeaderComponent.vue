@@ -6,6 +6,14 @@
         @logged="logged" />
       <AlertComponent @alert="setAlert($event)"/>
       <h1>Projeto Pokemon</h1>
+      <ul class="coins" v-if="itemsIcons.coinsLinks.length">
+        <li v-for="coin in itemsIcons.coinsLinks" :key="coin.name" class="coin" :title="coin.name.replace('-', ' ')">
+          <img :src="coin.iconLink">
+          <span>
+            {{ itemsAmount.coins[coin.name] }}
+          </span>
+        </li>
+      </ul>
       <div class="login">
         <small v-show="user.hasUser" class="user-name">{{ user.info.login }}</small>
         <button class="btn btn-login" @click="actionUserButton">
@@ -47,6 +55,10 @@
     components: {
       LoginComponent,
       AlertComponent
+    },
+    props: {
+      itemsIcons: Object,
+      itemsAmount: Object
     },
     computed: {
       iconUser() {
@@ -96,8 +108,14 @@
     position: relative;
   }
 
-  .login {
+  .coins, .login {
     display: flex;
+  }
+
+  .coins .coin {
+    display: flex;
+    align-items: center;
+    font-size: 9pt;
   }
 
   .login .user-name {
