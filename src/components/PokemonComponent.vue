@@ -74,15 +74,15 @@
           name: 'Player',
           items: {
             balls: {
-            'poke-ball': 200,
-            'great-ball': 200,
-            'ultra-ball': 200,
-            'master-ball': 200
+            'poke-ball': null,
+            'great-ball': null,
+            'ultra-ball': null,
+            'master-ball': null
             },
             fruits: {
-              'jaboca-berry': 100,
-              'razz-berry': 100,
-              'bluk-berry': 100
+              'jaboca-berry': null,
+              'razz-berry': null,
+              'bluk-berry': null
             },
             coins: {
               'copper-coin': null,

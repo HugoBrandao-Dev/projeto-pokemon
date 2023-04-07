@@ -816,8 +816,6 @@
             resCoins.data.map(coin => {
               this.jogador.items.coins[coin.item] = coin.amount
             })
-
-            console.log(this.jogador.items.coins)
           } catch (error) {
             console.error(error)
           }
