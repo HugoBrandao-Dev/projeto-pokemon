@@ -204,6 +204,12 @@
                 'razz-berry': '5',
                 'bluk-berry': '1'
               }, this.getAuth())
+
+              await axios_database.post('/user/coins', {
+                'copper-coin': '500',
+                'silver-coin': '100',
+                'gold-coin': '50'
+              }, this.getAuth())
             } catch (error) {
               console.error(error)
             }
