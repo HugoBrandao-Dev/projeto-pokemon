@@ -84,6 +84,11 @@
               'razz-berry': 100,
               'bluk-berry': 100
             },
+            coins: {
+              'copper-coin': null,
+              'silver-coin': null,
+              'gold-coin': null
+            }
           },
           pokemon: {
             life: 100,

@@ -812,6 +812,12 @@
               this.jogador.items.fruits[fruit.item] = fruit.amount
             })
 
+            let resCoins = await axios_database.get('/user/coins', this.getAuth())
+            resCoins.data.map(coin => {
+              this.jogador.items.coins[coin.item] = coin.amount
+            })
+
+            console.log(this.jogador.items.coins)
           } catch (error) {
             console.error(error)
           }
