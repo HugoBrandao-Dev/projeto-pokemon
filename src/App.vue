@@ -7,7 +7,8 @@
     <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
       <HeaderComponent
         @user="setUser($event)"
-        :itemsIcons="items"
+        @hasUser="getCoinsInfos()"
+        :itemsCoins="items.coinsLinks"
         :player="jogador" />
       <section id="jogadores">
         <PokemonComponent 
@@ -368,6 +369,7 @@
           }, this.getAuth())
 
           let allEvolutions = await this.getAllEvolutions(chain_id)
+
           let canEvolve = await this.canAlreadyEvolve(allEvolutions)
 
           if (canEvolve) {
@@ -488,6 +490,47 @@
           }
         }
         
+      },
+      async getCoinsIcons() {
+        let coins = ['relic-copper', 'relic-silver', 'relic-gold']
+
+        for (let coin of coins) {
+          try {
+            let response = await axios.get(`https://pokeapi.co/api/v2/item/${ coin }`)
+            this.items.coinsLinks.push({
+              name: `${ coin.split('-')[1] }-coin`,
+              iconLink: response.data.sprites.default
+            })
+          }
+          catch (error) {
+            console.log(error)
+          }
+        }
+      },
+      async getCoinsAmounts() {
+        try {
+          let resCoins = await axios_database.get('/user/coins', this.getAuth())
+          if (resCoins.data.errorField) {
+            console.log(resCoins.data.msg)
+          } else {
+            resCoins.data.map(coin => {
+              this.jogador.items.coins[coin.item] = coin.amount
+            })
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      },
+      async getCoinsInfos() {
+        try {
+          if (this.items.coinsLinks.length === 0) {
+            this.items.coinsLinks = []
+            await this.getCoinsIcons()
+          }
+          await this.getCoinsAmounts()
+        } catch (error) {
+          console.log(error)
+        }
       },
       getRandom(min, max) {
         return Math.round(Math.random() * (max - min) + min)
