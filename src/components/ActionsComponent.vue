@@ -391,6 +391,44 @@
 
         return dropCoins
       },
+      async saveDropCoins(coinsInfo) {
+        try {
+          let drops = []
+
+          for (let info of coinsInfo) {
+            drops.push({
+              dropped: Math.random() <= info.rate,
+              amount: this.getValorRandom(1, info.amount)
+            })
+          }
+
+          let content = [
+            drops[0].dropped ? `${ drops[0].amount } x Copper Coin` : '',
+            drops[1].dropped ? `${ drops[1].amount } x Silver Coin` : '',
+            drops[2].dropped ? `${ drops[2].amount } x Gold Coin` : ''
+          ]
+
+          this.setMyWindow('info', 'Drops', content, null)
+
+          let resCoins = await axios_database.get('/user/coins', this.getAuth())
+
+          for (let info of resCoins.data) {
+            this.jogador.items.coins[info.item] = info.amount
+          }
+
+          let copper_coin = this.jogador.items.coins['copper-coin']
+          let silver_coin = this.jogador.items.coins['silver-coin']
+          let gold_coin = this.jogador.items.coins['gold-coin']
+
+          await axios_database.post('/user/coins/update', {
+            'copper-coin': `${ drops[0].dropped ? copper_coin + drops[0].amount : copper_coin }`,
+            'silver-coin': `${ drops[1].dropped ? silver_coin + drops[1].amount : silver_coin }`,
+            'gold-coin': `${ drops[2].dropped ? gold_coin + drops[2].amount : gold_coin }`
+          }, this.getAuth())
+        } catch (error) {
+          console.error(error)
+        }        
+      },
       async verificarVencedor() {
         if (this.jogador.pokemon.life == 0 && this.monstro.pokemon.life == 0) {
           this.setFinalizarPartida('empatou', 'Houve empate!', 'n/a', 'n/a')
@@ -399,9 +437,10 @@
         } else if (this.monstro.pokemon.life == 0) {
           this.setFinalizarPartida('ganhou', "Você venceu! \\o/", this.jogador.name, this.jogador.pokemon.info.specie)
           let infoFruitDrops = await this.getFruitsDrop()
-          let infoCoinDrops = await this.getCoinsDrop()
-          console.log(infoCoinDrops)
           this.saveDropFruits(infoFruitDrops)
+
+          let infoCoinDrops = await this.getCoinsDrop()
+          this.saveDropCoins(infoCoinDrops)
           this.$emit('increaseExp')
         }
       },
