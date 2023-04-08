@@ -10,7 +10,7 @@
         <li v-for="coin in itemsIcons.coinsLinks" :key="coin.name" class="coin" :title="coin.name.replace('-', ' ')">
           <img :src="coin.iconLink">
           <span>
-            {{ itemsAmount.coins[coin.name] }}
+            {{ jogador.items.coins[coin.name] }}
           </span>
         </li>
       </ul>
@@ -41,8 +41,8 @@
   export default {
     data() {
       return {
+        jogador: {},
         itemsIcons: { coinsLinks: [] },
-        itemsAmount: { coins: {} },
         myWindows: {},
         user: {
           hasUser: false,
@@ -53,23 +53,33 @@
         showLoginScreen: false
       }
     },
-    created() {
-
-      // Verifica se já existe um token (usuário logado).
-      if (localStorage.getItem('PokemonUserToken')) {
-        this.user.hasUser = true
-        this.getCoinsAmounts()
-        this.getCoinsIcons()
-      }
-
-      this.$emit('user', { user: this.user })
-    },
     components: {
       LoginComponent,
       AlertComponent
     },
     props: {
-      jogador: Object
+      player: Object
+    },
+    created() {
+      this.jogador = this.player
+      this.jogador = {
+        items: {
+          coins: {
+            'copper-coin': null,
+            'silver-coin': null,
+            'gold-coin': null
+          }
+        }
+      }
+
+      // Verifica se já existe um token (usuário logado).
+      if (localStorage.getItem('PokemonUserToken')) {
+        this.user.hasUser = true
+        this.getCoinsIcons()
+        this.getCoinsAmounts()
+      }
+
+      this.$emit('user', { user: this.user })
     },
     computed: {
       iconUser() {
@@ -90,6 +100,7 @@
         }
       },
       async getCoinsIcons() {
+        this.itemsIcons.coinsLinks = []
         let coins = ['relic-copper', 'relic-silver', 'relic-gold']
 
         for (let coin of coins) {
@@ -106,13 +117,14 @@
         }
       },
       async getCoinsAmounts() {
+        this.jogador.items.coins = {}
         try {
           let resCoins = await axios_database.get('/user/coins', this.getAuth())
           if (resCoins.data.errorField) {
-            console.log(resCoins.data.errorField)
+            console.log(resCoins.data.msg)
           } else {
             resCoins.data.map(coin => {
-              this.itemsAmount.coins[coin.item] = coin.amount
+              this.jogador.items.coins[coin.item] = coin.amount
             })
           }
         } catch (error) {
@@ -134,8 +146,6 @@
         axios.get('http://localhost:4000/logout')
           .then(() => {
             localStorage.removeItem('PokemonUserToken')
-
-            this.itemsAmount.coins = {}
             this.user.hasUser = false
           })
           .catch(error => {

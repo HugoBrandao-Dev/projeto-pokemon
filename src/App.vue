@@ -8,7 +8,7 @@
       <HeaderComponent
         @user="setUser($event)"
         :itemsIcons="items"
-        :jogador="jogador" />
+        :player="jogador" />
       <section id="jogadores">
         <PokemonComponent 
           @player="setPokemonPlayer($event)"
