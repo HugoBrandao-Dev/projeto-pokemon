@@ -349,32 +349,36 @@
         }
       },
       async saveDropFruits(fruitsInfo) {
-        let drops = []
+        try {
+          let drops = []
 
-        for (let info of fruitsInfo) {
-          drops.push({
-            dropped: Math.random() <= info.rate,
-            amount: this.getValorRandom(1, info.amount)
-          })
-        }
+          for (let info of fruitsInfo) {
+            drops.push({
+              dropped: Math.random() <= info.rate,
+              amount: this.getValorRandom(1, info.amount)
+            })
+          }
 
-        let content = [
-          drops[0].dropped ? `${ drops[0].amount } x Jaboca Berry` : '',
-          drops[1].dropped ? `${ drops[1].amount } x Razz Berry` : '',
-          drops[2].dropped ? `${ drops[2].amount } x Bluk Berry` : ''
-        ]
+          let content = [
+            drops[0].dropped ? `${ drops[0].amount } x Jaboca Berry` : '',
+            drops[1].dropped ? `${ drops[1].amount } x Razz Berry` : '',
+            drops[2].dropped ? `${ drops[2].amount } x Bluk Berry` : ''
+          ]
 
-        this.setMyWindow('info', 'Drops', content, null)
+          this.setMyWindow('info', 'Drops', content, null)
 
-        let jaboca_berry = this.jogador.items.fruits['jaboca-berry']
-        let razz_berry = this.jogador.items.fruits['razz-berry']
-        let bluk_berry = this.jogador.items.fruits['bluk-berry']
+          let jaboca_berry = this.jogador.items.fruits['jaboca-berry']
+          let razz_berry = this.jogador.items.fruits['razz-berry']
+          let bluk_berry = this.jogador.items.fruits['bluk-berry']
 
-        await axios_database.post('/user/fruits/update', {
-          'jaboca-berry': `${ drops[0].dropped ? jaboca_berry + drops[0].amount : jaboca_berry }`,
-          'razz-berry': `${ drops[1].dropped ? razz_berry + drops[1].amount : razz_berry }`,
-          'bluk-berry': `${ drops[2].dropped ? bluk_berry + drops[2].amount : bluk_berry }`
-        }, this.getAuth())
+          await axios_database.post('/user/fruits/update', {
+            'jaboca-berry': `${ drops[0].dropped ? jaboca_berry + drops[0].amount : jaboca_berry }`,
+            'razz-berry': `${ drops[1].dropped ? razz_berry + drops[1].amount : razz_berry }`,
+            'bluk-berry': `${ drops[2].dropped ? bluk_berry + drops[2].amount : bluk_berry }`
+          }, this.getAuth())
+        } catch (error) {
+          console.error(error)
+        }        
       },
       async getCoinsDrop() {
         let dropCoins = []
