@@ -346,6 +346,29 @@
           console.log(error)
         }
       },
+      async refreshAmounts() {
+        try {
+          let resFruits = await axios_database.get('/user/fruits',this.getAuth())
+          if (resFruits.data.errorField) {
+            console.log(resFruits.data.msg)
+          } else {
+            for (let itemList of resFruits.data) {
+              this.jogador.items.fruits[itemList.item] = itemList.amount
+            }
+          }
+
+          let resCoins = await axios_database.get('/user/coins',this.getAuth())
+          if (resCoins.data.errorField) {
+            console.log(resCoins.data.msg)
+          } else {
+            for (let itemList of resCoins.data) {
+              this.jogador.items.coins[itemList.item] = itemList.amount
+            }
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      },
       // Aumenta o Experience do pokemon do jogador, caso ele vença a batalha
       // experienceRate: taxa de aumento da experienca (%);
       // max: valor máximo do aumento da experiencia (%).
@@ -375,6 +398,8 @@
           if (canEvolve) {
             this.setEvolve()
           }
+
+          this.refreshAmounts()
         } catch (error) {
           console.error(error)
         }
