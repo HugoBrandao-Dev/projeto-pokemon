@@ -334,15 +334,19 @@
         this.logAcoes = []
       },
       async getFruitsDrop() {
-        let dropFruits = []
-        // [5 - 7] são valores hardcoded do valor dos IDs das frutas no BD.
-        for (let cont = 5; cont <= 7; cont++) {
-          let resFruit = await axios_database.get(`/fruits/dropRate/${ cont }`, this.getAuth())
-          let { rate, amount } = resFruit.data
-          dropFruits.push({ rate, amount })
-        }
+        try {
+          let dropFruits = []
+          // [5 - 7] são valores hardcoded do valor dos IDs das frutas no BD.
+          for (let cont = 5; cont <= 7; cont++) {
+            let resFruit = await axios_database.get(`/fruits/dropRate/${ cont }`, this.getAuth())
+            let { rate, amount } = resFruit.data
+            dropFruits.push({ rate, amount })
+          }
 
-        return dropFruits
+          return dropFruits
+        } catch (error) {
+          console.error(error)
+        }
       },
       async saveDropFruits(fruitsInfo) {
         let drops = []
