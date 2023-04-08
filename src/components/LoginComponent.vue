@@ -184,11 +184,9 @@
           })
 
           if (resLogin.data.token) {
-            this.$emit('logged')
-
-            localStorage.setItem('PokemonUserToken', resLogin.data.token)
 
             try {
+              localStorage.setItem('PokemonUserToken', resLogin.data.token)
 
               // Setta as quantidades (padrão) de pokebolas do usuário no banco de dados.
               await axios_database.post('/user/balls', {
@@ -205,11 +203,14 @@
                 'bluk-berry': '1'
               }, this.getAuth())
 
+              // Setta as quantidades (padrão) de moedas do usuário no banco de dados.
               await axios_database.post('/user/coins', {
                 'copper-coin': '500',
                 'silver-coin': '100',
                 'gold-coin': '50'
               }, this.getAuth())
+
+              this.$emit('logged')
             } catch (error) {
               console.error(error)
             }
