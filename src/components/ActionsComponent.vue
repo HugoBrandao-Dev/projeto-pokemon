@@ -372,6 +372,17 @@
           'bluk-berry': `${ drops[2].dropped ? bluk_berry + drops[2].amount : bluk_berry }`
         }, this.getAuth())
       },
+      async getCoinsDrop() {
+        let dropCoins = []
+        // [8 - 10] são valores hardcoded do valor dos IDs das moedas no BD.
+        for (let cont = 8; cont <= 10; cont++) {
+          let resCoin = await axios_database.get(`/coins/dropRate/${ cont }`, this.getAuth())
+          let { rate, amount } = resCoin.data
+          dropCoins.push({ rate, amount })
+        }
+
+        return dropCoins
+      },
       async verificarVencedor() {
         if (this.jogador.pokemon.life == 0 && this.monstro.pokemon.life == 0) {
           this.setFinalizarPartida('empatou', 'Houve empate!', 'n/a', 'n/a')
@@ -380,6 +391,8 @@
         } else if (this.monstro.pokemon.life == 0) {
           this.setFinalizarPartida('ganhou', "Você venceu! \\o/", this.jogador.name, this.jogador.pokemon.info.specie)
           let infoFruitDrops = await this.getFruitsDrop()
+          let infoCoinDrops = await this.getCoinsDrop()
+          console.log(infoCoinDrops)
           this.saveDropFruits(infoFruitDrops)
           this.$emit('increaseExp')
         }
