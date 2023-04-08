@@ -6,7 +6,7 @@
         @logged="logged" />
       <AlertComponent @alert="setAlert($event)"/>
       <h1>Projeto Pokemon</h1>
-      <ul class="coins" v-if="itemsIcons.coinsLinks.length">
+      <ul class="coins" v-if="user.hasUser">
         <li v-for="coin in itemsIcons.coinsLinks" :key="coin.name" class="coin" :title="coin.name.replace('-', ' ')">
           <img :src="coin.iconLink">
           <span>
@@ -31,9 +31,18 @@
   // Bibliotecas
   import axios from 'axios'
 
+  /*
+  Instância do axios, para atender, diretamente, as requisições feitas para o localhost do back-end.
+  */
+  const axios_database = axios.create({
+    baseURL: 'http://localhost:4000'
+  })
+
   export default {
     data() {
       return {
+        itemsIcons: { coinsLinks: [] },
+        itemsAmount: { coins: {} },
         myWindows: {},
         user: {
           hasUser: false,
@@ -45,9 +54,12 @@
       }
     },
     created() {
+
       // Verifica se já existe um token (usuário logado).
       if (localStorage.getItem('PokemonUserToken')) {
         this.user.hasUser = true
+        this.getCoinsAmounts()
+        this.getCoinsIcons()
       }
 
       this.$emit('user', { user: this.user })
@@ -57,8 +69,7 @@
       AlertComponent
     },
     props: {
-      itemsIcons: Object,
-      itemsAmount: Object
+      jogador: Object
     },
     computed: {
       iconUser() {
@@ -69,18 +80,62 @@
       }
     },
     methods: {
+      getAuth() {
+        return {
+          headers: {
+            common: {
+              Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
+            }
+          }
+        }
+      },
+      async getCoinsIcons() {
+        let coins = ['relic-copper', 'relic-silver', 'relic-gold']
+
+        for (let coin of coins) {
+          try {
+            let response = await axios.get(`https://pokeapi.co/api/v2/item/${ coin }`)
+            this.itemsIcons.coinsLinks.push({
+              name: `${ coin.split('-')[1] }-coin`,
+              iconLink: response.data.sprites.default
+            })
+          }
+          catch (error) {
+            console.log(error)
+          }
+        }
+      },
+      async getCoinsAmounts() {
+        try {
+          let resCoins = await axios_database.get('/user/coins', this.getAuth())
+          if (resCoins.data.errorField) {
+            console.log(resCoins.data.errorField)
+          } else {
+            resCoins.data.map(coin => {
+              this.itemsAmount.coins[coin.item] = coin.amount
+            })
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      },
       setAlert($event) {
         this.myWindow = $event.myWindow
       },
       logged() {
         this.user.hasUser = true
         this.showLoginScreen = false
+        this.getCoinsIcons()
+        this.getCoinsAmounts()
+
         alert('Logado com sucesso!')
       },
       logout() {
         axios.get('http://localhost:4000/logout')
           .then(() => {
             localStorage.removeItem('PokemonUserToken')
+
+            this.itemsAmount.coins = {}
             this.user.hasUser = false
           })
           .catch(error => {

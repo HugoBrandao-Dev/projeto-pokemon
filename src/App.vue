@@ -6,9 +6,9 @@
       @matchCanceled="cancelMatch()" />
     <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
       <HeaderComponent
-      @user="setUser($event)"
-      :itemsIcons="items"
-      :itemsAmount="jogador.items" />
+        @user="setUser($event)"
+        :itemsIcons="items"
+        :jogador="jogador" />
       <section id="jogadores">
         <PokemonComponent 
           @player="setPokemonPlayer($event)"
@@ -489,22 +489,6 @@
         }
         
       },
-      async getCoinsIcons() {
-        let coins = ['relic-copper', 'relic-silver', 'relic-gold']
-
-        for (let coin of coins) {
-          try {
-            let response = await axios.get(`https://pokeapi.co/api/v2/item/${ coin }`)
-            this.items.coinsLinks.push({
-              name: `${ coin.split('-')[1] }-coin`,
-              iconLink: response.data.sprites.default
-            })
-          }
-          catch (error) {
-            console.log(error)
-          }
-        }
-      },
       getRandom(min, max) {
         return Math.round(Math.random() * (max - min) + min)
       },
@@ -813,11 +797,6 @@
             resFruits.data.map(fruit => {
               this.jogador.items.fruits[fruit.item] = fruit.amount
             })
-
-            let resCoins = await axios_database.get('/user/coins', this.getAuth())
-            resCoins.data.map(coin => {
-              this.jogador.items.coins[coin.item] = coin.amount
-            })
           } catch (error) {
             console.error(error)
           }
@@ -926,10 +905,6 @@
             if (this.items.fruitsLinks.length === 0) {
               this.items.fruitsLinks = []
               this.getFruitsIcons()
-            }
-            if (this.items.coinsLinks.length === 0) {
-              this.items.coinsLinks = []
-              this.getCoinsIcons()
             }
           } catch (error) {
             console.error(error)
