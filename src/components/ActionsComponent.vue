@@ -365,7 +365,6 @@
             drops[2].dropped ? `${ drops[2].amount } x Bluk Berry` : ''
           ]
 
-          this.setMyWindow('info', 'Drops', content, null)
 
           let jaboca_berry = this.jogador.items.fruits['jaboca-berry']
           let razz_berry = this.jogador.items.fruits['razz-berry']
@@ -376,9 +375,11 @@
             'razz-berry': `${ drops[1].dropped ? razz_berry + drops[1].amount : razz_berry }`,
             'bluk-berry': `${ drops[2].dropped ? bluk_berry + drops[2].amount : bluk_berry }`
           }, this.getAuth())
+
+          return content
         } catch (error) {
           console.error(error)
-        }        
+        }
       },
       async getCoinsDrop() {
         let dropCoins = []
@@ -425,6 +426,8 @@
             'silver-coin': `${ drops[1].dropped ? silver_coin + drops[1].amount : silver_coin }`,
             'gold-coin': `${ drops[2].dropped ? gold_coin + drops[2].amount : gold_coin }`
           }, this.getAuth())
+
+          return content
         } catch (error) {
           console.error(error)
         }        
@@ -437,10 +440,12 @@
         } else if (this.monstro.pokemon.life == 0) {
           this.setFinalizarPartida('ganhou', "Você venceu! \\o/", this.jogador.name, this.jogador.pokemon.info.specie)
           let infoFruitDrops = await this.getFruitsDrop()
-          this.saveDropFruits(infoFruitDrops)
+          let fruitDrops = await this.saveDropFruits(infoFruitDrops)
 
           let infoCoinDrops = await this.getCoinsDrop()
-          this.saveDropCoins(infoCoinDrops)
+          let coinDrops = await this.saveDropCoins(infoCoinDrops)
+
+          this.setMyWindow('info', 'Drops', [...fruitDrops, ...coinDrops], null)
           this.$emit('increaseExp')
         }
       },
