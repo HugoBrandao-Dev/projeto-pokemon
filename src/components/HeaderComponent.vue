@@ -13,6 +13,11 @@
             {{ player.items.coins[coin.name] }}
           </span>
         </li>
+        <li>
+          <button type="button" id="btn-buy" class="btn">
+            <img src="https://img.icons8.com/color/32/null/pokebag.png"/>
+          </button>
+        </li>
       </ul>
       <div class="login">
         <small v-show="user.hasUser" class="user-name">{{ user.info.login }}</small>
@@ -126,6 +131,18 @@
     display: flex;
     align-items: center;
     font-size: 9pt;
+  }
+
+  #cabecalho #btn-buy {
+    margin-left: 10px;
+    padding: 2px;
+    background-color: #47476b;
+    border: none;
+    border-bottom: 2px solid #47476b
+  }
+
+  #cabecalho #btn-buy:hover {
+    border-bottom: 2px solid #fff;
   }
 
   .login .user-name {
