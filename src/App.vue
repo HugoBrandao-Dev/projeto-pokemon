@@ -4,11 +4,15 @@
       @alert="setAlert($event)"
       @selectedPokemon="selectedPokemon($event)"
       @matchCanceled="cancelMatch()" />
-    <ShoppingComponent />
+    <ShoppingComponent
+      @closeShoppingWindow="windows.showShoppingScreen = false"
+      v-show="windows.showShoppingScreen"
+     />
     <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
       <HeaderComponent
         @user="setUser($event)"
         @hasUser="getCoinsInfos()"
+        @showShoppingWindow="windows.showShoppingScreen = !windows.showShoppingScreen"
         :itemsCoins="items.coinsLinks"
         :player="jogador" />
       <section id="jogadores">
@@ -80,6 +84,9 @@
           ballsLinks: [],
           fruitsLinks: [],
           coinsLinks: []
+        },
+        windows: {
+          showShoppingScreen: false
         }
       }
     },

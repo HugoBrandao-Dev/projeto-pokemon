@@ -3,7 +3,7 @@
     <form method="POST" @submit="shopping" class="form-shopping">
       <div class="form-header">
         <h1 class="espacar">Compras</h1>
-        <button type="button" class="btn btn-close-window" @click="closeWindow()">
+        <button type="button" class="btn btn-close-window" @click="closeShoppingWindow()">
           <img src="https://img.icons8.com/dotty/32/null/close-window.png"/>
         </button>
       </div>
@@ -41,14 +41,29 @@
         </div>
 
         <div class="access-action">
-          <button class="btn btn-cancel" @click="form.type = 'login'">Cancelar</button>
-          <button class="btn btn-buy">Comprar</button>
+          <button type="button" class="btn btn-cancel" @click="closeShoppingWindow()">Cancelar</button>
+          <button type="submit" class="btn btn-buy">Comprar</button>
         </div>
       </fieldset>
     </form>
   </div>
 </template>
-<script></script>
+<script>
+  export default {
+    data() {
+      return {}
+    },
+    methods: {
+      shopping($event) {
+        $event.preventDefault()
+        alert('Dados enviados.')
+      },
+      closeShoppingWindow() {
+        this.$emit('closeShoppingWindow')
+      }
+    }
+  }
+</script>
 <style scoped>
   #shopping {
     width: 40%;

@@ -14,7 +14,7 @@
           </span>
         </li>
         <li>
-          <button type="button" id="btn-buy" class="btn">
+          <button type="button" id="btn-buy" class="btn" @click="showShoppingWindow">
             <img src="https://img.icons8.com/color/32/null/pokebag.png"/>
           </button>
         </li>
@@ -83,6 +83,9 @@
       }
     },
     methods: {
+      showShoppingWindow() {
+        this.$emit('showShoppingWindow')
+      },
       setAlert($event) {
         this.myWindow = $event.myWindow
       },
