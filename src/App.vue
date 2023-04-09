@@ -4,6 +4,7 @@
       @alert="setAlert($event)"
       @selectedPokemon="selectedPokemon($event)"
       @matchCanceled="cancelMatch()" />
+    <ShoppingComponent />
     <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
       <HeaderComponent
         @user="setUser($event)"
@@ -41,6 +42,7 @@
 <script>
   // Componentes
   import AlertComponent from './components/AlertComponent'
+  import ShoppingComponent from './components/ShoppingComponent'
   import HeaderComponent from './components/HeaderComponent'
   import PokemonComponent from './components/PokemonComponent'
   import MatchComponent from './components/MatchComponent'
@@ -83,6 +85,7 @@
     },
     components: {
       AlertComponent,
+      ShoppingComponent,
       HeaderComponent,
       PokemonComponent,
       ActionsComponent,
