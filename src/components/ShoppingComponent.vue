@@ -140,7 +140,7 @@
           }
         }
       },
-      // Faz a atualização da nova quantidade de frutas.
+      // Faz a atualização para nova quantidade de frutas.
       async saveFruitsAmounts() {
         try {
           let resFruits = await axios_database.get('/user/fruits', this.getAuth())
@@ -165,6 +165,39 @@
 
           if (resFruitsSetted.data.errorField) {
             console.log(resFruitsSetted.data.msg)
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      },
+      // Faz a atualização para nova quantidade de pokebolas.
+      async saveBallsAmounts() {
+        try {
+          let resBalls = await axios_database.get('/user/balls', this.getAuth())
+
+          // Pega a quantidade de frutas que o usuário já tem.
+          let poke_ball = resBalls.data.find(item => item.item == 'poke-ball').amount
+          let great_ball = resBalls.data.find(item => item.item == 'great-ball').amount
+          let ultra_ball = resBalls.data.find(item => item.item == 'ultra-ball').amount
+          let master_ball = resBalls.data.find(item => item.item == 'master-ball').amount
+
+          // Atualiza a quantidade somando os valores do formulário e a quantidade que o usuário já possui.
+          let newBallsValues = {
+            'poke-ball': `${ parseInt(this.form.fields.balls['poke-ball']) + poke_ball }`,
+            'great-ball': `${ parseInt(this.form.fields.balls['great-ball']) + great_ball }`,
+            'ultra-ball': `${ parseInt(this.form.fields.balls['ultra-ball']) + ultra_ball }`,
+            'master-ball': `${ parseInt(this.form.fields.balls['master-ball']) + master_ball }`
+          }
+
+          let resBallsSetted = await axios_database.post('/user/balls/update', {
+            'poke-ball': newBallsValues['poke-ball'],
+            'great-ball': newBallsValues['great-ball'],
+            'ultra-ball': newBallsValues['ultra-ball'],
+            'master-ball': newBallsValues['master-ball']
+          },this.getAuth())
+
+          if (resBallsSetted.data.errorField) {
+            console.log(resBallsSetted.data.msg)
           }
         } catch (error) {
           console.error(error)
@@ -203,6 +236,7 @@
         }
 
         this.saveFruitsAmounts()
+        this.saveBallsAmounts()
 
         alert('Dados enviados.')
       },
