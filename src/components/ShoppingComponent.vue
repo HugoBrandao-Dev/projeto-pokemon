@@ -122,6 +122,13 @@
       }
     },
     methods: {
+      resetFields() {
+        for (let type of Object.keys(this.form.fields)) {
+          for (let field of Object.keys(this.form.fields[type])) {
+            this.form.fields[type][field] = 0
+          }
+        }
+      },
       findPrice(itemType, itemName) {
         return this.items_shopping[itemType].find(fruit => fruit.item == itemName)
       },
@@ -149,6 +156,7 @@
 
         console.info(coinsCount)
 
+        this.resetFields()
         alert('Dados enviados.')
       },
       closeShoppingWindow() {
