@@ -122,10 +122,33 @@
       }
     },
     methods: {
+      findPrice(itemType, itemName) {
+        return this.items_shopping[itemType].find(fruit => fruit.item == itemName)
+      },
       // Busca os items que serão vendidos na loja
-      
       shopping($event) {
         $event.preventDefault()
+
+        let coinsCount = {
+          'copper-coin': 0,
+          'silver-coin': 0,
+          'gold-coin': 0
+        }
+
+        // Pega os valores das moedas que serão gastas em frutas
+        for (let fruit of Object.keys(this.form.fields.fruits)) {
+          let item = this.findPrice('fruits', fruit)
+          coinsCount[item.required] += this.form.fields.fruits[fruit] * item.amount
+        }
+
+        // Pega os valores das moedas que serão gastas em pokebolas
+        for (let ball of Object.keys(this.form.fields.balls)) {
+          let item = this.findPrice('balls', ball)
+          coinsCount[item.required] += this.form.fields.balls[ball] * item.amount
+        }
+
+        console.info(coinsCount)
+
         alert('Dados enviados.')
       },
       closeShoppingWindow() {
