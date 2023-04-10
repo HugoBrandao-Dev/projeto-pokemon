@@ -51,6 +51,15 @@
   </div>
 </template>
 <script>
+  import axios from 'axios'
+
+  /*
+  Instância do axios, para atender, diretamente, as requisições feitas para o localhost do back-end.
+  */
+  const axios_database = axios.create({
+    baseURL: 'http://localhost:4000'
+  })
+
   export default {
     data() {
       return {
@@ -122,6 +131,45 @@
       }
     },
     methods: {
+      getAuth() {
+        return {
+          headers: {
+            common: {
+              Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
+            }
+          }
+        }
+      },
+      // Faz a atualização da nova quantidade de frutas.
+      async saveFruitsAmounts() {
+        try {
+          let resFruits = await axios_database.get('/user/fruits', this.getAuth())
+
+          // Pega a quantidade de frutas que o usuário já tem.
+          let jaboca_berry = resFruits.data.find(item => item.item == 'jaboca-berry').amount
+          let razz_berry = resFruits.data.find(item => item.item == 'razz-berry').amount
+          let bluk_berry = resFruits.data.find(item => item.item == 'bluk-berry').amount
+
+          // Atualiza a quantidade somando os valores do formulário e a quantidade que o usuário já possui.
+          let newFruitsValues = {
+            'jaboca-berry': `${ parseInt(this.form.fields.fruits['jaboca-berry']) + jaboca_berry }`,
+            'razz-berry': `${ parseInt(this.form.fields.fruits['razz-berry']) + razz_berry }`,
+            'bluk-berry': `${ parseInt(this.form.fields.fruits['bluk-berry']) + bluk_berry }`
+          }
+
+          let resFruitsSetted = await axios_database.post('/user/fruits/update', {
+            'jaboca-berry': newFruitsValues['jaboca-berry'],
+            'razz-berry': newFruitsValues['razz-berry'],
+            'bluk-berry': newFruitsValues['bluk-berry']
+          },this.getAuth())
+
+          if (resFruitsSetted.data.errorField) {
+            console.log(resFruitsSetted.data.msg)
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      },
       resetFields() {
         for (let type of Object.keys(this.form.fields)) {
           for (let field of Object.keys(this.form.fields[type])) {
@@ -154,9 +202,8 @@
           coinsCount[item.required] += this.form.fields.balls[ball] * item.amount
         }
 
-        console.info(coinsCount)
+        this.saveFruitsAmounts()
 
-        this.resetFields()
         alert('Dados enviados.')
       },
       closeShoppingWindow() {
