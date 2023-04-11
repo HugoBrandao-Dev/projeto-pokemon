@@ -121,6 +121,9 @@
         }
       }
     },
+    created() {
+      this.getShoppingItems()
+    },
     filters: {
       assembleIconUrl(item) {
         if (item.indexOf('coin') >= 0) {
@@ -138,6 +141,23 @@
               Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
             }
           }
+        }
+      },
+      // Pega os items do shopping no BD.
+      async getShoppingItems() {
+        try {
+          let resShopping = await axios_database.get('/shoppingItems', this.getAuth())
+
+          // Pega somente as frutas.
+          let fruits = resShopping.data.filter(item => item.type == 'fruit')
+
+          // Pega somente as pokebolas.          
+          let balls = resShopping.data.filter(item => item.type == 'ball')
+
+          this.items_shopping.fruits = fruits
+          this.items_shopping.balls = balls
+        } catch (error) {
+          console.error(error)
         }
       },
       // Faz a atualização para nova quantidade de frutas.
