@@ -766,18 +766,16 @@
         }
       },
       resetStatus(player) {
-        player.items = {
-          balls: {
+        player.items.balls = {
           'poke-ball': 150,
           'great-ball': 10,
           'ultra-ball': 800,
           'master-ball': 2
-          },
-          fruits: {
-            'jaboca-berry': 10, 
-            'razz-berry': 5, 
-            'bluk-berry': 1
-          }
+        }
+        player.items.fruits = {
+          'jaboca-berry': 10, 
+          'razz-berry': 5, 
+          'bluk-berry': 1
         }
         player.pokemon = {
           life: 100,
