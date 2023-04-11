@@ -31,6 +31,7 @@
         @clearLog="clearArrays" 
         @generatePokemons="setPokemons"
         @setAbilities="setSpecialAbilities($event)"
+        @refreshAmounts="refreshAmounts"
         @increaseExp="increaseExp(50)"
         :user="user"
         :player="jogador" 

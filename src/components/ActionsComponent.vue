@@ -446,14 +446,19 @@
         }
       },
       async verificarVencedor() {
-        if (this.jogador.pokemon.life == 0 && this.monstro.pokemon.life == 0) {
-          this.setFinalizarPartida('empatou', 'Houve empate!', 'n/a', 'n/a')
-        } else if (this.jogador.pokemon.life == 0) {
-          this.setFinalizarPartida('perdeu', 'Você perdeu :(', this.monstro.name, this.monstro.pokemon.info.specie)
-        } else if (this.monstro.pokemon.life == 0) {
-          this.setFinalizarPartida('ganhou', "Você venceu! \\o/", this.jogador.name, this.jogador.pokemon.info.specie)
-            this.getDrops()
-          this.$emit('increaseExp')
+        try {
+          if (this.jogador.pokemon.life == 0 && this.monstro.pokemon.life == 0) {
+            this.setFinalizarPartida('empatou', 'Houve empate!', 'n/a', 'n/a')
+          } else if (this.jogador.pokemon.life == 0) {
+            this.setFinalizarPartida('perdeu', 'Você perdeu :(', this.monstro.name, this.monstro.pokemon.info.specie)
+          } else if (this.monstro.pokemon.life == 0) {
+            this.setFinalizarPartida('ganhou', "Você venceu! \\o/", this.jogador.name, this.jogador.pokemon.info.specie)
+            await this.getDrops()
+            await this.$emit('refreshAmounts')
+            await this.$emit('increaseExp')
+          }
+        } catch (error) {
+          console.log(error)
         }
       },
       desistir() {
