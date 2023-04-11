@@ -203,6 +203,29 @@
           console.error(error)
         }
       },
+      async canBuy(coins) {
+        try {
+          let resCoins = await axios_database.get('/user/coins', this.getAuth())
+
+          // Pega as quantidades atuais de coins do usuário.
+          let copper_coin = resCoins.data.find(item => item.item == 'copper-coin').amount
+          let silver_coin = resCoins.data.find(item => item.item == 'silver-coin').amount
+          let gold_coin = resCoins.data.find(item => item.item == 'gold-coin').amount
+
+          // Verifica se as quantidades que ele possui de cada moeda é maior que o necessário para comprar.
+          let is_copper_coin_OK = copper_coin - coins['copper-coin'] >= 0
+          let is_silver_coin_OK = silver_coin - coins['silver-coin'] >= 0
+          let is_gold_coin_OK = gold_coin - coins['gold-coin'] >= 0
+
+          if (is_copper_coin_OK && is_silver_coin_OK && is_gold_coin_OK) {
+            return true
+          }
+
+          return false
+        } catch (error) {
+          console.log(error)
+        }
+      },
       resetFields() {
         for (let type of Object.keys(this.form.fields)) {
           for (let field of Object.keys(this.form.fields[type])) {
@@ -212,6 +235,19 @@
       },
       findPrice(itemType, itemName) {
         return this.items_shopping[itemType].find(fruit => fruit.item == itemName)
+      },
+      async buy(coins) {
+        try {
+          if (await this.canBuy(coins)) {
+            await this.saveFruitsAmounts()
+            await this.saveBallsAmounts()
+            alert('Dados enviados.')
+          } else {
+            alert('Você não tem coin suficientes.')
+          }
+        } catch (error) {
+          console.error(error)
+        }
       },
       // Busca os items que serão vendidos na loja
       shopping($event) {
@@ -235,10 +271,7 @@
           coinsCount[item.required] += this.form.fields.balls[ball] * item.amount
         }
 
-        this.saveFruitsAmounts()
-        this.saveBallsAmounts()
-
-        alert('Dados enviados.')
+        this.buy(coinsCount)
       },
       closeShoppingWindow() {
         this.$emit('closeShoppingWindow')
