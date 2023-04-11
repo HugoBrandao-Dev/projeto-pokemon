@@ -267,6 +267,7 @@
             await this.saveFruitsAmounts()
             await this.saveBallsAmounts()
             await this.saveCoinsAmounts(coins)
+            this.$emit('refreshAmounts')
             alert('Dados enviados.')
           } else {
             alert('Você não tem coin suficientes.')

@@ -6,8 +6,8 @@
       @matchCanceled="cancelMatch()" />
     <ShoppingComponent
       @closeShoppingWindow="windows.showShoppingScreen = false"
-      v-show="windows.showShoppingScreen"
-     />
+      @refreshAmounts="refreshAmounts"
+      v-show="windows.showShoppingScreen" />
     <div id="main" :class="{'selecting-pokemon': selectingPokemon}" >
       <HeaderComponent
         @user="setUser($event)"
