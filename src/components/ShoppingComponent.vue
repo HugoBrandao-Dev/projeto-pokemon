@@ -146,7 +146,7 @@
       // Pega os items do shopping no BD.
       async getShoppingItems() {
         try {
-          let resShopping = await axios_database.get('/shoppingItems', this.getAuth())
+          let resShopping = await axios_database.get('/shoppingItems')
 
           // Pega somente as frutas.
           let fruits = resShopping.data.filter(item => item.type == 'fruit')
