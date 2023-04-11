@@ -267,6 +267,7 @@
             await this.saveFruitsAmounts()
             await this.saveBallsAmounts()
             await this.saveCoinsAmounts(coins)
+            this.resetFields()
             this.$emit('refreshAmounts')
             alert('Dados enviados.')
           } else {
