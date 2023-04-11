@@ -368,6 +368,15 @@
             }
           }
 
+          let resBalls = await axios_database.get('/user/balls',this.getAuth())
+          if (resBalls.data.errorField) {
+            console.log(resBalls.data.msg)
+          } else {
+            for (let itemList of resBalls.data) {
+              this.jogador.items.balls[itemList.item] = itemList.amount
+            }
+          }
+
           let resCoins = await axios_database.get('/user/coins',this.getAuth())
           if (resCoins.data.errorField) {
             console.log(resCoins.data.msg)
