@@ -56,3 +56,8 @@ Uma vez que não foi utilizado frameworks/bibliotecas para estilo, e sim CSS pur
 
 * Se clicar em cancelar, na tela de seleção de pokemon, depois de já ter clicado em iniciar partida, está selecionando e renderizando o pokemon do NPC;
 * Quando um alert é exibido, os botões da "tela de fundo" continuam ativos.
+
+## Possíveis melhorias futuras
+
+* Criar um baú, onde o jogador possa colocar pokemons que não quer utilizar, para esvaziar a tela de seleção de pokemons;
+* Criar mecanismo que o último pokemon selecionado seja o padrão na tela de seleção.
