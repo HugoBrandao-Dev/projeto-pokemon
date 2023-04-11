@@ -226,6 +226,31 @@
           console.log(error)
         }
       },
+      async saveCoinsAmounts(coins) {
+        try {
+          let resCoins = await axios_database.get('/user/coins', this.getAuth())
+
+          // Pega as quantidades atuais de coins do usuário.
+          let copper_coin = parseInt(resCoins.data.find(item => item.item == 'copper-coin').amount)
+          let silver_coin = parseInt(resCoins.data.find(item => item.item == 'silver-coin').amount)
+          let gold_coin = parseInt(resCoins.data.find(item => item.item == 'gold-coin').amount)
+
+          // Novos valores para as moedas.
+          let newCoinsValues = {
+            'copper-coin': `${ copper_coin - coins['copper-coin'] }`,
+            'silver-coin': `${ silver_coin - coins['silver-coin'] }`,
+            'gold-coin': `${ gold_coin - coins['gold-coin'] }`,
+          }
+
+          let resCoinsSetteds = await axios_database.post('/user/coins/update', newCoinsValues, this.getAuth())
+
+          if (resCoinsSetteds.data.errorField) {
+            console.log(resCoinsSetteds.data.msg)
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      },
       resetFields() {
         for (let type of Object.keys(this.form.fields)) {
           for (let field of Object.keys(this.form.fields[type])) {
@@ -241,6 +266,7 @@
           if (await this.canBuy(coins)) {
             await this.saveFruitsAmounts()
             await this.saveBallsAmounts()
+            await this.saveCoinsAmounts(coins)
             alert('Dados enviados.')
           } else {
             alert('Você não tem coin suficientes.')

@@ -86,7 +86,7 @@
           coinsLinks: []
         },
         windows: {
-          showShoppingScreen: true
+          showShoppingScreen: false
         }
       }
     },
