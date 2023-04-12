@@ -36,6 +36,13 @@
   // Bibliotecas
   import axios from 'axios'
 
+  /*
+  Instância do axios, para atender, diretamente, as requisições feitas para o localhost do back-end.
+  */
+  const axios_database = axios.create({
+    baseURL: 'http://localhost:4000'
+  })
+
   export default {
     data() {
       return {
@@ -57,13 +64,10 @@
       player: Object,
       itemsCoins: Array
     },
-    created() {
+    async created() {
       this.jogador = this.player
 
-      // Verifica se já existe um token (usuário logado).
-      if (localStorage.getItem('PokemonUserToken')) {
-        this.user.hasUser = true
-      }
+      await this.validateToken()
 
       this.$emit('user', { user: this.user })
     },
@@ -83,6 +87,30 @@
       }
     },
     methods: {
+      getAuth() {
+        return {
+          headers: {
+            common: {
+              Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
+            }
+          }
+        }
+      },
+      // Verifica se já existe um token (usuário logado).
+      async validateToken() {
+        try {
+          if (localStorage.getItem('PokemonUserToken')) {
+            let resToken = await axios_database.get('/validate', this.getAuth())
+            if (resToken.data.errorField) {
+              console.log(resToken.data.msg)
+            } else {
+              this.user.hasUser = true
+            }
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      },
       showShoppingWindow() {
         this.$emit('showShoppingWindow')
       },
