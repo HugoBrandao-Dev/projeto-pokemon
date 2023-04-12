@@ -60,4 +60,5 @@ Uma vez que não foi utilizado frameworks/bibliotecas para estilo, e sim CSS pur
 ## Possíveis melhorias futuras
 
 * Criar um baú, onde o jogador possa colocar pokemons que não quer utilizar, para esvaziar a tela de seleção de pokemons;
-* Criar mecanismo que o último pokemon selecionado seja o padrão na tela de seleção.
+* Criar mecanismo que o último pokemon selecionado seja o padrão na tela de seleção;
+* Fazer com que as quantidades de itens dropados estejam relacionadas a Exp do pokemon do NPC.
