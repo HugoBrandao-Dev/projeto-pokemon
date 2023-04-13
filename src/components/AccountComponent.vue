@@ -19,40 +19,45 @@
             <span>dinora_oli@hotmail.com</span>
           </p>
         </div>
-        <button id="btn-change" class="btn">Mudar</button>
+        <button id="btn-change" class="btn" @click="changeInfo = true">Mudar</button>
       </section>
-      <hr class="hr-ver">
-      <section class="update">
-        <form>
+      <hr class="hr-ver" v-show="changeInfo">
+      <section class="update" v-show="changeInfo">
+        <form @submit="update">
           <legend><h2>Atualização</h2></legend>
           <fieldset>
             <p>
               <label>Nome:</label>
-              <input type="text" name="iptName" placeholder="Nome completo">
+              <input type="text" v-model="form.update.iptName.value" name="iptName" placeholder="Nome completo">
+              <small class="error-message">{{ form.update.iptName.errorMessage }}</small>
             </p>
 
             <p>
               <label>Email:</label>
-              <input type="email" name="iptEmail" placeholder="seu_email@exemplo.com">
+              <input type="email" v-model="form.update.iptEmail.value" name="iptEmail" placeholder="seu_email@exemplo.com">
+              <small class="error-message">{{ form.update.iptEmail.errorMessage }}</small>
             </p>
             
             <p>
               <label>Data de nascimento:</label>
-              <input type="date" name="iptBornDate">
+              <input type="date" v-model="form.update.iptBornDate.value" name="iptBornDate">
+              <small class="error-message">{{ form.update.iptBornDate.errorMessage }}</small>
             </p>
 
             <p>
               <label>Senha:</label>
-              <input type="password" name="iptPassword">
+              <input type="password" v-model="form.update.iptPassword.value" name="iptPassword">
+              <small class="error-message">{{ form.update.iptPassword.errorMessage }}</small>
             </p>
 
             <p>
               <label>Sua senha novamente:</label>
-              <input type="password" name="iptConfirmationPassword">
+              <input type="password" v-model="form.update.iptConfirmationPassword.value" name="iptConfirmationPassword">
+              <small class="error-message">{{ form.update.iptConfirmationPassword.errorMessage }}</small>
             </p>
 
             <div class="access-action">
-              <button id="btn-update" class="btn">Atualizar</button>
+              <button id="btn-update" type="submit" class="btn">Atualizar</button>
             </div>
           </fieldset>
         </form>
@@ -60,7 +65,51 @@
     </article>
   </div>
 </template>
-<script></script>
+<script>
+  export default {
+    data() {
+      return {
+        changeInfo: false,
+        form: {
+          update: {
+            iptName: {
+              value: '',
+              errorMessage: ''
+            },
+            iptEmail: {
+              value: '',
+              errorMessage: ''
+            },
+            iptBornDate: {
+              value: '',
+              errorMessage: ''
+            },
+            iptPassword: {
+              value: '',
+              errorMessage: ''
+            },
+            iptConfirmationPassword: {
+              value: '',
+              errorMessage: ''
+            }
+          }
+        }
+      }
+    },
+    methods: {
+      update($event) {
+        $event.preventDefault()
+
+        console.log(`
+Nome: ${ this.form.update.iptName.value }
+Email: ${ this.form.update.iptEmail.value }
+Nascimento: ${ this.form.update.iptBornDate.value }
+Senha: ${ this.form.update.iptPassword.value }
+          `)
+      }
+    }
+  }
+</script>
 <style scoped>
   /* CABEÇALHO */
   #account {
@@ -87,7 +136,7 @@
   }
 
   /* Informações */
-  .infos-update .infos h2, .infos-update .infos .info, .infos-update .update h2{
+  .infos-update .infos h2, .infos-update .infos .info, .infos-update .update h2, form p {
     margin-bottom: 10px;
   }
 
@@ -116,7 +165,6 @@
     background-color: #47476b;
     color: #fff;
     border-color: white;
-    margin-bottom: 20px;
     outline: none;
   }
 
