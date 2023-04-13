@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../App.vue'
+import Home from '../components/HomeComponent.vue'
+import Account from '../components/AccountComponent.vue'
 
 /*
 import axios from 'axios'
@@ -41,6 +42,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: Account
   }
 ]
 
