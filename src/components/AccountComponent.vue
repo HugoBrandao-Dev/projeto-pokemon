@@ -65,7 +65,10 @@
     </article>
   </div>
 </template>
-<script>export default {
+<script>
+  import axios from 'axios'
+
+  export default {
     data() {
       return {
         changeInfo: false,
@@ -100,7 +103,36 @@
         }
       }
     },
+    created() {
+      this.getUserInfos()
+    },
     methods: {
+      /*
+      Função que faz o tratamento da data de nascimento, já que retorna do BD com horário e outras 
+      informações desnecessárias.
+      */
+      getBornDateFormated(born_date) {
+        return born_date.split('T')[0]
+      },
+      async getUserInfos() {
+        try {
+          let resUser = await axios.get('http://localhost:4000/user/info', {
+            headers: {
+              common: {
+                Authorization: `Bearer ${ localStorage.getItem('PokemonUserToken') }`
+              }
+            }
+          })
+
+          let { full_name, born_date, email } = resUser.data
+
+          born_date = this.getBornDateFormated(born_date)
+
+          this.userInfo = { full_name, born_date, email }
+        } catch (error) {
+          console.error(error)
+        }
+      },
       update($event) {
         $event.preventDefault()
 
