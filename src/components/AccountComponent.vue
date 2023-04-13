@@ -8,15 +8,15 @@
         <div>
           <p class="info">
             <strong>Nome: </strong>
-            <span>Dinorá de Oliveira</span>
+            <span>{{ userInfo.full_name }}</span>
           </p>
           <p class="info">
             <strong>Data de nascimento: </strong>
-            <span>1985-01-10</span>
+            <span>{{ userInfo.born_date }}</span>
           </p>
           <p class="info">
             <strong>Email: </strong>
-            <span>dinora_oli@hotmail.com</span>
+            <span>{{ userInfo.email }}</span>
           </p>
         </div>
         <button id="btn-change" class="btn" @click="changeInfo = true">Mudar</button>
@@ -65,11 +65,15 @@
     </article>
   </div>
 </template>
-<script>
-  export default {
+<script>export default {
     data() {
       return {
         changeInfo: false,
+        userInfo: {
+          full_name: '',
+          born_date: '',
+          email: ''
+        },
         form: {
           update: {
             iptName: {
