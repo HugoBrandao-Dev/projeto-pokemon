@@ -64,3 +64,4 @@ Uma vez que não foi utilizado frameworks/bibliotecas para estilo, e sim CSS pur
 * Fazer com que as quantidades de itens dropados estejam relacionadas a Exp do pokemon do NPC.
 * Criar componente para a atualização das informações da conta do cliente;
 * Criar componente para a deleção da conta do cliente.
+* Componentalizar melhor os elementos, como tornar o header um elemento comum entre as rotas da app.
