@@ -23,7 +23,7 @@
       </section>
       <hr class="hr-ver" v-show="changeInfo">
       <section class="update" v-show="changeInfo">
-        <form @submit="update">
+        <form @submit="update" class="form-update">
           <legend><h2>Atualização</h2></legend>
           <fieldset>
             <p>
@@ -67,6 +67,7 @@
 </template>
 <script>
   import axios from 'axios'
+  import validator from 'validator'
 
   const axios_database = axios.create({
     baseURL: 'http://localhost:4000'
@@ -103,7 +104,9 @@
               value: '',
               errorMessage: ''
             }
-          }
+          },
+          acceptableCharactersPassword: '.@#%&*!@_',
+          acceptableCharactersName: ' -\''
         }
       }
     },
@@ -143,12 +146,48 @@
       update($event) {
         $event.preventDefault()
 
-        console.log(`
-Nome: ${ this.form.update.iptName.value }
-Email: ${ this.form.update.iptEmail.value }
-Nascimento: ${ this.form.update.iptBornDate.value }
-Senha: ${ this.form.update.iptPassword.value }
-          `)
+        let areFormFieldsCorrect = true
+
+        this.form.update.iptName.errorMessage = !validator.isAlpha(this.form.update.iptName.value, ['pt-BR'], {
+          ignore: this.form.acceptableCharactersName
+        }) ? 'Nome inválido.' : ''
+
+        this.form.update.iptEmail.errorMessage = !validator.isEmail(this.form.update.iptEmail.value) ? 'Email inválido' : ''
+
+        this.form.update.iptBornDate.errorMessage = !validator.isDate(this.form.update.iptBornDate.value) ? 'Data de nascimento inválida' : ''
+
+        this.form.update.iptPassword.errorMessage = !validator.isAlphanumeric(this.form.update.iptPassword.value, ['pt-BR'], {
+          ignore: this.form.acceptableCharactersPassword
+        }) ? 'Senha inválida' : ''
+
+        this.form.update.iptConfirmationPassword.errorMessage = !validator.equals(this.form.update.iptPassword.value, this.form.update.iptConfirmationPassword.value) ? 'Senha de confirmação não confere.' : ''
+
+        for (let field of Object.keys(this.form.update)) {
+          if (this.form.update[field].errorMessage.length != 0) {
+            areFormFieldsCorrect = false
+          }
+        }
+
+        if (areFormFieldsCorrect) {
+          axios_database.post('/user/update', {
+            full_name: this.form.update.iptName.value,
+            born_date: this.form.update.iptBornDate.value,
+            email: this.form.update.iptEmail.value,
+            user_password: this.form.update.iptPassword.value
+          }, this.getAuth()).then(response => {
+              if (response.data.errorField) {
+                console.log(response.data.errorField)
+                this.form.update[response.data.errorField].errorMessage = response.data.msg
+              } else {
+                alert('Informações atualizadas com sucesso.')
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        } else {
+          alert('Erro no cadastro do usuário.')
+        }
       }
     }
   }
@@ -179,7 +218,7 @@ Senha: ${ this.form.update.iptPassword.value }
   }
 
   /* Informações */
-  .infos-update .infos h2, .infos-update .infos .info, .infos-update .update h2, form p {
+  .infos-update .infos h2, .infos-update .infos .info, .infos-update .update h2, .form-update p {
     margin-bottom: 10px;
   }
 
@@ -198,11 +237,11 @@ Senha: ${ this.form.update.iptPassword.value }
   }
 
   /* Formulário de atualização */
-  .update form fieldset {
+  .update .form-update fieldset {
     border: none;
   }
 
-  form p input {
+  .form-update p input {
     width: 100%;
     padding: 5px 10px;
     background-color: #47476b;
@@ -211,20 +250,27 @@ Senha: ${ this.form.update.iptPassword.value }
     outline: none;
   }
 
-  form p input:focus {
+  .form-update p input:focus {
     box-shadow: 0 0 2px #fff;
   }
 
-  form .access-action {
+  .form-update .access-action {
     width: 100%;
     display: flex;
     justify-content: flex-end;
   }
 
-  form .access-action #btn-update {
+  .form-update .access-action #btn-update {
     margin-right: 0;
     background-color: #e6e600;
     border-color: #e6e600;
     color: #47476b;
+  }
+
+  .form-update fieldset .error-message {
+    align-self: flex-start;
+    font-size: 9px;
+    color: #ee6666;
+    font-weight: bolder;
   }
 </style>
