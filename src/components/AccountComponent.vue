@@ -1,6 +1,12 @@
 <template>
-  <div id="account">
-    <h1>Conta</h1>
+  <div id="account" class="espacar">
+    <div class="account-header">
+      <router-link to="/" title="Home">
+        <img src="https://img.icons8.com/dusk/32/null/home--v1.png"/>
+      </router-link>
+      <h1>Conta</h1>
+      <button id="btn-delete" class="btn">Deletar conta</button>
+    </div>
     <hr class="hr-hor">
     <article class="infos-update">
       <section class="infos">
@@ -203,10 +209,27 @@
   }
 </script>
 <style scoped>
+  .btn {
+    margin-right: 0;
+  }
+
   /* CABEÇALHO */
   #account {
-    padding: 20px 0;
+    width: 100%;
   }
+
+  #account .account-header {
+    width: 100%;
+    margin-right: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #account #btn-delete {
+    background-color: #ff3333;
+    border-color: #ff3333;
+  }
+
   #account .hr-hor {
     margin: 20px 0;
     border: none;
