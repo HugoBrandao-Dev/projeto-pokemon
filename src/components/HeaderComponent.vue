@@ -20,7 +20,7 @@
         </li>
       </ul>
       <div class="login">
-        <small v-show="user.hasUser" class="user-name">{{ user.info.login }}</small>
+        <router-link id="btn-account" v-show="user.hasUser" to="/account">Minha Conta</router-link>
         <button class="btn btn-login" @click="actionUserButton">
           <img :src="iconUser"/>
         </button>
@@ -156,6 +156,12 @@
 
   .coins, .login {
     display: flex;
+    align-items: center;
+  }
+
+  .login #btn-account {
+    margin-right: 20px;
+    color: #fff;
   }
 
   .coins .coin {
