@@ -13,14 +13,14 @@
             {{ player.items.coins[coin.name] }}
           </span>
         </li>
-        <li>
+        <li v-show="!this.match.emAndamento">
           <button type="button" id="btn-buy" class="btn" @click="showShoppingWindow">
             <img src="https://img.icons8.com/color/32/null/pokebag.png"/>
           </button>
         </li>
       </ul>
       <div class="login">
-        <router-link id="btn-account" v-show="user.hasUser" to="/account">Minha Conta</router-link>
+        <router-link id="btn-account" v-show="canShowMyAccount" to="/account">Minha Conta</router-link>
         <button class="btn btn-login" @click="actionUserButton">
           <img :src="iconUser"/>
         </button>
@@ -62,6 +62,7 @@
     },
     props: {
       player: Object,
+      match: Object,
       itemsCoins: Array
     },
     async created() {
@@ -72,6 +73,12 @@
       this.$emit('user', { user: this.user })
     },
     computed: {
+      canShowMyAccount() {
+        if (this.user.hasUser && !this.match.emAndamento) {
+          return true
+        }
+        return false
+      },
       iconUser() {
         if (this.user.hasUser) {
           return 'https://img.icons8.com/bubbles/50/null/logout-rounded.png'

@@ -15,7 +15,8 @@
         @showShoppingWindow="windows.showShoppingScreen = !windows.showShoppingScreen"
         @userLogout="cancelMatch"
         :itemsCoins="items.coinsLinks"
-        :player="jogador" />
+        :player="jogador"
+        :match="match" />
       <section id="jogadores">
         <PokemonComponent 
           @player="setPokemonPlayer($event)"
