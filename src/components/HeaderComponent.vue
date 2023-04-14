@@ -74,9 +74,9 @@
     computed: {
       iconUser() {
         if (this.user.hasUser) {
-          return 'https://img.icons8.com/pastel-glyph/32/00cc99/user-male-circle.png'
+          return 'https://img.icons8.com/bubbles/50/null/logout-rounded.png'
         }
-        return 'https://img.icons8.com/pastel-glyph/32/ff3333/user-male-circle.png'
+        return 'https://img.icons8.com/bubbles/50/null/login-rounded-right.png'
       },
       setCoinsInfo() {
         if (this.user.hasUser) {
