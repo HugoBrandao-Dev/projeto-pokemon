@@ -187,6 +187,8 @@
                 this.form.update[response.data.errorField].errorMessage = response.data.msg
               } else {
                 this.resetFields()
+                localStorage.removeItem('PokemonUserToken')
+                this.$router.push('/')
                 alert('Informações atualizadas com sucesso.')
               }
             })
