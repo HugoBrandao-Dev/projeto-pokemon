@@ -143,6 +143,13 @@
           console.error(error)
         }
       },
+      resetFields() {
+        this.form.update.iptName.value = ''
+        this.form.update.iptEmail.value = ''
+        this.form.update.iptBornDate.value = ''
+        this.form.update.iptPassword.value = ''
+        this.form.update.iptConfirmationPassword.value = ''
+      },
       update($event) {
         $event.preventDefault()
 
@@ -179,6 +186,7 @@
                 console.log(response.data.errorField)
                 this.form.update[response.data.errorField].errorMessage = response.data.msg
               } else {
+                this.resetFields()
                 alert('Informações atualizadas com sucesso.')
               }
             })
