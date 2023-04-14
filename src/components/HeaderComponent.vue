@@ -127,6 +127,7 @@
         axios.get('http://localhost:4000/logout')
           .then(() => {
             localStorage.removeItem('PokemonUserToken')
+            this.$emit('userLogout')
             this.user.hasUser = false
           })
           .catch(error => {

@@ -13,6 +13,7 @@
         @user="setUser($event)"
         @hasUser="getCoinsInfos()"
         @showShoppingWindow="windows.showShoppingScreen = !windows.showShoppingScreen"
+        @userLogout="cancelMatch"
         :itemsCoins="items.coinsLinks"
         :player="jogador" />
       <section id="jogadores">
@@ -831,6 +832,7 @@
         this.match.mensagem = ''
         this.match.vencedores.treinador = ''
         this.match.vencedores.pokemon = ''
+        this.clearArrays()
       },
       async selectedPokemon($event) {
         let selected = $event.pokemon
