@@ -5,7 +5,7 @@
         <img src="https://img.icons8.com/dusk/32/null/home--v1.png"/>
       </router-link>
       <h1>Conta</h1>
-      <button id="btn-delete" class="btn">Deletar conta</button>
+      <button id="btn-delete" class="btn" @click="deleteAccount">Deletar conta</button>
     </div>
     <hr class="hr-hor">
     <article class="infos-update">
@@ -203,6 +203,22 @@
             })
         } else {
           alert('Erro no cadastro do usuário.')
+        }
+      },
+      deleteAccount() {
+        if(confirm('Deseja realmente deletar sua conta?')) {
+          axios_database.post('/user/delete', {}, this.getAuth())
+            .then(response => {
+              if (response.data.errorField) {
+                console.log(response.data.msg)
+              } else {
+                localStorage.removeItem('PokemonUserToken')
+                this.$router.push('/')
+              }
+            })
+            .catch(error => {
+              console.error(error)
+            })
         }
       }
     }
