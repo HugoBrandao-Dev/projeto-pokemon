@@ -66,3 +66,4 @@ Uma vez que não foi utilizado frameworks/bibliotecas para estilo, e sim CSS pur
 * Criar componente para a deleção da conta do cliente.
 * Componentalizar melhor os elementos, como tornar o header um elemento comum entre as rotas da app.
 * Criar mecanismo onde o pokemon que vencer o jogador, caso seja sorteado novamente, tem a chance de ter plus_status (ser o mesmo pokemon contra quem o jogador lutou).
+* Criar mecanismo para visualizar o pokemon do NPC antes ou durante a seleção do pokemon do usuário.
