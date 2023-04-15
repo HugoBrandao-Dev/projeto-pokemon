@@ -205,9 +205,9 @@
 
               // Setta as quantidades (padrão) de moedas do usuário no banco de dados.
               await axios_database.post('/user/coins', {
-                'copper-coin': '500',
-                'silver-coin': '100',
-                'gold-coin': '50'
+                'copper-coin': '50',
+                'silver-coin': '0',
+                'gold-coin': '0'
               }, this.getAuth())
 
               this.$emit('logged')
