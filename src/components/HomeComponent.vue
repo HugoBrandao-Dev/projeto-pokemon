@@ -34,7 +34,7 @@
         @generatePokemons="setPokemons"
         @setAbilities="setSpecialAbilities($event)"
         @refreshAmounts="refreshAmounts"
-        @increaseExp="increaseExp(50)"
+        @increaseExp="increaseExp"
         :user="user"
         :player="jogador" 
         :npc="monstro" 
