@@ -108,33 +108,20 @@
         let targetTotalSpeed = target.base_status.speed + target.plus_status.speed
         let isHitted = false
 
-        let speedDifference = Math.round(pokemonTotalSpeed - targetTotalSpeed)
         let randomNumber = this.getValorRandom(1,100)
 
-        // Quando os speeds dos dois pokemons são iguais, a chance de acerto do hit é de 50%.
-        if (speedDifference == 0) {
-          isHitted = randomNumber >= 50
-        } else if (speedDifference > 0) {
+        /*
+        O valor máximo (100%) é a soma da velocidade total tanto do alvo quando do atacante.
+        Esse método foi utilizado para que haja uma pequena chance de o pokemon atacante errar,
+        mesmo que tenha um valor muito superior de speed.
+        */
+        let maxSpeedAcceptable = pokemonTotalSpeed + targetTotalSpeed
+        let chance = Math.round(pokemonTotalSpeed * 100 / maxSpeedAcceptable)
 
-          // Quando o agressor é mais RÁPIDO, MAS MENOS DE 2x, o alvo tem 75% de ser atingido.
-          if (speedDifference * 2 < targetTotalSpeed) {
-            isHitted = randomNumber < 75
-
-          // Quando o agressor é mais RÁPIDO, E MAIS DE 2x, o alvo tem 95% de ser atingido.
-          } else {
-            isHitted = randomNumber < 95
-          }
-        } else {
-
-          // Quando o agressor é mais LENTO, MAS MENOS DE 2x, o alvo tem 25% de ser atingido.
-          if (Math.abs(speedDifference) * 2 < pokemonTotalSpeed) {
-            isHitted = randomNumber > 75
-
-          // Quando o agressor é mais LENTO, E MAIS MENOS DE 2x, o alvo tem 5% de ser atingido.
-          } else {
-            isHitted = randomNumber > 95
-          }
+        if (randomNumber <= chance) {
+          isHitted = true
         }
+
         return isHitted
       },
       // taxCritical é o valor máximo do intervalo para ser considerado um DANO CRÍTICO
